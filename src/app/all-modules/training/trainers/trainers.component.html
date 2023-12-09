@@ -1,0 +1,362 @@
+<div class="page-wrapper">
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Trainers</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Trainers</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <a class="btn add-btn" data-toggle="modal" data-target="#add_trainer"><i class="fa fa-plus"></i> Add
+                    New</a>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                    class="table table-striped custom-table mb-0 datatable">
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;">#</th>
+                            <th>Name </th>
+                            <th>Contact Number </th>
+                            <th>Email </th>
+                            <th>Description </th>
+                            <th>Status </th>
+                            <th class="text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of lstTrainer;let i = index">
+                            <td>{{item.id}}</td>
+                            <td>
+                                <h2 class="table-avatar">
+                                    <a routerLink="/employees/employeeprofile" class="avatar"><img alt=""
+                                            src="assets/img/profiles/avatar-{{i+ 1}}.jpg"></a>
+                                    <a routerLink="/employees/employeeprofile">{{item.name}}</a>
+                                </h2>
+                            </td>
+                            <td>{{item.contactNumber}}</td>
+                            <td>{{item.mail}}</td>
+                            <td>{{item.description}}</td>
+                            <td>
+                                <div class="dropdown action-label">
+                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <i class="fa fa-dot-circle-o text-danger"></i> {{item.status}}
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item"><i class="fa fa-dot-circle-o text-success"></i>
+                                            Active</a>
+                                        <a class="dropdown-item"><i class="fa fa-dot-circle-o text-danger"></i>
+                                            Inactive</a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                <div class="dropdown dropdown-action">
+                                    <a class="action-icon dropdown-toggle" data-toggle="dropdown"
+                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#edit_trainer"
+                                            (click)="edit(item.id)"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#delete_trainer"
+                                            (click)="tempId =item.id"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- Add Trainers List Modal -->
+<div id="add_trainer" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Trainer</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="addTrainer()" [formGroup]="addTrainerForm">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">First Name <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="addTrainerForm.get('firstName').invalid && addTrainerForm.get('firstName').touched"
+                                    formControlName="firstName">
+                                <div
+                                    *ngIf="addTrainerForm.get('firstName').invalid && addTrainerForm.get('firstName').touched">
+                                    <small
+                                        *ngIf="addTrainerForm.get('firstName').invalid && addTrainerForm.get('firstName').touched"
+                                        class="text-danger"> *First Name is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Last Name</label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="addTrainerForm.get('lastName').invalid && addTrainerForm.get('lastName').touched"
+                                    formControlName="lastName">
+                                <div
+                                    *ngIf="addTrainerForm.get('lastName').invalid && addTrainerForm.get('lastName').touched">
+                                    <small
+                                        *ngIf="addTrainerForm.get('lastName').invalid && addTrainerForm.get('lastName').touched"
+                                        class="text-danger"> *Last Name is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Role <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="addTrainerForm.get('RoleName').invalid && addTrainerForm.get('RoleName').touched"
+                                    formControlName="RoleName">
+                                <div
+                                    *ngIf="addTrainerForm.get('RoleName').invalid && addTrainerForm.get('RoleName').touched">
+                                    <small
+                                        *ngIf="addTrainerForm.get('RoleName').invalid && addTrainerForm.get('RoleName').touched"
+                                        class="text-danger"> *Role is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Email <span class="text-danger">*</span></label>
+                                <input class="form-control" type="email"
+                                    [class.invalid]="addTrainerForm.get('Email').invalid && addTrainerForm.get('Email').touched"
+                                    formControlName="Email">
+                                <div *ngIf="addTrainerForm.get('Email').invalid && addTrainerForm.get('Email').touched">
+                                    <small
+                                        *ngIf="addTrainerForm.get('Email').invalid && addTrainerForm.get('Email').touched"
+                                        class="text-danger"> *Email is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Phone </label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="addTrainerForm.get('phoneNumber').invalid && addTrainerForm.get('phoneNumber').touched"
+                                    formControlName="phoneNumber">
+                                <div
+                                    *ngIf="addTrainerForm.get('phoneNumber').invalid && addTrainerForm.get('phoneNumber').touched">
+                                    <small
+                                        *ngIf="addTrainerForm.get('phoneNumber').invalid && addTrainerForm.get('phoneNumber').touched"
+                                        class="text-danger"> *Phone is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Status</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addTrainerForm.get('StatusName').invalid && addTrainerForm.get('StatusName').touched"
+                                    formControlName="StatusName">
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                </select>
+                                <div
+                                    *ngIf="addTrainerForm.get('StatusName').invalid && addTrainerForm.get('StatusName').touched">
+                                    <small
+                                        *ngIf="addTrainerForm.get('StatusName').invalid && addTrainerForm.get('StatusName').touched"
+                                        class="text-danger"> *Status is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Description <span class="text-danger">*</span></label>
+                                <textarea class="form-control" rows="4"
+                                    [class.invalid]="addTrainerForm.get('Description').invalid && addTrainerForm.get('Description').touched"
+                                    formControlName="Description"></textarea>
+                                <div
+                                    *ngIf="addTrainerForm.get('Description').invalid && addTrainerForm.get('Description').touched">
+                                    <small
+                                        *ngIf="addTrainerForm.get('Description').invalid && addTrainerForm.get('Description').touched"
+                                        class="text-danger"> *Description is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Trainers List Modal -->
+
+<!-- Edit Trainers List Modal -->
+<div id="edit_trainer" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Trainer</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="editTrainer()" [formGroup]="editTrainerForm">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">First Name <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="editTrainerForm.get('firstName').invalid && editTrainerForm.get('firstName').touched"
+                                    formControlName="firstName">
+                                <div
+                                    *ngIf="editTrainerForm.get('firstName').invalid && editTrainerForm.get('firstName').touched">
+                                    <small
+                                        *ngIf="editTrainerForm.get('firstName').invalid && editTrainerForm.get('firstName').touched"
+                                        class="text-danger"> *First Name is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Last Name</label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="editTrainerForm.get('lastName').invalid && editTrainerForm.get('lastName').touched"
+                                    formControlName="lastName">
+                                <div
+                                    *ngIf="editTrainerForm.get('lastName').invalid && editTrainerForm.get('lastName').touched">
+                                    <small
+                                        *ngIf="editTrainerForm.get('lastName').invalid && editTrainerForm.get('lastName').touched"
+                                        class="text-danger"> *Last Name is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Role <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="editTrainerForm.get('RoleName').invalid && editTrainerForm.get('RoleName').touched"
+                                    formControlName="RoleName">
+                                <div
+                                    *ngIf="editTrainerForm.get('RoleName').invalid && editTrainerForm.get('RoleName').touched">
+                                    <small
+                                        *ngIf="editTrainerForm.get('RoleName').invalid && editTrainerForm.get('RoleName').touched"
+                                        class="text-danger"> *Role is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Email <span class="text-danger">*</span></label>
+                                <input class="form-control" type="email"
+                                    [class.invalid]="editTrainerForm.get('Email').invalid && editTrainerForm.get('Email').touched"
+                                    formControlName="Email">
+                                <div
+                                    *ngIf="editTrainerForm.get('Email').invalid && editTrainerForm.get('Email').touched">
+                                    <small
+                                        *ngIf="editTrainerForm.get('Email').invalid && editTrainerForm.get('Email').touched"
+                                        class="text-danger"> *Email is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Phone </label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="editTrainerForm.get('phoneNumber').invalid && editTrainerForm.get('phoneNumber').touched"
+                                    formControlName="phoneNumber">
+                                <div
+                                    *ngIf="editTrainerForm.get('phoneNumber').invalid && editTrainerForm.get('phoneNumber').touched">
+                                    <small
+                                        *ngIf="editTrainerForm.get('phoneNumber').invalid && editTrainerForm.get('phoneNumber').touched"
+                                        class="text-danger"> *Phone is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Status</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editTrainerForm.get('StatusName').invalid && editTrainerForm.get('StatusName').touched"
+                                    formControlName="StatusName">
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                </select>
+                                <div
+                                    *ngIf="editTrainerForm.get('StatusName').invalid && editTrainerForm.get('StatusName').touched">
+                                    <small
+                                        *ngIf="editTrainerForm.get('StatusName').invalid && editTrainerForm.get('StatusName').touched"
+                                        class="text-danger"> *Status is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Description <span class="text-danger">*</span></label>
+                                <textarea class="form-control" rows="4"
+                                    [class.invalid]="editTrainerForm.get('Description').invalid && editTrainerForm.get('Description').touched"
+                                    formControlName="Description"></textarea>
+                                <div
+                                    *ngIf="editTrainerForm.get('Description').invalid && editTrainerForm.get('Description').touched">
+                                    <small
+                                        *ngIf="editTrainerForm.get('Description').invalid && editTrainerForm.get('Description').touched"
+                                        class="text-danger"> *Description is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Edit Trainers List Modal -->
+
+<!-- Delete Trainers List Modal -->
+<div class="modal custom-modal fade" id="delete_trainer" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete Trainers List</h3>
+                    <p>Are you sure want to delete?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a  class="btn btn-primary continue-btn"
+                                (click)="deleteTrainer()">Delete</a>
+                        </div>
+                        <div class="col-6">
+                            <a  data-dismiss="modal"
+                                class="btn btn-primary cancel-btn">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete Trainers List Modal -->
+</div>

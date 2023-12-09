@@ -1,0 +1,151 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <form (ngSubmit)="submitEmailSettings()" [formGroup]="emailSettings">
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio"  id="phpmail" value="option1" [class.invalid]="emailSettings.get('phpMail').invalid && emailSettings.get('phpMail').touched"
+                        formControlName="phpMail">
+                        <div
+                        *ngIf="emailSettings.get('phpMail').invalid && emailSettings.get('phpMail').touched">
+                        <small
+                            *ngIf="emailSettings.get('phpMail').invalid && emailSettings.get('phpMail').touched"
+                            class="text-danger"> *PHP mail is required</small>
+                    </div>
+                        <label class="form-check-label" for="phpmail">PHP Mail</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio"  id="smtpmail" value="option2" [class.invalid]="emailSettings.get('smtp').invalid && emailSettings.get('smtp').touched"
+                        formControlName="smtp">
+                        <div
+                        *ngIf="emailSettings.get('smtp').invalid && emailSettings.get('smtp').touched">
+                        <small
+                            *ngIf="emailSettings.get('smtp').invalid && emailSettings.get('smtp').touched"
+                            class="text-danger"> *SMTP is required</small>
+                    </div>
+                        <label class="form-check-label" for="smtpmail">SMTP</label>
+                    </div>
+                </div>
+                <h4 class="page-title">PHP Email Settings</h4>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Email From Address</label>
+                            <input class="form-control"  [class.invalid]="emailSettings.get('emailAddress').invalid && emailSettings.get('emailAddress').touched"
+                            formControlName="emailAddress">
+                            <div
+                            *ngIf="emailSettings.get('emailAddress').invalid && emailSettings.get('emailAddress').touched">
+                            <small
+                                *ngIf="emailSettings.get('emailAddress').invalid && emailSettings.get('emailAddress').touched"
+                                class="text-danger"> *Email  from address is required</small>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Emails From Name</label>
+                            <input class="form-control" type="text" [class.invalid]="emailSettings.get('emailName').invalid && emailSettings.get('emailName').touched"
+                            formControlName="emailName">
+                            <div
+                            *ngIf="emailSettings.get('emailName').invalid && emailSettings.get('emailName').touched">
+                            <small
+                                *ngIf="emailSettings.get('emailName').invalid && emailSettings.get('emailName').touched"
+                                class="text-danger"> *Email  from name is required</small>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <h4 class="page-title m-t-30">SMTP Email Settings</h4>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>SMTP HOST</label>
+                            <input class="form-control" type="text" [class.invalid]="emailSettings.get('smtpHost').invalid && emailSettings.get('smtpHost').touched"
+                            formControlName="smtpHost">
+                            <div
+                            *ngIf="emailSettings.get('smtpHost').invalid && emailSettings.get('smtpHost').touched">
+                            <small
+                                *ngIf="emailSettings.get('smtpHost').invalid && emailSettings.get('smtpHost').touched"
+                                class="text-danger"> *SMTP host is required</small>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>SMTP USER</label>
+                            <input class="form-control" type="text" [class.invalid]="emailSettings.get('smtpUser').invalid && emailSettings.get('smtpUser').touched"
+                            formControlName="smtpUser">
+                            <div
+                            *ngIf="emailSettings.get('smtpUser').invalid && emailSettings.get('smtpUser').touched">
+                            <small
+                                *ngIf="emailSettings.get('smtpUser').invalid && emailSettings.get('smtpUser').touched"
+                                class="text-danger"> *SMTP user is required</small>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>SMTP PASSWORD</label>
+                            <input class="form-control" type="password" [class.invalid]="emailSettings.get('smtpPassword').invalid && emailSettings.get('smtpPassword').touched"
+                            formControlName="smtpPassword">
+                            <div
+                            *ngIf="emailSettings.get('smtpPassword').invalid && emailSettings.get('smtpPassword').touched">
+                            <small
+                                *ngIf="emailSettings.get('smtpPassword').invalid && emailSettings.get('smtpPassword').touched"
+                                class="text-danger"> *SMTP password is required</small>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>SMTP PORT</label>
+                            <input class="form-control" type="text" [class.invalid]="emailSettings.get('smtpPort').invalid && emailSettings.get('smtpPort').touched"
+                            formControlName="smtpPort">
+                            <div
+                            *ngIf="emailSettings.get('smtpPort').invalid && emailSettings.get('smtpPort').touched">
+                            <small
+                                *ngIf="emailSettings.get('smtpPort').invalid && emailSettings.get('smtpPort').touched"
+                                class="text-danger"> *SMTP port is required</small>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>SMTP Security</label>
+                            <select class="select form-control"  [class.invalid]="emailSettings.get('smtpSecurity').invalid && emailSettings.get('smtpSecurity').touched"
+                            formControlName="smtpSecurity">
+                                <option>None</option>
+                                <option>SSL</option>
+                                <option>TLS</option>
+                            </select>
+                            <div
+                            *ngIf="emailSettings.get('smtpSecurity').invalid && emailSettings.get('smtpSecurity').touched">
+                            <small
+                                *ngIf="emailSettings.get('smtpSecurity').invalid && emailSettings.get('smtpSecurity').touched"
+                                class="text-danger"> *SMTP Security is required</small>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>SMTP Authentication Domain</label>
+                            <input class="form-control" type="text" [class.invalid]="emailSettings.get('smtpAuthentication').invalid && emailSettings.get('smtpAuthentication').touched"
+                            formControlName="smtpAuthentication">
+                            <div
+                            *ngIf="emailSettings.get('smtpAuthentication').invalid && emailSettings.get('smtpAuthentication').touched">
+                            <small
+                                *ngIf="emailSettings.get('smtpAuthentication').invalid && emailSettings.get('smtpAuthentication').touched"
+                                class="text-danger"> *SMTP Authentication is required</small>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="submit-section">
+                    <button class="btn btn-primary submit-btn">Save &amp; update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->

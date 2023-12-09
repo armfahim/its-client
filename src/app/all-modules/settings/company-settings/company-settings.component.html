@@ -1,0 +1,205 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3 class="page-title">Company Settings</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- /Page Header -->
+
+            <form (ngSubmit)="submitCompany()" [formGroup]="companySettings">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Company Name <span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" value="Dreamguy's Technologies"
+                                [class.invalid]="companySettings.get('companyName').invalid && companySettings.get('companyName').touched"
+                                formControlName="companyName">
+                            <div
+                                *ngIf="companySettings.get('companyName').invalid && companySettings.get('companyName').touched">
+                                <small
+                                    *ngIf="companySettings.get('companyName').invalid && companySettings.get('companyName').touched"
+                                    class="text-danger"> *Company name is required</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Contact Person</label>
+                            <input class="form-control " value="Daniel Porter" type="text"
+                                [class.invalid]="companySettings.get('contactPerson').invalid && companySettings.get('contactPerson').touched"
+                                formControlName="contactPerson">
+                            <div
+                                *ngIf="companySettings.get('contactPerson').invalid && companySettings.get('contactPerson').touched">
+                                <small
+                                    *ngIf="companySettings.get('contactPerson').invalid && companySettings.get('contactPerson').touched"
+                                    class="text-danger"> *Contact person is required</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Address</label>
+                            <input class="form-control " value="3864 Quiet Valley Lane, Sherman Oaks, CA, 91403"
+                                type="text"
+                                [class.invalid]="companySettings.get('address').invalid && companySettings.get('address').touched"
+                                formControlName="address">
+                            <div
+                                *ngIf="companySettings.get('address').invalid && companySettings.get('address').touched">
+                                <small
+                                    *ngIf="companySettings.get('address').invalid && companySettings.get('address').touched"
+                                    class="text-danger"> *Address is required</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-3">
+                        <div class="form-group">
+                            <label>Country</label>
+                            <select class="form-control select"
+                                [class.invalid]="companySettings.get('country').invalid && companySettings.get('country').touched"
+                                formControlName="country">
+                                <option value="USA">USA</option>
+                                <option value="United Kingdom">United Kingdom</option>
+                            </select>
+                            <div
+                                *ngIf="companySettings.get('country').invalid && companySettings.get('country').touched">
+                                <small
+                                    *ngIf="companySettings.get('country').invalid && companySettings.get('country').touched"
+                                    class="text-danger"> *Country is required</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-3">
+                        <div class="form-group">
+                            <label>City</label>
+                            <input class="form-control" value="Sherman Oaks" type="text"
+                                [class.invalid]="companySettings.get('city').invalid && companySettings.get('city').touched"
+                                formControlName="city">
+                            <div *ngIf="companySettings.get('city').invalid && companySettings.get('city').touched">
+                                <small
+                                    *ngIf="companySettings.get('city').invalid && companySettings.get('city').touched"
+                                    class="text-danger"> *City is required</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-3">
+                        <div class="form-group">
+                            <label>State/Province</label>
+                            <select class="form-control select"
+                                [class.invalid]="companySettings.get('state').invalid && companySettings.get('state').touched"
+                                formControlName="state">
+                                <option value="California">California</option>
+                                <option value="Alaska">Alaska</option>
+                                <option value="Alabama">Alabama</option>
+                            </select>
+                            <div *ngIf="companySettings.get('state').invalid && companySettings.get('state').touched">
+                                <small
+                                    *ngIf="companySettings.get('state').invalid && companySettings.get('state').touched"
+                                    class="text-danger"> *State is required</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-3">
+                        <div class="form-group">
+                            <label>Postal Code</label>
+                            <input class="form-control" value="91403" type="text"
+                                [class.invalid]="companySettings.get('postalCode').invalid && companySettings.get('postalCode').touched"
+                                formControlName="postalCode">
+                            <div
+                                *ngIf="companySettings.get('postalCode').invalid && companySettings.get('postalCode').touched">
+                                <small
+                                    *ngIf="companySettings.get('postalCode').invalid && companySettings.get('postalCode').touched"
+                                    class="text-danger"> *Postal code is required</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input class="form-control" value="danielporter@example.com" type="email"
+                                [class.invalid]="companySettings.get('email').invalid && companySettings.get('email').touched"
+                                formControlName="email">
+                            <div *ngIf="companySettings.get('email').invalid && companySettings.get('email').touched">
+                                <small
+                                    *ngIf="companySettings.get('email').invalid && companySettings.get('email').touched"
+                                    class="text-danger"> *Email is required</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input class="form-control" value="818-978-7102" type="text"
+                                [class.invalid]="companySettings.get('phoneNumber').invalid && companySettings.get('phoneNumber').touched"
+                                formControlName="phoneNumber">
+                            <div
+                                *ngIf="companySettings.get('phoneNumber').invalid && companySettings.get('phoneNumber').touched">
+                                <small
+                                    *ngIf="companySettings.get('phoneNumber').invalid && companySettings.get('phoneNumber').touched"
+                                    class="text-danger"> *Phone number is required</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Mobile Number</label>
+                            <input class="form-control" value="818-635-5579" type="text"
+                                [class.invalid]="companySettings.get('mobileNumber').invalid && companySettings.get('mobileNumber').touched"
+                                formControlName="mobileNumber">
+                            <div
+                                *ngIf="companySettings.get('mobileNumber').invalid && companySettings.get('mobileNumber').touched">
+                                <small
+                                    *ngIf="companySettings.get('mobileNumber').invalid && companySettings.get('mobileNumber').touched"
+                                    class="text-danger"> *Mobile number is required</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Fax</label>
+                            <input class="form-control" value="818-978-7102" type="text"
+                                [class.invalid]="companySettings.get('fax').invalid && companySettings.get('fax').touched"
+                                formControlName="fax">
+                            <div *ngIf="companySettings.get('fax').invalid && companySettings.get('fax').touched">
+                                <small *ngIf="companySettings.get('fax').invalid && companySettings.get('fax').touched"
+                                    class="text-danger"> *Fax is required</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Website Url</label>
+                            <input class="form-control" value="https://www.example.com" type="text"
+                                [class.invalid]="companySettings.get('website').invalid && companySettings.get('website').touched"
+                                formControlName="website">
+                            <div
+                                *ngIf="companySettings.get('website').invalid && companySettings.get('website').touched">
+                                <small
+                                    *ngIf="companySettings.get('website').invalid && companySettings.get('website').touched"
+                                    class="text-danger"> *Website URL is required</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="submit-section">
+                    <button class="btn btn-primary submit-btn">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->

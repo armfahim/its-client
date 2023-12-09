@@ -1,0 +1,135 @@
+<!-- Page Wrapper -->
+            <div class="page-wrapper">
+			
+				<!-- Page Content -->
+                <div class="content container-fluid">
+					
+				
+					<!-- Page Header -->
+					<div class="page-header">
+						<div class="row">
+							<div class="col">
+								<h3 class="page-title">Employee Report</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+									<li class="breadcrumb-item active">Employee Report</li>
+								</ul>
+							</div>
+							<div class="col-auto">
+								<a href="#" class="btn btn-primary">PDF</a>
+							</div>
+						</div>
+					</div>
+					<!-- /Page Header -->
+					
+						<!-- Content Starts -->
+						
+							<!-- Search Filter -->
+					<div class="row filter-row mb-4">
+						<div class="col-sm-6 col-md-3">  
+							<div class="form-group form-focus">
+								<input class="form-control floating" type="text" (input)="searchEmployee($event.target.value)">
+								<label class="focus-label">Employee</label>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-3"> 
+							<div class="form-group form-focus select-focus">
+								<select class="select  form-control" (input)="searchDepartment($event.target.value)">
+									<option>Select Department</option>
+									<option>Designing</option>
+									<option>Development</option>
+									<option>Finance</option>
+									<option>Hr & Finance</option>
+								</select>
+								<label class="focus-label">Department</label>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-3">  
+							<div class="form-group form-focus">
+								<div class="cal-icon">
+									<input class="form-control floating datetimepicker" type="text" bsDatepicker>
+								</div>
+								<label class="focus-label">From</label>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-3">  
+							<div class="form-group form-focus">
+								<div class="cal-icon">
+									<input class="form-control floating datetimepicker" type="text" bsDatepicker>
+								</div>
+								<label class="focus-label">To</label>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-3">  
+							<a href="#" class="btn btn-success btn-block"> Search </a>  
+						</div>     
+                    </div>
+					<!-- /Search Filter -->
+					<div class="row">
+						<div class="col-md-12">
+							<div class="table-responsive">
+								<table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                    class="table table-striped custom-table datatable mb-0">
+									<thead>
+										<tr>
+											<th>Employee Name</th>
+											<th>Employee Type</th>
+											<th>Email</th>
+											<th>Department</th>
+											<th>Designation</th>
+											<th>Joining Date</th>
+											<th>DOB</th>
+											<th>Martial Status</th>
+											<th>Gender</th>
+											<th>Terminated Date</th>
+											<th>Relieving Date</th>
+											<th>Salary</th>
+											<th>Address</th>
+											<th>Contact Number</th>
+											<th>Emercency Contact Details</th>
+											<th>Experience</th>
+											<th class="text-center">Status</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr *ngFor="let item of lstEmployee">
+											<td>
+												<h2 class="table-avatar">
+													<a routerLink="/profile/profilelist" class="avatar"><img alt="" src="assets/img/profiles/avatar-2.jpg"></a>
+													<a routerLink="/profile/profilelist" class="text-primary">{{item.name1}} <span>{{item.name2}}</span></a>
+												</h2>
+											</td>
+											<td>{{item.employeetype}}</td>
+											<td class="text-info">{{item.email}}</td>
+											<td>{{item.department}}</td>
+											<td>{{item.designation}}</td>
+											<td>{{item.joiningdate}}</td>
+											<td>{{item.dob}}</td>
+											<td>{{item.marritalstatus}}</td>
+											<td>{{item.gender}}</td>
+											<td>{{item.terminateddate}}</td>
+											<td>{{item.relievingdate}}</td>
+											<td>{{item.salary}}</td>
+											<td>
+												{{item.address}}
+											</td>
+											<td>{{item.contactnumber}}</td>
+											<td>{{item.contactnumber}}</td>
+											<td>{{item.experience}}</td>
+											<td><button class="btn btn-outline-success btn-sm">{{item.status}}</button></td>
+										</tr>
+										
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					
+                
+					<!-- /Content End -->
+					
+                </div>
+				<!-- /Page Content -->
+				
+            </div>
+			<!-- /Page Wrapper -->

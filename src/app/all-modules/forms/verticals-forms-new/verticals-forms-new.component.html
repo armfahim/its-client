@@ -1,0 +1,596 @@
+<!--PageContent-->
+
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">Vertical Form</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Vertical Form</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title mb-0">Basic Form</h4>
+                </div>
+                <div class="card-body">
+                    <form (ngSubmit)="basicFormSubmit()" [formGroup]="basicForm">
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input type="text" class="form-control"
+                                [class.invalid]="basicForm.get('firstName').invalid && basicForm.get('firstName').touched"
+                                formControlName="firstName">
+                            <div *ngIf="basicForm.get('firstName').invalid && basicForm.get('firstName').touched">
+                                <small *ngIf="basicForm.get('firstName').invalid && basicForm.get('firstName').touched"
+                                    class="text-danger"> *First name is required</small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input type="text" class="form-control"
+                                [class.invalid]="basicForm.get('lastName').invalid && basicForm.get('lastName').touched"
+                                formControlName="lastName">
+                            <div *ngIf="basicForm.get('lastName').invalid && basicForm.get('lastName').touched">
+                                <small *ngIf="basicForm.get('lastName').invalid && basicForm.get('lastName').touched"
+                                    class="text-danger"> *Last name is required</small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" class="form-control"
+                                [class.invalid]="basicForm.get('email').invalid && basicForm.get('email').touched"
+                                formControlName="email">
+                            <div *ngIf="basicForm.get('lastName').invalid && basicForm.get('lastName').touched">
+                                <small *ngIf="basicForm.get('lastName').invalid && basicForm.get('lastName').touched"
+                                    class="text-danger"> *Last name is required</small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" class="form-control"
+                                [class.invalid]="basicForm.get('userName').invalid && basicForm.get('userName').touched"
+                                formControlName="userName">
+                            <div *ngIf="basicForm.get('userName').invalid && basicForm.get('userName').touched">
+                                <small *ngIf="basicForm.get('userName').invalid && basicForm.get('userName').touched"
+                                    class="text-danger"> *User name is required</small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" class="form-control"
+                                [class.invalid]="basicForm.get('password').invalid && basicForm.get('password').touched"
+                                formControlName="password">
+                            <div *ngIf="basicForm.get('password').invalid && basicForm.get('password').touched">
+                                <small *ngIf="basicForm.get('password').invalid && basicForm.get('password').touched"
+                                    class="text-danger"> *Password is required</small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Repeat Password</label>
+                            <input type="password" class="form-control"
+                                [class.invalid]="basicForm.get('repeatPassword').invalid && basicForm.get('repeatPassword').touched"
+                                formControlName="repeatPassword">
+                            <div
+                                *ngIf="basicForm.get('repeatPassword').invalid && basicForm.get('repeatPassword').touched">
+                                <small
+                                    *ngIf="basicForm.get('repeatPassword').invalid && basicForm.get('repeatPassword').touched"
+                                    class="text-danger"> *Repeat password is required</small>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title mb-0">Address Form</h4>
+                </div>
+                <div class="card-body">
+                    <form (ngSubmit)="addressFormSubmit()" [formGroup]="addressForm">
+                        <div class="form-group">
+                            <label>Address Line 1</label>
+                            <input type="text" class="form-control"
+                                [class.invalid]="addressForm.get('addressOne').invalid && addressForm.get('addressOne').touched"
+                                formControlName="addressOne">
+                            <div *ngIf="addressForm.get('addressOne').invalid && addressForm.get('addressOne').touched">
+                                <small
+                                    *ngIf="addressForm.get('addressOne').invalid && addressForm.get('addressOne').touched"
+                                    class="text-danger"> *Address 1 is required</small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Address Line 2</label>
+                            <input type="text" class="form-control"
+                                [class.invalid]="addressForm.get('addressTwo').invalid && addressForm.get('addressTwo').touched"
+                                formControlName="addressTwo">
+                            <div *ngIf="addressForm.get('addressTwo').invalid && addressForm.get('addressTwo').touched">
+                                <small
+                                    *ngIf="addressForm.get('addressTwo').invalid && addressForm.get('addressTwo').touched"
+                                    class="text-danger"> *Address 2 is required</small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>City</label>
+                            <input type="text" class="form-control"
+                                [class.invalid]="addressForm.get('city').invalid && addressForm.get('city').touched"
+                                formControlName="city">
+                            <div *ngIf="addressForm.get('city').invalid && addressForm.get('city').touched">
+                                <small *ngIf="addressForm.get('city').invalid && addressForm.get('city').touched"
+                                    class="text-danger"> *City is required</small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>State</label>
+                            <input type="text" class="form-control"
+                                [class.invalid]="addressForm.get('state').invalid && addressForm.get('state').touched"
+                                formControlName="state">
+                            <div *ngIf="addressForm.get('state').invalid && addressForm.get('state').touched">
+                                <small *ngIf="addressForm.get('state').invalid && addressForm.get('state').touched"
+                                    class="text-danger"> *State is required</small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Country</label>
+                            <input type="text" class="form-control"
+                                [class.invalid]="addressForm.get('country').invalid && addressForm.get('country').touched"
+                                formControlName="country">
+                            <div *ngIf="addressForm.get('country').invalid && addressForm.get('country').touched">
+                                <small *ngIf="addressForm.get('country').invalid && addressForm.get('country').touched"
+                                    class="text-danger"> *Country is required</small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Postal Code</label>
+                            <input type="text" class="form-control"
+                                [class.invalid]="addressForm.get('postalCode').invalid && addressForm.get('postalCode').touched"
+                                formControlName="postalCode">
+                            <div *ngIf="addressForm.get('postalCode').invalid && addressForm.get('postalCode').touched">
+                                <small
+                                    *ngIf="addressForm.get('postalCode').invalid && addressForm.get('postalCode').touched"
+                                    class="text-danger"> *Postalcode is required</small>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title mb-0">Two Column Vertical Form</h4>
+                </div>
+                <div class="card-body">
+                    <form (ngSubmit)="columnOneSubmit()" [formGroup]="twoColumnFormOne">
+                        <h4 class="card-title">Personal Information</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <input type="text" class="form-control"
+                                        [class.invalid]="twoColumnFormOne.get('firstName').invalid && twoColumnFormOne.get('firstName').touched"
+                                        formControlName="firstName">
+                                    <div
+                                        *ngIf="twoColumnFormOne.get('firstName').invalid && twoColumnFormOne.get('firstName').touched">
+                                        <small
+                                            *ngIf="twoColumnFormOne.get('firstName').invalid && twoColumnFormOne.get('firstName').touched"
+                                            class="text-danger"> *First name is required</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <input type="text" class="form-control"
+                                        [class.invalid]="twoColumnFormOne.get('lastName').invalid && twoColumnFormOne.get('lastName').touched"
+                                        formControlName="lastName">
+                                    <div
+                                        *ngIf="twoColumnFormOne.get('lastName').invalid && twoColumnFormOne.get('lastName').touched">
+                                        <small
+                                            *ngIf="twoColumnFormOne.get('lastName').invalid && twoColumnFormOne.get('lastName').touched"
+                                            class="text-danger"> *Last name is required</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Blood Group</label>
+                                    <select class="select form-control"
+                                        [class.invalid]="twoColumnFormOne.get('bloodGroup').invalid && twoColumnFormOne.get('bloodGroup').touched"
+                                        formControlName="bloodGroup">
+                                        <option>Select</option>
+                                        <option value="1">A+</option>
+                                        <option value="2">O+</option>
+                                        <option value="3">B+</option>
+                                        <option value="4">AB+</option>
+                                    </select>
+                                    <div
+                                        *ngIf="twoColumnFormOne.get('bloodGroup').invalid && twoColumnFormOne.get('bloodGroup').touched">
+                                        <small
+                                            *ngIf="twoColumnFormOne.get('bloodGroup').invalid && twoColumnFormOne.get('bloodGroup').touched"
+                                            class="text-danger"> *Blood Group is required</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="d-block">Gender:</label>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="gender_male"
+                                            value="option1">
+                                        <label class="form-check-label" for="gender_male">Male</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="gender_female"
+                                            value="option2">
+                                        <label class="form-check-label" for="gender_female">Female</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Username</label>
+                                    <input type="text" class="form-control"
+                                        [class.invalid]="twoColumnFormOne.get('userName').invalid && twoColumnFormOne.get('userName').touched"
+                                        formControlName="userName">
+                                    <div
+                                        *ngIf="twoColumnFormOne.get('userName').invalid && twoColumnFormOne.get('userName').touched">
+                                        <small
+                                            *ngIf="twoColumnFormOne.get('userName').invalid && twoColumnFormOne.get('userName').touched"
+                                            class="text-danger"> *User name is required</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="text" class="form-control"
+                                        [class.invalid]="twoColumnFormOne.get('email').invalid && twoColumnFormOne.get('email').touched"
+                                        formControlName="email">
+                                    <div
+                                        *ngIf="twoColumnFormOne.get('email').invalid && twoColumnFormOne.get('email').touched">
+                                        <small
+                                            *ngIf="twoColumnFormOne.get('email').invalid && twoColumnFormOne.get('email').touched"
+                                            class="text-danger"> *Email is required</small>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Password</label>
+                                    <input type="text" class="form-control"
+                                        [class.invalid]="twoColumnFormOne.get('password').invalid && twoColumnFormOne.get('password').touched"
+                                        formControlName="password">
+                                    <div
+                                        *ngIf="twoColumnFormOne.get('password').invalid && twoColumnFormOne.get('password').touched">
+                                        <small
+                                            *ngIf="twoColumnFormOne.get('password').invalid && twoColumnFormOne.get('password').touched"
+                                            class="text-danger"> *Password is required</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Repeat Password</label>
+                                    <input type="text" class="form-control"
+                                        [class.invalid]="twoColumnFormOne.get('repeatPassword').invalid && twoColumnFormOne.get('repeatPassword').touched"
+                                        formControlName="repeatPassword">
+                                    <div
+                                        *ngIf="twoColumnFormOne.get('repeatPassword').invalid && twoColumnFormOne.get('repeatPassword').touched">
+                                        <small
+                                            *ngIf="twoColumnFormOne.get('repeatPassword').invalid && twoColumnFormOne.get('repeatPassword').touched"
+                                            class="text-danger"> *Repeat password is required</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h4 class="card-title">Postal Address</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Address Line 1</label>
+                                    <input type="text" class="form-control"
+                                        [class.invalid]="twoColumnFormOne.get('addresslineone').invalid && twoColumnFormOne.get('addresslineone').touched"
+                                        formControlName="addresslineone">
+                                    <div
+                                        *ngIf="twoColumnFormOne.get('addresslineone').invalid && twoColumnFormOne.get('addresslineone').touched">
+                                        <small
+                                            *ngIf="twoColumnFormOne.get('addresslineone').invalid && twoColumnFormOne.get('addresslineone').touched"
+                                            class="text-danger"> *Address Line 1 is required</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Address Line 2</label>
+                                    <input type="text" class="form-control"
+                                        [class.invalid]="twoColumnFormOne.get('addresslinetwo').invalid && twoColumnFormOne.get('addresslinetwo').touched"
+                                        formControlName="addresslinetwo">
+                                    <div
+                                        *ngIf="twoColumnFormOne.get('addresslinetwo').invalid && twoColumnFormOne.get('addresslinetwo').touched">
+                                        <small
+                                            *ngIf="twoColumnFormOne.get('addresslinetwo').invalid && twoColumnFormOne.get('addresslinetwo').touched"
+                                            class="text-danger"> *Address Line 2 is required</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>State</label>
+                                    <input type="text" class="form-control"
+                                        [class.invalid]="twoColumnFormOne.get('state').invalid && twoColumnFormOne.get('state').touched"
+                                        formControlName="state">
+                                    <div
+                                        *ngIf="twoColumnFormOne.get('state').invalid && twoColumnFormOne.get('state').touched">
+                                        <small
+                                            *ngIf="twoColumnFormOne.get('state').invalid && twoColumnFormOne.get('state').touched"
+                                            class="text-danger"> *State is required</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>City</label>
+                                    <input type="text" class="form-control"
+                                        [class.invalid]="twoColumnFormOne.get('city').invalid && twoColumnFormOne.get('city').touched"
+                                        formControlName="city">
+                                    <div
+                                        *ngIf="twoColumnFormOne.get('city').invalid && twoColumnFormOne.get('city').touched">
+                                        <small
+                                            *ngIf="twoColumnFormOne.get('city').invalid && twoColumnFormOne.get('city').touched"
+                                            class="text-danger"> *City is required</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Country</label>
+                                    <input type="text" class="form-control"
+                                        [class.invalid]="twoColumnFormOne.get('country').invalid && twoColumnFormOne.get('country').touched"
+                                        formControlName="country">
+                                    <div
+                                        *ngIf="twoColumnFormOne.get('city').invalid && twoColumnFormOne.get('city').touched">
+                                        <small
+                                            *ngIf="twoColumnFormOne.get('city').invalid && twoColumnFormOne.get('city').touched"
+                                            class="text-danger"> *City is required</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Postal Code</label>
+                                    <input type="text" class="form-control"
+                                        [class.invalid]="twoColumnFormOne.get('postalCode').invalid && twoColumnFormOne.get('postalCode').touched"
+                                        formControlName="postalCode">
+                                    <div
+                                        *ngIf="twoColumnFormOne.get('postalCode').invalid && twoColumnFormOne.get('postalCode').touched">
+                                        <small
+                                            *ngIf="twoColumnFormOne.get('postalCode').invalid && twoColumnFormOne.get('postalCode').touched"
+                                            class="text-danger"> *Postal Code is required</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-0">
+                <div class="card-header">
+                    <h4 class="card-title mb-0">Two Column Vertical Form</h4>
+                </div>
+                <div class="card-body">
+                    <form (ngSubmit)="columnTwoSubmit()" [formGroup]="twoColumnFormTwo">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4 class="card-title">Personal details</h4>
+                                <div class="form-group">
+                                    <label>Name:</label>
+                                    <input type="text" class="form-control"
+                                        [class.invalid]="twoColumnFormTwo.get('name').invalid && twoColumnFormTwo.get('name').touched"
+                                        formControlName="name">
+                                    <div
+                                        *ngIf="twoColumnFormTwo.get('name').invalid && twoColumnFormTwo.get('name').touched">
+                                        <small
+                                            *ngIf="twoColumnFormTwo.get('name').invalid && twoColumnFormTwo.get('name').touched"
+                                            class="text-danger"> *Name is required</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Password:</label>
+                                    <input type="password" class="form-control"
+                                        [class.invalid]="twoColumnFormTwo.get('password').invalid && twoColumnFormTwo.get('password').touched"
+                                        formControlName="password">
+                                    <div
+                                        *ngIf="twoColumnFormTwo.get('password').invalid && twoColumnFormTwo.get('password').touched">
+                                        <small
+                                            *ngIf="twoColumnFormTwo.get('password').invalid && twoColumnFormTwo.get('password').touched"
+                                            class="text-danger"> *Password is required</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>State:</label>
+                                    <select class="select form-control"
+                                        [class.invalid]="twoColumnFormTwo.get('state').invalid && twoColumnFormTwo.get('state').touched"
+                                        formControlName="state">
+                                        <option>Select State</option>
+                                        <option value="1">California</option>
+                                        <option value="2">Texas</option>
+                                        <option value="3">Florida</option>
+                                    </select>
+                                    <div
+                                        *ngIf="twoColumnFormTwo.get('state').invalid && twoColumnFormTwo.get('state').touched">
+                                        <small
+                                            *ngIf="twoColumnFormTwo.get('state').invalid && twoColumnFormTwo.get('state').touched"
+                                            class="text-danger"> *State is required</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Your Message:</label>
+                                    <textarea rows="5" cols="5" class="form-control" placeholder="Enter message"
+                                        [class.invalid]="twoColumnFormTwo.get('textArea').invalid && twoColumnFormTwo.get('textArea').touched"
+                                        formControlName="textArea"></textarea>
+                                    <div
+                                        *ngIf="twoColumnFormTwo.get('textArea').invalid && twoColumnFormTwo.get('textArea').touched">
+                                        <small
+                                            *ngIf="twoColumnFormTwo.get('textArea').invalid && twoColumnFormTwo.get('textArea').touched"
+                                            class="text-danger"> *Text area is required</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h4 class="card-title">Personal details</h4>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>First Name:</label>
+                                            <input type="text" class="form-control"
+                                                [class.invalid]="twoColumnFormTwo.get('personalFirstName').invalid && twoColumnFormTwo.get('personalFirstName').touched"
+                                                formControlName="personalFirstName">
+                                            <div
+                                                *ngIf="twoColumnFormTwo.get('personalFirstName').invalid && twoColumnFormTwo.get('personalFirstName').touched">
+                                                <small
+                                                    *ngIf="twoColumnFormTwo.get('personalFirstName').invalid && twoColumnFormTwo.get('personalFirstName').touched"
+                                                    class="text-danger"> *First name is required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Last Name:</label>
+                                            <input type="text" class="form-control"
+                                                [class.invalid]="twoColumnFormTwo.get('personalLastName').invalid && twoColumnFormTwo.get('personalLastName').touched"
+                                                formControlName="personalLastName">
+                                            <div
+                                                *ngIf="twoColumnFormTwo.get('personalLastName').invalid && twoColumnFormTwo.get('personalLastName').touched">
+                                                <small
+                                                    *ngIf="twoColumnFormTwo.get('personalLastName').invalid && twoColumnFormTwo.get('personalLastName').touched"
+                                                    class="text-danger"> *Last name is required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Email:</label>
+                                            <input type="text" class="form-control"
+                                                [class.invalid]="twoColumnFormTwo.get('personalEmail').invalid && twoColumnFormTwo.get('personalEmail').touched"
+                                                formControlName="personalEmail">
+                                            <div
+                                                *ngIf="twoColumnFormTwo.get('personalEmail').invalid && twoColumnFormTwo.get('personalEmail').touched">
+                                                <small
+                                                    *ngIf="twoColumnFormTwo.get('personalEmail').invalid && twoColumnFormTwo.get('personalEmail').touched"
+                                                    class="text-danger"> *Email is required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Phone:</label>
+                                            <input type="text" class="form-control"
+                                                [class.invalid]="twoColumnFormTwo.get('personalPhone').invalid && twoColumnFormTwo.get('personalPhone').touched"
+                                                formControlName="personalPhone">
+                                            <div
+                                                *ngIf="twoColumnFormTwo.get('personalPhone').invalid && twoColumnFormTwo.get('personalPhone').touched">
+                                                <small
+                                                    *ngIf="twoColumnFormTwo.get('personalPhone').invalid && twoColumnFormTwo.get('personalPhone').touched"
+                                                    class="text-danger"> *Phone is required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Address line:</label>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Country:</label>
+                                            <select class="select form-control"
+                                                [class.invalid]="twoColumnFormTwo.get('personalCountry').invalid && twoColumnFormTwo.get('personalCountry').touched"
+                                                formControlName="personalCountry">
+                                                <option>Select Country</option>
+                                                <option value="1">USA</option>
+                                                <option value="2">France</option>
+                                                <option value="3">India</option>
+                                                <option value="4">Spain</option>
+                                            </select>
+                                            <div
+                                                *ngIf="twoColumnFormTwo.get('personalCountry').invalid && twoColumnFormTwo.get('personalCountry').touched">
+                                                <small
+                                                    *ngIf="twoColumnFormTwo.get('personalCountry').invalid && twoColumnFormTwo.get('personalCountry').touched"
+                                                    class="text-danger"> *Country is required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>State/Province:</label>
+                                            <input type="text" class="form-control"
+                                                [class.invalid]="twoColumnFormTwo.get('personalProvince').invalid && twoColumnFormTwo.get('personalProvince').touched"
+                                                formControlName="personalProvince">
+                                            <div
+                                                *ngIf="twoColumnFormTwo.get('personalProvince').invalid && twoColumnFormTwo.get('personalProvince').touched">
+                                                <small
+                                                    *ngIf="twoColumnFormTwo.get('personalProvince').invalid && twoColumnFormTwo.get('personalProvince').touched"
+                                                    class="text-danger"> *State/Province is required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>ZIP code:</label>
+                                            <input type="text" class="form-control"
+                                                [class.invalid]="twoColumnFormTwo.get('personalZipCode').invalid && twoColumnFormTwo.get('personalZipCode').touched"
+                                                formControlName="personalZipCode">
+                                            <div
+                                                *ngIf="twoColumnFormTwo.get('personalZipCode').invalid && twoColumnFormTwo.get('personalZipCode').touched">
+                                                <small
+                                                    *ngIf="twoColumnFormTwo.get('personalZipCode').invalid && twoColumnFormTwo.get('personalZipCode').touched"
+                                                    class="text-danger"> *Zip Code is required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>City:</label>
+                                            <input type="text" class="form-control"
+                                                [class.invalid]="twoColumnFormTwo.get('personalCity').invalid && twoColumnFormTwo.get('personalCity').touched"
+                                                formControlName="personalCity">
+                                            <div
+                                                *ngIf="twoColumnFormTwo.get('personalCity').invalid && twoColumnFormTwo.get('personalCity').touched">
+                                                <small
+                                                    *ngIf="twoColumnFormTwo.get('personalCity').invalid && twoColumnFormTwo.get('personalCity').touched"
+                                                    class="text-danger"> *City is required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!--/PageContent-->

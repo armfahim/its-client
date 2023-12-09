@@ -1,0 +1,672 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Clients</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Clients</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <a class="btn add-btn" data-toggle="modal" data-target="#add_client" (click)="resetForm()"><i
+                        class="fa fa-plus"></i>
+                    Add Client</a>
+                <div class="view-icons">
+                    <a routerLink="/clients/clientspage" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>
+                    <a routerLink="/clients/clientslist" class="list-view btn btn-link active"><i
+                            class="fa fa-bars"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <!-- Search Filter -->
+    <div class="row filter-row">
+        <div class="col-sm-6 col-md-3">
+            <div class="form-group form-focus">
+                <input type="text" class="form-control floating" (input)="searchID($event.target.value)">
+                <label class="focus-label">Client ID</label>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <div class="form-group form-focus">
+                <input type="text" class="form-control floating" (input)="searchName($event.target.value)"
+                    (focusout)="rerender()">
+                <label class="focus-label">Client Name</label>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <div class="form-group form-focus select-focus">
+                <select class="select floating form-control" (input)="searchCompany($event.target.value)">
+                    <option>Select Company</option>
+                    <option>Global Technologies</option>
+                    <option>Delta Infotech</option>
+                </select>
+                <label class="focus-label">Company</label>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <a class="btn btn-success btn-block"> Search </a>
+        </div>
+    </div>
+    <!-- Search Filter -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="datatable"
+                    class="table table-striped custom-table datatable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Client ID</th>
+                            <th>Contact Person</th>
+                            <th>Email</th>
+                            <th>Mobile</th>
+                            <th>Status</th>
+                            <th class="text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let client of clientsData; let i = index">
+                            <td>
+                                <h2 class="table-avatar">
+                                    <a routerLink="/clients/clientsprofile/{{client.id}}" class="avatar"><img
+                                            src="assets/img/profiles/avatar-{{ i + 1 }}.jpg" alt=""></a>
+                                    <a routerLink="/clients/clientsprofile/{{client.id}}">{{client.company}}</a>
+                                </h2>
+                            </td>
+                            <td>{{client.clientId}}</td>
+                            <td>{{client.name}}</td>
+                            <td>{{client.email}}</td>
+                            <td>{{client.phone}}</td>
+                            <td>
+                                <div class="dropdown action-label">
+                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown"
+                                        aria-expanded="false"><i class="fa fa-dot-circle-o text-success"></i>
+                                        {{client.status || statusValue}} </a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" (click)="getStatus('Active')"><i
+                                                class="fa fa-dot-circle-o text-success"></i> Active</a>
+                                        <a class="dropdown-item" (click)="getStatus('Inactive')"><i
+                                                class="fa fa-dot-circle-o text-danger"></i>
+                                            Inactive</a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                <div class="dropdown dropdown-action">
+                                    <a class="action-icon dropdown-toggle" data-toggle="dropdown"
+                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#edit_client"
+                                            (click)="onEditClient(client.id)"><i class="fa fa-pencil m-r-5"></i>
+                                            Edit</a>
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#delete_client"
+                                            (click)="tempId = client.id"><i class="fa fa-trash-o m-r-5"></i>
+                                            Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- Add Client Modal -->
+<div id="add_client" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Client</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="addClientForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">First Name <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="addClientForm.get('clientName').invalid && addClientForm.get('clientName').touched"
+                                    formControlName="clientName">
+                                <div
+                                    *ngIf="addClientForm.get('clientName').invalid && addClientForm.get('clientName').touched">
+                                    <small
+                                        *ngIf="addClientForm.get('clientName').invalid && addClientForm.get('clientName').touched"
+                                        class="text-danger"> *Name is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Last Name</label>
+                                <input class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Username</label>
+                                <input class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Email <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="addClientForm.get('clientEmail').invalid && addClientForm.get('clientEmail').touched"
+                                    formControlName="clientEmail">
+                                <div
+                                    *ngIf="addClientForm.get('clientEmail').invalid && addClientForm.get('clientEmail').touched">
+                                    <small
+                                        *ngIf="addClientForm.get('clientEmail').invalid && addClientForm.get('clientEmail').touched"
+                                        class="text-danger"> *Email is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Password</label>
+                                <input class="form-control" type="password">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Confirm Password</label>
+                                <input class="form-control" type="password">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Client ID <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="addClientForm.get('clientId').invalid && addClientForm.get('clientId').touched"
+                                    formControlName="clientId">
+                                <div
+                                    *ngIf="addClientForm.get('clientId').invalid && addClientForm.get('clientId').touched">
+                                    <small
+                                        *ngIf="addClientForm.get('clientId').invalid && addClientForm.get('clientId').touched"
+                                        class="text-danger"> *Id is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Phone <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="addClientForm.get('clientPhone').invalid && addClientForm.get('clientPhone').touched"
+                                    formControlName="clientPhone">
+                                <div
+                                    *ngIf="addClientForm.get('clientPhone').invalid && addClientForm.get('clientPhone').touched">
+                                    <small
+                                        *ngIf="addClientForm.get('clientPhone').invalid && addClientForm.get('clientPhone').touched"
+                                        class="text-danger"> *Phone is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Company Name</label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="addClientForm.get('clientCompany').invalid && addClientForm.get('clientCompany').touched"
+                                    formControlName="clientCompany">
+                                <div
+                                    *ngIf="addClientForm.get('clientCompany').invalid && addClientForm.get('clientCompany').touched">
+                                    <small
+                                        *ngIf="addClientForm.get('clientCompany').invalid && addClientForm.get('clientCompany').touched"
+                                        class="text-danger"> *Company is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive m-t-15">
+                        <table class="table table-striped custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Module Permission</th>
+                                    <th class="text-center">Read</th>
+                                    <th class="text-center">Write</th>
+                                    <th class="text-center">Create</th>
+                                    <th class="text-center">Delete</th>
+                                    <th class="text-center">Import</th>
+                                    <th class="text-center">Export</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Projects</td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Tasks</td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Chat</td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Estimates</td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Invoices</td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Timing Sheets</td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" (click)="onAddClient()">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Client Modal -->
+
+<!-- Edit Client Modal -->
+<div id="edit_client" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Client</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="editClientForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">First Name <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="editClientForm.get('editClientName').invalid && editClientForm.get('editClientName').touched"
+                                    formControlName="editClientName">
+                                <div
+                                    *ngIf="editClientForm.get('editClientName').invalid && editClientForm.get('editClientName').touched">
+                                    <small
+                                        *ngIf="editClientForm.get('editClientName').invalid && editClientForm.get('editClientName').touched"
+                                        class="text-danger"> *Name is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Last Name</label>
+                                <input class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Username <span class="text-danger">*</span></label>
+                                <input class="form-control" value="barrycuda" type="text">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Email <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="editClientForm.get('editClientEmail').invalid && editClientForm.get('editClientEmail').touched"
+                                    formControlName="editClientEmail">
+                                <div
+                                    *ngIf="editClientForm.get('editClientEmail').invalid && editClientForm.get('editClientEmail').touched">
+                                    <small
+                                        *ngIf="editClientForm.get('editClientEmail').invalid && editClientForm.get('editClientEmail').touched"
+                                        class="text-danger"> *Email is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Password</label>
+                                <input class="form-control" value="barrycuda" type="password">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Confirm Password</label>
+                                <input class="form-control" value="barrycuda" type="password">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Client ID <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="editClientForm.get('editClientId').invalid && editClientForm.get('editClientId').touched"
+                                    formControlName="editClientId">
+                                <div
+                                    *ngIf="editClientForm.get('editClientId').invalid && editClientForm.get('editClientId').touched">
+                                    <small
+                                        *ngIf="editClientForm.get('editClientId').invalid && editClientForm.get('editClientId').touched"
+                                        class="text-danger"> *Id is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Phone <span class="text-danger">*</span> </label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="editClientForm.get('editClientPhone').invalid && editClientForm.get('editClientPhone').touched"
+                                    formControlName="editClientPhone">
+                                <div
+                                    *ngIf="editClientForm.get('editClientPhone').invalid && editClientForm.get('editClientPhone').touched">
+                                    <small
+                                        *ngIf="editClientForm.get('editClientPhone').invalid && editClientForm.get('editClientPhone').touched"
+                                        class="text-danger"> *Phone is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Company Name <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="editClientForm.get('editClientCompany').invalid && editClientForm.get('editClientCompany').touched"
+                                    formControlName="editClientCompany">
+                                <div
+                                    *ngIf="editClientForm.get('editClientCompany').invalid && editClientForm.get('editClientCompany').touched">
+                                    <small
+                                        *ngIf="editClientForm.get('editClientCompany').invalid && editClientForm.get('editClientCompany').touched"
+                                        class="text-danger"> *Company is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive m-t-15">
+                        <table class="table table-striped custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Module Permission</th>
+                                    <th class="text-center">Read</th>
+                                    <th class="text-center">Write</th>
+                                    <th class="text-center">Create</th>
+                                    <th class="text-center">Delete</th>
+                                    <th class="text-center">Import</th>
+                                    <th class="text-center">Export</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Projects</td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Tasks</td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Chat</td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Estimates</td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Invoices</td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Timing Sheets</td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" (click)="onSave()">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Edit Client Modal -->
+
+<!-- Delete Client Modal -->
+<div class="modal custom-modal fade" id="delete_client" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete Client</h3>
+                    <p>Are you sure want to delete?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a  class="btn btn-primary continue-btn"
+                                (click)="onDelete()">Delete</a>
+                        </div>
+                        <div class="col-6">
+                            <a  data-dismiss="modal"
+                                class="btn btn-primary cancel-btn">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete Client Modal -->

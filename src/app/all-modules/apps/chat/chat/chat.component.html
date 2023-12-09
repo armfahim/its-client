@@ -1,0 +1,212 @@
+<!-- Chat Main Row -->
+<div class="chat-main-row">
+
+    <!-- Chat Main Wrapper -->
+    <div class="chat-main-wrapper">
+        <div *ngIf="urlComplete.childUrl === 'outgoing' || urlComplete.childUrl === 'incoming'"
+            class="col-lg-12 message-view task-view"
+            [ngStyle]="{ 'display' : urlComplete.childUrl === 'outgoing' || urlComplete.childUrl === 'incoming' ? 'block' : 'table-cell',
+                          'width' : urlComplete.childUrl === 'outgoing' || urlComplete.childUrl === 'incoming' ? '100%' : '75%' }">
+            <app-calls-outgoing *ngIf="urlComplete.childUrl === 'outgoing'"></app-calls-outgoing>
+            <app-calls-incoming *ngIf="urlComplete.childUrl === 'incoming'"></app-calls-incoming>
+        </div>
+
+        <!-- Chats View -->
+        <div *ngIf="urlComplete.childUrl !== 'outgoing' && urlComplete.childUrl !== 'incoming'"
+            class="col-lg-9 message-view task-view">
+            <app-chat-message *ngIf="urlComplete.subUrl === 'chat'"></app-chat-message>
+            <app-calls-voice *ngIf="urlComplete.childUrl === 'voice'"></app-calls-voice>
+            <app-calls-video *ngIf="urlComplete.childUrl === 'video'"></app-calls-video>
+        </div>
+        <!-- /Chats View -->
+
+        <!-- Chat Right Sidebar -->
+        <div *ngIf="urlComplete.childUrl !== 'outgoing' && urlComplete.childUrl !== 'incoming'"
+            class="col-lg-3 message-view chat-profile-view chat-sidebar" id="task_window">
+            <div class="chat-window video-window">
+                <div class="fixed-header">
+                    <ul class="nav nav-tabs nav-tabs-bottom">
+                        <li class="nav-item">
+                            <a class="nav-link" [ngClass]="{'active' : urlComplete.subUrl === 'calls' }"
+                                href="#calls_tab" data-toggle="tab">Calls</a>
+                        </li>
+                        <li *ngIf="urlComplete.childUrl === 'video' || urlComplete.childUrl === 'voice'"
+                            class="nav-item">
+                            <a class="nav-link" href="#chats_tab" data-toggle="tab">Chats</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" [ngClass]="{'active' : urlComplete.subUrl === 'chat' }"
+                                href="#profile_tab" data-toggle="tab">Profile</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-content chat-contents">
+                    <div class="content-full tab-pane" id="calls_tab"
+                        [ngClass]="{'active' : urlComplete.subUrl === 'calls' }">
+                        <app-calls-sidebar></app-calls-sidebar>
+                    </div>
+                    <div *ngIf="urlComplete.childUrl === 'video' || urlComplete.childUrl === 'voice'"
+                        class="content-full tab-pane" id="chats_tab">
+                        <app-chat-sidebar></app-chat-sidebar>
+                    </div>
+                    <div class="content-full tab-pane show" [ngClass]="{'active' : urlComplete.subUrl === 'chat' }"
+                        id="profile_tab">
+                        <app-chat-profile></app-chat-profile>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Chat Right Sidebar -->
+
+    </div>
+    <!-- /Chat Main Wrapper -->
+
+</div>
+<!-- /Chat Main Row -->
+
+<!-- Add Group Modal -->
+<div id="add_group" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create a group</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Groups are where your team communicates. They’re best when organized around a topic — #leads, for
+                    example.</p>
+                <form>
+                    <div class="form-group">
+                        <label>Group Name <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Send invites to: <span class="text-muted-light">(optional)</span></label>
+                        <input class="form-control" type="text">
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Group Modal -->
+
+<!-- Add Chat User Modal -->
+<div id="add_chat_user" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Direct Chat</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group m-b-30">
+                    <input placeholder="Search to start a chat" class="form-control search-input" type="text">
+                    <span class="input-group-append">
+                        <button class="btn btn-primary">Search</button>
+                    </span>
+                </div>
+                <div>
+                    <h5>Recent Conversations</h5>
+                    <ul class="chat-user-list">
+                        <li>
+                            <a>
+                                <div class="media">
+                                    <span class="avatar align-self-center">
+                                        <img src="assets/img/profiles/avatar-1.jpg" alt="">
+                                    </span>
+                                    <div class="media-body align-self-center text-nowrap">
+                                        <div class="user-name">Jeffery Lalor</div>
+                                        <span class="designation">Team Leader</span>
+                                    </div>
+                                    <div class="text-nowrap align-self-center">
+                                        <div class="online-date">1 day ago</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a >
+                                <div class="media ">
+                                    <span class="avatar align-self-center">
+                                        <img src="assets/img/profiles/avatar-3.jpg" alt="">
+                                    </span>
+                                    <div class="media-body align-self-center text-nowrap">
+                                        <div class="user-name">Bernardo Galaviz</div>
+                                        <span class="designation">Web Developer</span>
+                                    </div>
+                                    <div class="align-self-center text-nowrap">
+                                        <div class="online-date">3 days ago</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a >
+                                <div class="media">
+                                    <span class="avatar align-self-center">
+                                        <img src="assets/img/profiles/avatar-2.jpg" alt="">
+                                    </span>
+                                    <div class="media-body text-nowrap align-self-center">
+                                        <div class="user-name">John Doe</div>
+                                        <span class="designation">Web Designer</span>
+                                    </div>
+                                    <div class="align-self-center text-nowrap">
+                                        <div class="online-date">7 months ago</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="submit-section">
+                    <button class="btn btn-primary submit-btn">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Chat User Modal -->
+
+<!-- Share Files Modal -->
+<div id="share_files" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Share File</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="files-share-list">
+                    <div class="files-cont">
+                        <div class="file-type">
+                            <span class="files-icon"><i class="fa fa-file-pdf-o"></i></span>
+                        </div>
+                        <div class="files-info">
+                            <span class="file-name text-ellipsis">AHA Selfcare Mobile Application Test-Cases.xls</span>
+                            <span class="file-author"><a href="javaScript:void(0):">Bernardo Galaviz</a></span> <span
+                                class="file-date">May 31st at 6:53 PM</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Share With</label>
+                    <input class="form-control" type="text">
+                </div>
+                <div class="submit-section">
+                    <button class="btn btn-primary submit-btn">Share</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Share Files Modal -->

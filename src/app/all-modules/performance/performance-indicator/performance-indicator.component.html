@@ -1,0 +1,743 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Performance Indicator</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Performance</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <a  class="btn add-btn" data-toggle="modal" data-target="#add_indicator"><i
+                        class="fa fa-plus"></i> Add New</a>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                    class="table table-striped custom-table mb-0 datatable">
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;">#</th>
+                            <th>Designation</th>
+                            <th>Department</th>
+                            <th>Added By</th>
+                            <th>Create At</th>
+                            <th>Status</th>
+                            <th class="text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of lstData;let i = index">
+                            <td>{{item.id}}</td>
+                            <td>{{item.designation}}</td>
+                            <td>{{item.department}}</td>
+                            <td>
+                                <h2 class="table-avatar">
+                                    <a routerLink="/employees/employeeprofile" class="avatar"><img alt=""
+                                            src="assets/img/profiles/avatar-{{i+ 1}}.jpg"></a>
+                                    <a routerLink="/employees/employeeprofile">{{item.addedBy}}</a>
+                                </h2>
+                            </td>
+                            <td>
+                                {{item.createdBy}}
+                            </td>
+                            <td>
+                                <div class="dropdown action-label">
+                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" 
+                                        data-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-dot-circle-o text-success"></i> {{item.status}}
+                                    </a>
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                <div class="dropdown dropdown-action">
+                                    <a  class="action-icon dropdown-toggle" data-toggle="dropdown"
+                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item"  data-toggle="modal"
+                                            data-target="#edit_indicator" (click)="edit(item.id)"><i
+                                                class="fa fa-pencil m-r-5"></i> Edit</a>
+                                        <a class="dropdown-item"  data-toggle="modal"
+                                            data-target="#delete_indicator" (click)="tempId = item.id"><i
+                                                class="fa fa-trash-o m-r-5"></i>
+                                            Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- Add Performance Indicator Modal -->
+<!-- Add Performance Indicator Modal -->
+<div id="add_indicator" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Set New Indicator</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="addIndicator()" [formGroup]="addIndicatorForm">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Designation</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addIndicatorForm.get('designationName').invalid && addIndicatorForm.get('designationName').touched"
+                                    formControlName="designationName">
+                                    <option>Select Designation</option>
+                                    <option>Web Designer</option>
+                                    <option>IOS Developer</option>
+                                </select>
+                                <div
+                                    *ngIf="addIndicatorForm.get('designationName').invalid && addIndicatorForm.get('designationName').touched">
+                                    <small
+                                        *ngIf="addIndicatorForm.get('designationName').invalid && addIndicatorForm.get('designationName').touched"
+                                        class="text-danger"> Designation is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <h4 class="modal-sub-title">Technical</h4>
+                            <div class="form-group">
+                                <label class="col-form-label">Customer Experience</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addIndicatorForm.get('experienceName').invalid && addIndicatorForm.get('experienceName').touched"
+                                    formControlName="experienceName">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="addIndicatorForm.get('experienceName').invalid && addIndicatorForm.get('experienceName').touched">
+                                    <small
+                                        *ngIf="addIndicatorForm.get('experienceName').invalid && addIndicatorForm.get('experienceName').touched"
+                                        class="text-danger"> Customer Experience is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Marketing</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addIndicatorForm.get('marketingName').invalid && addIndicatorForm.get('marketingName').touched"
+                                    formControlName="marketingName">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="addIndicatorForm.get('marketingName').invalid && addIndicatorForm.get('marketingName').touched">
+                                    <small
+                                        *ngIf="addIndicatorForm.get('marketingName').invalid && addIndicatorForm.get('marketingName').touched"
+                                        class="text-danger"> Marketing is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Management</label>
+                                <select class="select form-control">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <!-- <div
+                                    *ngIf="addIndicatorForm.get('ManagementSkill').invalid && addIndicatorForm.get('ManagementSkill').touched">
+                                    <small
+                                        *ngIf="addIndicatorForm.get('ManagementSkill').invalid && addIndicatorForm.get('ManagementSkill').touched"
+                                        class="text-danger"> Management is required</small>
+                                </div> -->
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Administration</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addIndicatorForm.get('AdministrationName').invalid && addIndicatorForm.get('AdministrationName').touched"
+                                    formControlName="AdministrationName">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="addIndicatorForm.get('AdministrationName').invalid && addIndicatorForm.get('AdministrationName').touched">
+                                    <small
+                                        *ngIf="addIndicatorForm.get('AdministrationName').invalid && addIndicatorForm.get('AdministrationName').touched"
+                                        class="text-danger"> Designation is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Presentation Skill</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addIndicatorForm.get('presentationName').invalid && addIndicatorForm.get('presentationName').touched"
+                                    formControlName="presentationName">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="addIndicatorForm.get('presentationName').invalid && addIndicatorForm.get('presentationName').touched">
+                                    <small
+                                        *ngIf="addIndicatorForm.get('presentationName').invalid && addIndicatorForm.get('presentationName').touched"
+                                        class="text-danger"> Presentation Skill is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Quality Of Work</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addIndicatorForm.get('QualityName').invalid && addIndicatorForm.get('QualityName').touched"
+                                    formControlName="QualityName">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="addIndicatorForm.get('QualityName').invalid && addIndicatorForm.get('QualityName').touched">
+                                    <small
+                                        *ngIf="addIndicatorForm.get('QualityName').invalid && addIndicatorForm.get('QualityName').touched"
+                                        class="text-danger"> Quality is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Efficiency</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addIndicatorForm.get('effientcyName').invalid && addIndicatorForm.get('effientcyName').touched"
+                                    formControlName="effientcyName">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="addIndicatorForm.get('effientcyName').invalid && addIndicatorForm.get('effientcyName').touched">
+                                    <small
+                                        *ngIf="addIndicatorForm.get('effientcyName').invalid && addIndicatorForm.get('effientcyName').touched"
+                                        class="text-danger"> Efficiency is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <h4 class="modal-sub-title">Organizational</h4>
+                            <div class="form-group">
+                                <label class="col-form-label">Integrity</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addIndicatorForm.get('integrityName').invalid && addIndicatorForm.get('integrityName').touched"
+                                    formControlName="integrityName">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="addIndicatorForm.get('integrityName').invalid && addIndicatorForm.get('integrityName').touched">
+                                    <small
+                                        *ngIf="addIndicatorForm.get('integrityName').invalid && addIndicatorForm.get('integrityName').touched"
+                                        class="text-danger"> Integrity is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Professionalism</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addIndicatorForm.get('professionalismName').invalid && addIndicatorForm.get('professionalismName').touched"
+                                    formControlName="professionalismName">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="addIndicatorForm.get('professionalismName').invalid && addIndicatorForm.get('professionalismName').touched">
+                                    <small
+                                        *ngIf="addIndicatorForm.get('professionalismName').invalid && addIndicatorForm.get('professionalismName').touched"
+                                        class="text-danger"> Professionalism is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Team Work</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addIndicatorForm.get('teamWork').invalid && addIndicatorForm.get('teamWork').touched"
+                                    formControlName="teamWork">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="addIndicatorForm.get('teamWork').invalid && addIndicatorForm.get('teamWork').touched">
+                                    <small
+                                        *ngIf="addIndicatorForm.get('teamWork').invalid && addIndicatorForm.get('teamWork').touched"
+                                        class="text-danger"> teamWork is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Critical Thinking</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addIndicatorForm.get('criticalName').invalid && addIndicatorForm.get('criticalName').touched"
+                                    formControlName="criticalName">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="addIndicatorForm.get('criticalName').invalid && addIndicatorForm.get('criticalName').touched">
+                                    <small
+                                        *ngIf="addIndicatorForm.get('criticalName').invalid && addIndicatorForm.get('criticalName').touched"
+                                        class="text-danger"> Critical Thinking is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Conflict Management</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addIndicatorForm.get('ManagementName').invalid && addIndicatorForm.get('ManagementName').touched"
+                                    formControlName="ManagementName">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="addIndicatorForm.get('ManagementName').invalid && addIndicatorForm.get('ManagementName').touched">
+                                    <small
+                                        *ngIf="addIndicatorForm.get('ManagementName').invalid && addIndicatorForm.get('ManagementName').touched"
+                                        class="text-danger"> Conflict Management is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Attendance</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addIndicatorForm.get('AttendanceName').invalid && addIndicatorForm.get('AttendanceName').touched"
+                                    formControlName="AttendanceName">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="addIndicatorForm.get('AttendanceName').invalid && addIndicatorForm.get('AttendanceName').touched">
+                                    <small
+                                        *ngIf="addIndicatorForm.get('AttendanceName').invalid && addIndicatorForm.get('AttendanceName').touched"
+                                        class="text-danger"> Attendance is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Ability To Meet Deadline</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addIndicatorForm.get('deadLineName').invalid && addIndicatorForm.get('deadLineName').touched"
+                                    formControlName="deadLineName">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="addIndicatorForm.get('deadLineName').invalid && addIndicatorForm.get('deadLineName').touched">
+                                    <small
+                                        *ngIf="addIndicatorForm.get('deadLineName').invalid && addIndicatorForm.get('deadLineName').touched"
+                                        class="text-danger"> Deadline is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Status</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addIndicatorForm.get('statusName').invalid && addIndicatorForm.get('statusName').touched"
+                                    formControlName="statusName">
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                </select>
+                                <div
+                                    *ngIf="addIndicatorForm.get('statusName').invalid && addIndicatorForm.get('statusName').touched">
+                                    <small
+                                        *ngIf="addIndicatorForm.get('statusName').invalid && addIndicatorForm.get('statusName').touched"
+                                        class="text-danger"> Status is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Performance Indicator Modal -->
+<!-- /Add Performance Indicator Modal -->
+
+
+<!-- Edit Performance Indicator Modal -->
+<div id="edit_indicator" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Set New Indicator</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="editIndicator()" [formGroup]="editIndicatorForm">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Designation</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editIndicatorForm.get('designationName').invalid && editIndicatorForm.get('designationName').touched"
+                                    formControlName="designationName">
+                                    <option>Select Designation</option>
+                                    <option>Web Designer</option>
+                                    <option>IOS Developer</option>
+                                </select>
+                                <div
+                                    *ngIf="editIndicatorForm.get('designationName').invalid && editIndicatorForm.get('designationName').touched">
+                                    <small
+                                        *ngIf="editIndicatorForm.get('designationName').invalid && editIndicatorForm.get('designationName').touched"
+                                        class="text-danger"> Designation is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <h4 class="modal-sub-title">Technical</h4>
+                            <div class="form-group">
+                                <label class="col-form-label">Customer Experience</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editIndicatorForm.get('experienceName').invalid && editIndicatorForm.get('experienceName').touched"
+                                    formControlName="experienceName">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="editIndicatorForm.get('experienceName').invalid && editIndicatorForm.get('experienceName').touched">
+                                    <small
+                                        *ngIf="editIndicatorForm.get('experienceName').invalid && editIndicatorForm.get('experienceName').touched"
+                                        class="text-danger"> Customer Experience is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Marketing</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editIndicatorForm.get('marketingName').invalid && editIndicatorForm.get('marketingName').touched"
+                                    formControlName="marketingName">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="editIndicatorForm.get('marketingName').invalid && editIndicatorForm.get('marketingName').touched">
+                                    <small
+                                        *ngIf="editIndicatorForm.get('marketingName').invalid && editIndicatorForm.get('marketingName').touched"
+                                        class="text-danger"> Marketing is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Management</label>
+                                <select class="select form-control">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <!-- <div
+                                    *ngIf="editIndicatorForm.get('ManagementSkill').invalid && editIndicatorForm.get('ManagementSkill').touched">
+                                    <small
+                                        *ngIf="editIndicatorForm.get('ManagementSkill').invalid && editIndicatorForm.get('ManagementSkill').touched"
+                                        class="text-danger"> Management is required</small>
+                                </div> -->
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Administration</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editIndicatorForm.get('AdministrationName').invalid && editIndicatorForm.get('AdministrationName').touched"
+                                    formControlName="AdministrationName">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="editIndicatorForm.get('AdministrationName').invalid && editIndicatorForm.get('AdministrationName').touched">
+                                    <small
+                                        *ngIf="editIndicatorForm.get('AdministrationName').invalid && editIndicatorForm.get('AdministrationName').touched"
+                                        class="text-danger"> Designation is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Presentation Skill</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editIndicatorForm.get('presentationName').invalid && editIndicatorForm.get('presentationName').touched"
+                                    formControlName="presentationName">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="editIndicatorForm.get('presentationName').invalid && editIndicatorForm.get('presentationName').touched">
+                                    <small
+                                        *ngIf="editIndicatorForm.get('presentationName').invalid && editIndicatorForm.get('presentationName').touched"
+                                        class="text-danger"> Presentation Skill is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Quality Of Work</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editIndicatorForm.get('QualityName').invalid && editIndicatorForm.get('QualityName').touched"
+                                    formControlName="QualityName">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="editIndicatorForm.get('QualityName').invalid && editIndicatorForm.get('QualityName').touched">
+                                    <small
+                                        *ngIf="editIndicatorForm.get('QualityName').invalid && editIndicatorForm.get('QualityName').touched"
+                                        class="text-danger"> Quality is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Efficiency</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editIndicatorForm.get('effientcyName').invalid && editIndicatorForm.get('effientcyName').touched"
+                                    formControlName="effientcyName">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="editIndicatorForm.get('effientcyName').invalid && editIndicatorForm.get('effientcyName').touched">
+                                    <small
+                                        *ngIf="editIndicatorForm.get('effientcyName').invalid && editIndicatorForm.get('effientcyName').touched"
+                                        class="text-danger"> Efficiency is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <h4 class="modal-sub-title">Organizational</h4>
+                            <div class="form-group">
+                                <label class="col-form-label">Integrity</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editIndicatorForm.get('integrityName').invalid && editIndicatorForm.get('integrityName').touched"
+                                    formControlName="integrityName">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="editIndicatorForm.get('integrityName').invalid && editIndicatorForm.get('integrityName').touched">
+                                    <small
+                                        *ngIf="editIndicatorForm.get('integrityName').invalid && editIndicatorForm.get('integrityName').touched"
+                                        class="text-danger"> Integrity is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Professionalism</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editIndicatorForm.get('professionalismName').invalid && editIndicatorForm.get('professionalismName').touched"
+                                    formControlName="professionalismName">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="editIndicatorForm.get('professionalismName').invalid && editIndicatorForm.get('professionalismName').touched">
+                                    <small
+                                        *ngIf="editIndicatorForm.get('professionalismName').invalid && editIndicatorForm.get('professionalismName').touched"
+                                        class="text-danger"> Professionalism is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Team Work</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editIndicatorForm.get('teamWork').invalid && editIndicatorForm.get('teamWork').touched"
+                                    formControlName="teamWork">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="editIndicatorForm.get('teamWork').invalid && editIndicatorForm.get('teamWork').touched">
+                                    <small
+                                        *ngIf="editIndicatorForm.get('teamWork').invalid && editIndicatorForm.get('teamWork').touched"
+                                        class="text-danger"> teamWork is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Critical Thinking</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editIndicatorForm.get('criticalName').invalid && editIndicatorForm.get('criticalName').touched"
+                                    formControlName="criticalName">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="editIndicatorForm.get('criticalName').invalid && editIndicatorForm.get('criticalName').touched">
+                                    <small
+                                        *ngIf="editIndicatorForm.get('criticalName').invalid && editIndicatorForm.get('criticalName').touched"
+                                        class="text-danger"> Critical Thinking is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Conflict Management</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editIndicatorForm.get('ManagementName').invalid && editIndicatorForm.get('ManagementName').touched"
+                                    formControlName="ManagementName">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="editIndicatorForm.get('ManagementName').invalid && editIndicatorForm.get('ManagementName').touched">
+                                    <small
+                                        *ngIf="editIndicatorForm.get('ManagementName').invalid && editIndicatorForm.get('ManagementName').touched"
+                                        class="text-danger"> Conflict Management is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Attendance</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editIndicatorForm.get('AttendanceName').invalid && editIndicatorForm.get('AttendanceName').touched"
+                                    formControlName="AttendanceName">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="editIndicatorForm.get('AttendanceName').invalid && editIndicatorForm.get('AttendanceName').touched">
+                                    <small
+                                        *ngIf="editIndicatorForm.get('AttendanceName').invalid && editIndicatorForm.get('AttendanceName').touched"
+                                        class="text-danger"> Attendance is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Ability To Meet Deadline</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editIndicatorForm.get('deadLineName').invalid && editIndicatorForm.get('deadLineName').touched"
+                                    formControlName="deadLineName">
+                                    <option>None</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                    <option>Expert / Leader</option>
+                                </select>
+                                <div
+                                    *ngIf="editIndicatorForm.get('deadLineName').invalid && editIndicatorForm.get('deadLineName').touched">
+                                    <small
+                                        *ngIf="editIndicatorForm.get('deadLineName').invalid && editIndicatorForm.get('deadLineName').touched"
+                                        class="text-danger"> Deadline is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Status</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editIndicatorForm.get('statusName').invalid && editIndicatorForm.get('statusName').touched"
+                                    formControlName="statusName">
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                </select>
+                                <div
+                                    *ngIf="editIndicatorForm.get('statusName').invalid && editIndicatorForm.get('statusName').touched">
+                                    <small
+                                        *ngIf="editIndicatorForm.get('statusName').invalid && editIndicatorForm.get('statusName').touched"
+                                        class="text-danger"> Status is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Edit Performance Indicator Modal -->
+
+<!-- Delete Performance Indicator Modal -->
+<div class="modal custom-modal fade" id="delete_indicator" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete Performance Indicator List</h3>
+                    <p>Are you sure want to delete?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a  class="btn btn-primary continue-btn"
+                                (click)="deleteIndicator()">Delete</a>
+                        </div>
+                        <div class="col-6">
+                            <a  data-dismiss="modal"
+                                class="btn btn-primary cancel-btn">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete Performance Indicator Modal -->

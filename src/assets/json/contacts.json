@@ -1,0 +1,66 @@
+[
+    {
+        "name" : "John Doe",
+        "role" : "Web Developer",
+        "type" : "company",
+        "number" : "9834553448",
+        "email": "johndoe@stanley.com",
+        "id" : 121
+    },
+    {
+        "name" : "Richard Miles",
+        "role" : "React Developer",
+        "type" : "client",
+        "number" : "9834573448",
+        "email": "richardmiles@stanley.com",
+        "id" : 122
+    },
+    {
+        "name" : "John Smith",
+        "role" : "Angular Developer",
+        "type" : "staff",
+        "number" : "9834593448",
+        "email": "johnsmith@stanley.com",
+        "id" : 124
+    },
+    {
+        "name" : "Mike Litorus",
+        "role" : "Web Developer",
+        "type" : "company",
+        "number" : "9834053448",
+        "email": "mikelitorus@stanley.com",
+        "id" : 125
+    },
+    {
+        "name" : "Wilmer Deluna",
+        "role" : "Front End Developer",
+        "type" : "client",
+        "number" : "9835553448",
+        "email": "wilmerdeluna@stanley.com",
+        "id" : 126
+    },
+    {
+        "name" : "Jeffrey Warden",
+        "role" : "Back End Developer",
+        "type" : "company",
+        "number" : "6834553448",
+        "email": "jefferywarden@stanley.com",
+        "id" : 127
+    },
+    {
+        "name" : "Loren Gatlin",
+        "role" : "Web Developer",
+        "type" : "staff",
+        "number" : "9834552348",
+        "email": "lorengatlin@stanley.com",
+        "id" : 128
+    },
+    {
+        "name" : "Lesley Grauer",
+        "role" : "Android Developer",
+        "type" : "company",
+        "number" : "9834233448",
+        "email": "lesleygrauer@stanley.com",
+        "id" : 129
+    }
+]

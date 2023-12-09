@@ -1,0 +1,30 @@
+[{
+    "message" : "I am just looking around. Will you tell me something about yourself",
+    "time" : "8:35 am",
+    "status" : "received"
+},
+{
+    "message" : "Where?",
+    "time" : "9:30 am",
+    "status" : "sent"
+},
+{
+    "message" : "You Wait for notice.",
+    "time" : "9:35 am",
+    "status" : "received"
+},
+{
+    "message" : "OK",
+    "time" : "10:35 am",
+    "status" : "received"
+},
+{
+    "message" : "What happened?",
+    "time" : "10:45 am",
+    "status" : "sent"
+},
+{
+    "message" : "Tell Immediately",
+    "time" : "10:55 am",
+    "status" : "sent"
+}]

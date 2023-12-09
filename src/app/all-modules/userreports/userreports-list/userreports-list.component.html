@@ -1,0 +1,97 @@
+<!-- Page Wrapper -->
+            <div class="page-wrapper">
+			
+				<!-- Page Content -->
+                <div class="content container-fluid">
+					
+					<!-- Page Header -->
+					<div class="page-header">
+						<div class="row">
+							<div class="col-sm-12">
+								<h3 class="page-title">User Report</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+									<li class="breadcrumb-item active">User Reports</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!-- /Page Header -->
+					
+						<!-- Content Starts -->
+						<!-- Search Filter -->
+					<div class="row filter-row">
+						
+						<div class="col-sm-6 col-md-3">  
+							<div class="form-group form-focus">
+								
+									<select class="form-control floating select">
+										<option>
+											Name1
+										</option>
+										<option>
+											Name2
+										</option>
+									</select>
+								
+								<label class="focus-label">User Role</label>
+							</div>
+						</div>
+					
+						<div class="col-sm-6 col-md-3">  
+							<a href="#" class="btn btn-success btn-block"> Search </a>  
+						</div>     
+                    </div>
+					<!-- /Search Filter -->
+					
+					<div class="row">
+						<div class="col-md-12">
+							<div class="table-responsive">
+								<table class="table table-striped custom-table">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Name</th>
+											<th>Company</th>
+											<th>Email</th>
+											<th>Role</th>
+											<th>Designation</th>
+											<th>Status</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr *ngFor="let students of lstStudents;let i = index">
+											<td>{{students.id}}</td>
+											<td>
+												<h2 class="table-avatar">
+													<a routerLink="/profile/profilelist" class="avatar"><img src="assets/img/profiles/avatar-19.jpg" alt=""></a>
+													<a routerLink="/profile/profilelist">{{students.name1}} <span>{{students.name2}}</span></a>
+												</h2>
+											</td>
+											<td>{{students.company}}</td>
+											<td>{{students.email}}</td>
+											<td>
+												<span class="badge bg-inverse-info">{{students.role}}</span>
+											</td>
+											<td>{{students.designation}}</td>
+											<td>
+												<div class="dropdown action-label">
+													<a href="#" class="btn btn-white btn-sm btn-rounded"><i class="fa fa-dot-circle-o text-success"></i> {{students.status}} </a>
+													
+												</div>
+											</td>
+										</tr>
+										
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+                
+					<!-- /Content End -->
+					
+                </div>
+				<!-- /Page Content -->
+				
+            </div>
+			<!-- /Page Wrapper -->

@@ -1,0 +1,391 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Goal Tracking</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Goal Tracking</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <a  class="btn add-btn" data-toggle="modal" data-target="#add_goal"><i class="fa fa-plus"></i>
+                    Add New</a>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                    class="table table-striped custom-table mb-0 datatable">
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;">#</th>
+                            <th>Goal Type</th>
+                            <th>Subject</th>
+                            <th>Target Achievement</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Description </th>
+                            <th>Status </th>
+                            <th>Progress </th>
+                            <th class="text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of lstGoal;let i = index">
+                            <td>{{item.id}}</td>
+                            <td>{{item.goalType}}</td>
+                            <td>{{item.subject}}</td>
+                            <td>{{item.targetAchivement}}</td>
+                            <td>
+                                {{item.startDate | customDate}}
+                            </td>
+                            <td>{{item.endDate | customDate}}</td>
+                            <td>{{item.description}}</td>
+                            <td>
+                                <div class="dropdown action-label">
+                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" 
+                                        data-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-dot-circle-o text-success"></i> {{item.status || statusValue}}
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" (click)="getStatus('Active')"><i
+                                                class="fa fa-dot-circle-o text-success"></i> Active</a>
+                                        <a class="dropdown-item" (click)="getStatus('Inactive')"><i
+                                                class="fa fa-dot-circle-o text-danger"></i>
+                                            Inactive</a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <p class="mb-1">{{item.progress}}</p>
+                                <div class="progress" style="height:5px">
+                                    <div class="progress-bar bg-primary progress-sm" style="width: 73%;height:10px;">
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="text-right">
+                                <div class="dropdown dropdown-action">
+                                    <a  class="action-icon dropdown-toggle" data-toggle="dropdown"
+                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item"  data-toggle="modal" data-target="#edit_goal"
+                                            (click)="edit(item.id)"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                        <a class="dropdown-item"  data-toggle="modal" data-target="#delete_goal"
+                                            (click)="tempId =item.id"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- Add Goal Modal -->
+<div id="add_goal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Goal Tracking</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="addGoal()" [formGroup]="addGoalForm">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Goal Type</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addGoalForm.get('GoalType').invalid && addGoalForm.get('GoalType').touched"
+                                    formControlName="GoalType">
+                                    <option>Invoice Goal</option>
+                                    <option>Event Goal</option>
+                                </select>
+                                <div *ngIf="addGoalForm.get('GoalType').invalid && addGoalForm.get('GoalType').touched">
+                                    <small
+                                        *ngIf="addGoalForm.get('GoalType').invalid && addGoalForm.get('GoalType').touched"
+                                        class="text-danger"> *Goal Type is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Subject</label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="addGoalForm.get('Subject').invalid && addGoalForm.get('Subject').touched"
+                                    formControlName="Subject">
+                                <div *ngIf="addGoalForm.get('Subject').invalid && addGoalForm.get('Subject').touched">
+                                    <small
+                                        *ngIf="addGoalForm.get('Subject').invalid && addGoalForm.get('Subject').touched"
+                                        class="text-danger"> *Subject is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Target Achievement</label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="addGoalForm.get('TargetAchivement').invalid && addGoalForm.get('TargetAchivement').touched"
+                                    formControlName="TargetAchivement">
+                                <div
+                                    *ngIf="addGoalForm.get('TargetAchivement').invalid && addGoalForm.get('TargetAchivement').touched">
+                                    <small
+                                        *ngIf="addGoalForm.get('TargetAchivement').invalid && addGoalForm.get('TargetAchivement').touched"
+                                        class="text-danger"> *Target Achievement is required</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Start Date <span class="text-danger">*</span></label>
+                                <div class="cal-icon">
+                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
+                                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                                        [class.invalid]="addGoalForm.get('StartDate').invalid && addGoalForm.get('StartDate').touched"
+                                        formControlName="StartDate">
+                                    <div
+                                        *ngIf="addGoalForm.get('TargetAchivement').invalid && addGoalForm.get('TargetAchivement').touched">
+                                        <small
+                                            *ngIf="addGoalForm.get('TargetAchivement').invalid && addGoalForm.get('TargetAchivement').touched"
+                                            class="text-danger"> *Start Date is required</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>End Date <span class="text-danger">*</span></label>
+                                <div class="cal-icon">
+                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
+                                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                                        [class.invalid]="addGoalForm.get('EndDate').invalid && addGoalForm.get('EndDate').touched"
+                                        formControlName="EndDate">
+                                    <div
+                                        *ngIf="addGoalForm.get('EndDate').invalid && addGoalForm.get('EndDate').touched">
+                                        <small
+                                            *ngIf="addGoalForm.get('EndDate').invalid && addGoalForm.get('EndDate').touched"
+                                            class="text-danger"> *End Date is required</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Description <span class="text-danger">*</span></label>
+                                <textarea class="form-control" rows="4"
+                                    [class.invalid]="addGoalForm.get('Description').invalid && addGoalForm.get('Description').touched"
+                                    formControlName="Description">
+                                </textarea>
+                                <div
+                                    *ngIf="addGoalForm.get('Description').invalid && addGoalForm.get('Description').touched">
+                                    <small
+                                        *ngIf="addGoalForm.get('Description').invalid && addGoalForm.get('Description').touched"
+                                        class="text-danger"> *Description is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Status</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addGoalForm.get('Status').invalid && addGoalForm.get('Status').touched"
+                                    formControlName="Status">
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                </select>
+                                <div *ngIf="addGoalForm.get('Status').invalid && addGoalForm.get('Status').touched">
+                                    <small
+                                        *ngIf="addGoalForm.get('Status').invalid && addGoalForm.get('Status').touched"
+                                        class="text-danger"> *End Date is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Goal Modal -->
+
+<!-- Edit Goal Modal -->
+<div id="edit_goal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Goal Tracking</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="editGoal()" [formGroup]="editGoalForm">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Goal Type</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editGoalForm.get('GoalType').invalid && editGoalForm.get('GoalType').touched"
+                                    formControlName="GoalType">
+                                    <option>Invoice Goal</option>
+                                    <option>Event Goal</option>
+                                </select>
+                                <div
+                                    *ngIf="editGoalForm.get('GoalType').invalid && editGoalForm.get('GoalType').touched">
+                                    <small
+                                        *ngIf="editGoalForm.get('GoalType').invalid && editGoalForm.get('GoalType').touched"
+                                        class="text-danger"> *Goal Type is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Subject</label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="editGoalForm.get('Subject').invalid && editGoalForm.get('Subject').touched"
+                                    formControlName="Subject">
+                                <div *ngIf="editGoalForm.get('Subject').invalid && editGoalForm.get('Subject').touched">
+                                    <small
+                                        *ngIf="editGoalForm.get('Subject').invalid && editGoalForm.get('Subject').touched"
+                                        class="text-danger"> *Subject is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Target Achievement</label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="editGoalForm.get('TargetAchivement').invalid && editGoalForm.get('TargetAchivement').touched"
+                                    formControlName="TargetAchivement">
+                                <div
+                                    *ngIf="editGoalForm.get('TargetAchivement').invalid && editGoalForm.get('TargetAchivement').touched">
+                                    <small
+                                        *ngIf="editGoalForm.get('TargetAchivement').invalid && editGoalForm.get('TargetAchivement').touched"
+                                        class="text-danger"> *Target Achievement is required</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Start Date <span class="text-danger">*</span></label>
+                                <div class="cal-icon">
+                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
+                                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                                        [class.invalid]="editGoalForm.get('StartDate').invalid && editGoalForm.get('StartDate').touched"
+                                        formControlName="StartDate">
+                                    <div
+                                        *ngIf="editGoalForm.get('TargetAchivement').invalid && editGoalForm.get('TargetAchivement').touched">
+                                        <small
+                                            *ngIf="editGoalForm.get('TargetAchivement').invalid && editGoalForm.get('TargetAchivement').touched"
+                                            class="text-danger"> *Start Date is required</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>End Date <span class="text-danger">*</span></label>
+                                <div class="cal-icon">
+                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
+                                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                                        [class.invalid]="editGoalForm.get('EndDate').invalid && editGoalForm.get('EndDate').touched"
+                                        formControlName="EndDate">
+                                    <div
+                                        *ngIf="editGoalForm.get('EndDate').invalid && editGoalForm.get('EndDate').touched">
+                                        <small
+                                            *ngIf="editGoalForm.get('EndDate').invalid && editGoalForm.get('EndDate').touched"
+                                            class="text-danger"> *End Date is required</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Description <span class="text-danger">*</span></label>
+                                <textarea class="form-control" rows="4"
+                                    [class.invalid]="editGoalForm.get('Description').invalid && editGoalForm.get('Description').touched"
+                                    formControlName="Description">
+
+                                </textarea>
+                                <div
+                                    *ngIf="editGoalForm.get('Description').invalid && editGoalForm.get('Description').touched">
+                                    <small
+                                        *ngIf="editGoalForm.get('Description').invalid && editGoalForm.get('Description').touched"
+                                        class="text-danger"> *End Date is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Status</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editGoalForm.get('Status').invalid && editGoalForm.get('Status').touched"
+                                    formControlName="Status">
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                </select>
+                                <div *ngIf="editGoalForm.get('Status').invalid && editGoalForm.get('Status').touched">
+                                    <small
+                                        *ngIf="editGoalForm.get('Status').invalid && editGoalForm.get('Status').touched"
+                                        class="text-danger"> *End Date is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Edit Goal Modal -->
+
+<!-- Delete Goal Modal -->
+<div class="modal custom-modal fade" id="delete_goal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete Goal Tracking List</h3>
+                    <p>Are you sure want to delete?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a  class="btn btn-primary continue-btn"
+                                (click)="deleteGoal()">Delete</a>
+                        </div>
+                        <div class="col-6">
+                            <a  data-dismiss="modal"
+                                class="btn btn-primary cancel-btn">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete Goal Modal -->

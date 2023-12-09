@@ -1,0 +1,267 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Performance Appraisal</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Performance</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <a class="btn add-btn" data-toggle="modal" data-target="#add_appraisal"><i class="fa fa-plus"></i> Add
+                    New</a>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="datatable"
+                    class="table table-striped custom-table mb-0 datatable">
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;">#</th>
+                            <th>Employee</th>
+                            <th>Designation</th>
+                            <th>Department</th>
+                            <th>Appraisal Date</th>
+                            <th>Status</th>
+                            <th class="text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of lstData;let i = index">
+                            <td>{{item.id}}</td>
+                            <td>
+                                <h2 class="table-avatar">
+                                    <a routerLink="/employees/employeeprofile" class="avatar"><img alt=""
+                                            src="assets/img/profiles/avatar-{{i+ 1}}.jpg"></a>
+                                    <a routerLink="/employees/employeeprofile">{{item.employee}} </a>
+                                </h2>
+                            </td>
+                            <td>{{item.designation}} </td>
+                            <td>{{item.department}} </td>
+                            <td>
+                                {{item.apparaisaldate | customDate}}
+                            </td>
+                            <td>
+                                <div class="dropdown action-label">
+                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <i class="fa fa-dot-circle-o text-success"></i>{{item.status || statusValue}}
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" (click)="getStatus('Active')"><i
+                                                class="fa fa-dot-circle-o text-success"></i> Active</a>
+                                        <a class="dropdown-item" (click)="getStatus('InActive')"><i
+                                                class="fa fa-dot-circle-o text-info"></i>
+                                            InActive</a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                <div class="dropdown dropdown-action">
+                                    <a class="action-icon dropdown-toggle" data-toggle="dropdown"
+                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#edit_appraisal"
+                                            (click)="edit(item.id)"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#delete_appraisal"
+                                            (click)="tempId = item.id"><i class="fa fa-trash-o m-r-5"></i>
+                                            Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- Add Performance Appraisal Modal -->
+<div id="add_appraisal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Give Performance Appraisal</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="addApparaisal()" [formGroup]="addApparaisalForm">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Employee</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addApparaisalForm.get('EmployeeName').invalid && addApparaisalForm.get('EmployeeName').touched"
+                                    formControlName="EmployeeName">
+                                    <option>Select Employee</option>
+                                    <option>John Doe</option>
+                                    <option>Mike Litorus</option>
+                                </select>
+                                <div
+                                    *ngIf="addApparaisalForm.get('EmployeeName').invalid && addApparaisalForm.get('EmployeeName').touched">
+                                    <small
+                                        *ngIf="addApparaisalForm.get('EmployeeName').invalid && addApparaisalForm.get('EmployeeName').touched"
+                                        class="text-danger"> Employee is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Select Date <span class="text-danger">*</span></label>
+                                <div class="cal-icon"> <input class="form-control datetimepicker" type="text"
+                                        bsDatepicker type="text"
+                                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                                        [class.invalid]="addApparaisalForm.get('SelectDate').invalid && addApparaisalForm.get('SelectDate').touched"
+                                        formControlName="SelectDate">
+                                    <div
+                                        *ngIf="addApparaisalForm.get('SelectDate').invalid && addApparaisalForm.get('SelectDate').touched">
+                                        <small
+                                            *ngIf="addApparaisalForm.get('SelectDate').invalid && addApparaisalForm.get('SelectDate').touched"
+                                            class="text-danger"> Date is required</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Status</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addApparaisalForm.get('StatusName').invalid && addApparaisalForm.get('StatusName').touched"
+                                    formControlName="StatusName">
+                                    <option>Active</option>
+                                    <option>InActive</option>
+                                </select>
+                                <div
+                                    *ngIf="addApparaisalForm.get('StatusName').invalid && addApparaisalForm.get('StatusName').touched">
+                                    <small
+                                        *ngIf="addApparaisalForm.get('StatusName').invalid && addApparaisalForm.get('StatusName').touched"
+                                        class="text-danger"> Date is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Performance Appraisal Modal -->
+
+<!-- Edit Performance Appraisal Modal -->
+<div id="edit_appraisal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Give Performance Appraisal</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="editApparaisal()" [formGroup]="editApparaisalForm">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Employee</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editApparaisalForm.get('EmployeeName').invalid && editApparaisalForm.get('EmployeeName').touched"
+                                    formControlName="EmployeeName">
+                                    <option>Select Employee</option>
+                                    <option>John Doe</option>
+                                    <option>Mike Litorus</option>
+                                </select>
+                                <div
+                                    *ngIf="editApparaisalForm.get('EmployeeName').invalid && editApparaisalForm.get('EmployeeName').touched">
+                                    <small
+                                        *ngIf="editApparaisalForm.get('EmployeeName').invalid && editApparaisalForm.get('EmployeeName').touched"
+                                        class="text-danger"> Employee is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Select Date <span class="text-danger">*</span></label>
+                                <div class="cal-icon">
+                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
+                                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                                        [class.invalid]="editApparaisalForm.get('SelectDate').invalid && editApparaisalForm.get('SelectDate').touched"
+                                        formControlName="SelectDate">
+                                    <div
+                                        *ngIf="editApparaisalForm.get('SelectDate').invalid && editApparaisalForm.get('SelectDate').touched">
+                                        <small
+                                            *ngIf="editApparaisalForm.get('SelectDate').invalid && editApparaisalForm.get('SelectDate').touched"
+                                            class="text-danger"> Date is required</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Status</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editApparaisalForm.get('StatusName').invalid && editApparaisalForm.get('StatusName').touched"
+                                    formControlName="StatusName">
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                </select>
+                                <div
+                                    *ngIf="addApparaisalForm.get('StatusName').invalid && addApparaisalForm.get('StatusName').touched">
+                                    <small
+                                        *ngIf="addApparaisalForm.get('StatusName').invalid && addApparaisalForm.get('StatusName').touched"
+                                        class="text-danger"> Date is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Edit Performance Appraisal Modal -->
+
+<!-- Delete Performance Appraisal Modal -->
+<div class="modal custom-modal fade" id="delete_appraisal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete Performance Appraisal List</h3>
+                    <p>Are you sure want to delete?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a  class="btn btn-primary continue-btn"
+                                (click)=deleteApparaisal()>Delete</a>
+                        </div>
+                        <div class="col-6">
+                            <a  data-dismiss="modal"
+                                class="btn btn-primary cancel-btn">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete Performance Appraisal Modal -->

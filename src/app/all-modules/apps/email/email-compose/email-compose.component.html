@@ -1,0 +1,95 @@
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+	<div class="sidebar-inner slimscroll">
+		<div class="sidebar-menu">
+			<ul>
+				<li> 
+					<a routerLink = "/dashboard"><i class="la la-home"></i> <span>Back to Inbox</span></a>
+				</li>
+				<li> 
+					<a routerLink="/inbox">Inbox <span class="mail-count">(21)</span></a>
+				</li>
+				<li> 
+					<a href="javascript:void(0)">Starred</a>
+				</li>
+				<li> 
+					<a href="javascript:void(0)">Sent Mail</a>
+				</li>
+				<li> 
+					<a href="javascript:void(0)">Draft <span class="mail-count">(8)</span></a>
+				</li>
+				<li> 
+					<a href="javascript:void(0)">Trash</a>
+				</li>
+				<li class="menu-title">Label <a ><i class="fa fa-plus"></i></a></li>
+				<li> 
+					<a href="javascript:void(0)"><i class="fa fa-circle text-success mail-label"></i> Work</a>
+				</li>
+				<li> 
+					<a href="javascript:void(0)"><i class="fa fa-circle text-danger mail-label"></i> Office</a>
+				</li>
+				<li> 
+					<a href="javascript:void(0)" ><i class="fa fa-circle text-warning mail-label"></i> Personal</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- /Sidebar -->
+<!-- Page Content -->
+<div class="content container-fluid">
+				
+	<!-- Page Header -->
+	<div class="page-header">
+		<div class="row">
+			<div class="col-sm-12">
+				<h3 class="page-title">Compose</h3>
+				<ul class="breadcrumb">
+					<li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+					<li class="breadcrumb-item active">Compose</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- /Page Header -->
+	
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="card">
+				<div class="card-body">
+					<form>
+						<div class="form-group">
+							<input type="email" placeholder="To" class="form-control">
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<input type="email" placeholder="Cc" class="form-control">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<input type="email" placeholder="Bcc" class="form-control">
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<input type="text" placeholder="Subject" class="form-control">
+						</div>
+						<div class="form-group">
+							<textarea rows="4" class="form-control summernote" placeholder="Enter your message here"></textarea>
+						</div>
+						<div class="form-group mb-0">
+							<div class="text-center">
+								<button class="btn btn-primary"><span>Send</span> <i class="fa fa-send m-l-5"></i></button>
+								<button class="btn btn-success m-l-5" type="button"><span>Draft</span> <i class="fa fa-floppy-o m-l-5"></i></button>
+								<button class="btn btn-success m-l-5" type="button"><span>Delete</span> <i class="fa fa-trash-o m-l-5"></i></button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Page Content -->

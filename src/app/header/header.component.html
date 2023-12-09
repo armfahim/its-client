@@ -1,0 +1,167 @@
+<!-- Header -->
+<div class="header">
+
+    <!-- Logo -->
+    <div class="header-left">
+        <a [routerLink]="['/dashboard']" class="logo">
+            <img src="assets/img/logo.png" width="40" height="40" alt="">
+        </a>
+    </div>
+    <!-- /Logo -->
+
+    <a id="toggle_btn">
+        <span class="bar-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </span>
+    </a>
+
+    <!-- Header Title -->
+    <div class="page-title-box">
+        <h3>Invoice Tracking System</h3>
+    </div>
+    <!-- /Header Title -->
+
+    <a id="mobile_btn" class="mobile_btn" href="javascript:"><i class="fa fa-bars"></i></a>
+
+    <!-- Header Menu -->
+    <ul class="nav user-menu">
+        <!-- Search -->
+        <!-- <li class="nav-item">
+            <div class="top-nav-search">
+                <a  class="responsive-search">
+                    <i class="fa fa-search"></i>
+                </a>
+                <form (ngSubmit)="onSubmit()">
+                    <input class="form-control" type="text" placeholder="Search here">
+                    <button class="btn" type="button"><i class="fa fa-search"></i></button>
+                </form>
+            </div>
+        </li> -->
+        <!-- /Search -->
+
+        <!-- Flag -->
+        <!-- <li class="nav-item dropdown has-arrow flag-nav">
+            <a href="javascript:" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                <img src="assets/img/flags/us.png" alt="" height="20"> <span>English</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a  class="dropdown-item">
+                    <img src="assets/img/flags/us.png" alt="" height="16"> English
+                </a>
+                <a  class="dropdown-item">
+                    <img src="assets/img/flags/fr.png" alt="" height="16"> French
+                </a>
+                <a  class="dropdown-item">
+                    <img src="assets/img/flags/es.png" alt="" height="16"> Spanish
+                </a>
+                <a  class="dropdown-item">
+                    <img src="assets/img/flags/de.png" alt="" height="16"> German
+                </a>
+            </div>
+        </li> -->
+        <!-- /Flag -->
+
+        <!-- Notifications -->
+        <li class="nav-item dropdown">
+            <a href="javascript:" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                <i class="fa fa-bell-o"></i> <span class="badge badge-pill">3</span>
+            </a>
+            <div class="dropdown-menu notifications">
+                <div class="topnav-dropdown-header">
+                    <span class="notification-title">Notifications</span>
+                    <a (click)="clearData('notification')" href="javascript:" class="clear-noti"> Clear All </a>
+                </div>
+                <div class="noti-content">
+                    <!-- <ul class="notification-list">
+                        <li class="notification-message" *ngFor="let item of notifications;let i = index">
+                            <a routerLink="/activities/activities-main">
+                                <div class="media">
+                                    <span class="avatar">
+                                        <img alt="" src="assets/img/profiles/avatar-{{i+ 1}}.jpg">
+                                    </span>
+                                    <div class="media-body">
+                                        <p class="noti-details"><span class="noti-title">{{ item.author }}</span>
+                                            {{ item.function }} <span class="noti-title">{{ item.message }}</span></p>
+                                        <p class="noti-time"><span class="notification-time">{{ item.time }}</span></p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul> -->
+                </div>
+                <div class="topnav-dropdown-footer">
+                    <a routerLink="/activities/activities-main">View all Notifications</a>
+                </div>
+            </div>
+        </li>
+        <!-- /Notifications -->
+
+        <!-- Message Notifications -->
+        <!-- <li class="nav-item dropdown">
+            <a href="javascript:" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                <i class="fa fa-comment-o"></i> <span class="badge badge-pill">8</span>
+            </a>
+            <div class="dropdown-menu notifications">
+                <div class="topnav-dropdown-header">
+                    <span class="notification-title">Messages</span>
+                    <a (click)="clearData('message')" href="javascript:" class="clear-noti"> Clear All </a>
+                </div>
+                <div class="noti-content">
+                    <ul class="notification-list">
+                        <li class="notification-message" *ngFor="let data of messagesData;let i = index">
+                            <a routerLink="/apps/chat">
+                                <div class="list-item">
+                                    <div class="list-left">
+                                        <span class="avatar">
+                                            <img alt="" src="assets/img/profiles/avatar-{{i+ 1}}.jpg">
+                                        </span>
+                                    </div>
+                                    <div class="list-body">
+                                        <span class="message-author">{{data.author}}</span>
+                                        <span class="message-time">{{data.time}}</span>
+                                        <div class="clearfix"></div>
+                                        <span class="message-content">{{data.message}}</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="topnav-dropdown-footer">
+                    <a routerLink="/apps/chat">View all Messages</a>
+                </div>
+            </div>
+        </li> -->
+        <!-- /Message Notifications -->
+
+        <li class="nav-item dropdown has-arrow main-drop">
+            <a href="javascript:" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                <span class="user-img"><img src="assets/img/profiles/avatar-21.jpg" alt="">
+                    <span class="status online"></span></span>
+                <span>Admin</span>
+            </a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" routerLink="/employees/employeeprofile">My Profile</a>
+                <a class="dropdown-item" routerLink="/settings/company-settings">Settings</a>
+                <a class="dropdown-item" routerLink="/login">Logout</a>
+            </div>
+        </li>
+    </ul>
+    <!-- /Header Menu -->
+
+    <!-- Mobile Menu -->
+    <div class="dropdown mobile-user-menu">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
+                class="fa fa-ellipsis-v"></i></a>
+        <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" routerLink="/employees/employeeprofile">My Profile</a>
+            <a class="dropdown-item" href="javascript:">Settings</a>
+            <a class="dropdown-item" routerLink="/login">Logout</a>
+        </div>
+    </div>
+    <!-- /Mobile Menu -->
+
+</div>
+<!-- /Header -->

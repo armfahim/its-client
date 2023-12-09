@@ -1,0 +1,107 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3 class="page-title">Invoice Report</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Invoice Report</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <!-- Search Filter -->
+    <div class="row filter-row">
+        <div class="col-sm-6 col-md-3">
+            <div class="form-group form-focus select-focus">
+                <select class="select form-control" (input)="searchStatus($event.target.value)">
+                    <option  value = "">Select Client</option>
+                    <option  value = "Global Technologies">Global Technologies</option>
+                    <option  value = "Delta Infotech">Delta Infotech</option>
+                </select>
+                <label class="focus-label">Client</label>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <div class="form-group form-focus">
+                <div class="cal-icon">
+                    <input class="form-control floating datetimepicker" type="text" type="text" bsDatepicker type="text" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }" (bsValueChange)="searchFromDate($event)">
+                </div>
+                <label class="focus-label">From</label>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <div class="form-group form-focus">
+                <div class="cal-icon">
+                    <input class="form-control floating datetimepicker" type="text" bsDatepicker type="text" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }" (bsValueChange)="searchToDate($event)">
+                </div>
+                <label class="focus-label">To</label>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <a  class="btn btn-success btn-block"> Search </a>
+        </div>
+    </div>
+    <!-- /Search Filter -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table  datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"class="table table-striped custom-table mb-0 datatable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Invoice Number</th>
+                            <th>Client</th>
+                            <th>Created Date</th>
+                            <th>Due Date</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th class="text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let invoice of invoices;let i=index;">
+                            <td>{{i+1}}</td>
+                            <td><a routerLink = "/accounts/invoice-view">{{invoice.number}}</a></td>
+                            <td>{{invoice.client}}</td>
+                            <td>{{invoice.invoice_date | customDate}}</td>
+                            <td>{{invoice.due_date | customDate}}</td>
+                            <td>{{invoice.grandTotal}}</td>
+                            <td class="text-center">
+                                <span class="badge bg-inverse-success">{{invoice.status}}</span>
+                            </td>
+                            <td class="text-right">
+                                <div class="dropdown dropdown-action">
+                                    <a  class="action-icon dropdown-toggle" data-toggle="dropdown"
+                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" routerLink = "/reports/edit-invoice-report" [queryParams]="{id: invoice.id}"><i
+                                                class="fa fa-pencil m-r-5"></i> Edit</a>
+                                        <a class="dropdown-item" routerLink = "/reports/edit-invoice-report" [queryParams]="{id: invoice.id}"><i
+                                                class="fa fa-eye m-r-5"></i> View</a>
+                                        <a class="dropdown-item" ><i class="fa fa-file-pdf-o m-r-5"></i>
+                                            Download</a>
+                                        <a class="dropdown-item"  data-toggle="modal" (click)="deleteInvoice(invoice)" data-target="#delete_estimate"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="invoices.length === 0">
+                            <td colspan="10">
+                                <h5 style="text-align: center;">No data found</h5>
+                            </td>
+                           
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->

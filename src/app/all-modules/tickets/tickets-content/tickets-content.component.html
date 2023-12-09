@@ -1,0 +1,666 @@
+
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Tickets</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Tickets</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <a class="btn add-btn" data-toggle="modal" data-target="#add_ticket"><i class="fa fa-plus"></i>
+                    Add Ticket</a>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card-group m-b-30">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3">
+                            <div>
+                                <span class="d-block">New Tickets</span>
+                            </div>
+                            <div>
+                                <span class="text-success">+10%</span>
+                            </div>
+                        </div>
+                        <h3 class="mb-3">112</h3>
+                        <div class="progress mb-2" style="height: 5px;">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 70%;"
+                                aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3">
+                            <div>
+                                <span class="d-block">Solved Tickets</span>
+                            </div>
+                            <div>
+                                <span class="text-success">+12.5%</span>
+                            </div>
+                        </div>
+                        <h3 class="mb-3">70</h3>
+                        <div class="progress mb-2" style="height: 5px;">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 70%;"
+                                aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3">
+                            <div>
+                                <span class="d-block">Open Tickets</span>
+                            </div>
+                            <div>
+                                <span class="text-danger">-2.8%</span>
+                            </div>
+                        </div>
+                        <h3 class="mb-3">100</h3>
+                        <div class="progress mb-2" style="height: 5px;">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 70%;"
+                                aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3">
+                            <div>
+                                <span class="d-block">Pending Tickets</span>
+                            </div>
+                            <div>
+                                <span class="text-danger">-75%</span>
+                            </div>
+                        </div>
+                        <h3 class="mb-3">125</h3>
+                        <div class="progress mb-2" style="height: 5px;">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 70%;"
+                                aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Filter -->
+    <div class="row filter-row">
+        <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+            <div class="form-group form-focus">
+                <input type="text" class="form-control floating" (input)="searchName($event.target.value)">
+                <label class="focus-label">Employee Name</label>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+            <div class="form-group form-focus select-focus">
+                <select class="select floating form-control" (input)="searchStatus($event.target.value)">
+                    <option value=""> -- Select -- </option>
+                    <option value="Pending"> Pending </option>
+                    <option value="Pending"> Approved </option>
+                    <option value="Pending"> Returned </option>
+                </select>
+                <label class="focus-label">Status</label>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+            <div class="form-group form-focus select-focus">
+                <select class="select floating form-control" (input)="searchPriority($event.target.value)">
+                    <option value=""> -- Select -- </option>
+                    <option value="High"> High </option>
+                    <option value="Low"> Low </option>
+                    <option value="Medium"> Medium </option>
+                </select>
+                <label class="focus-label">Priority</label>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+            <div class="form-group form-focus">
+                <div class="cal-icon">
+                    <input class="form-control floating datetimepicker" bsDatepicker type="text"
+                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                        (bsValueChange)="searchFrom($event)">
+                </div>
+                <label class="focus-label">From</label>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+            <div class="form-group form-focus">
+                <div class="cal-icon">
+                    <input class="form-control floating datetimepicker" bsDatepicker type="text"
+                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                        (bsValueChange)="searchTo($event)">
+                </div>
+                <label class="focus-label">To</label>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+            <a class="btn btn-success btn-block"> Search </a>
+        </div>
+    </div>
+    <!-- /Search Filter -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                    class="table table-striped custom-table mb-0 datatable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Ticket Id</th>
+                            <th>Ticket Subject</th>
+                            <th>Assigned Staff</th>
+                            <th>Created Date</th>
+                            <th>Last Reply</th>
+                            <th>Priority</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let tickets of allTickets;let i = index">
+                            <td>{{i + 1}}</td>
+                            <td><a routerLink="/tickets/ticketsview">{{tickets.ticketId}}</a></td>
+                            <td>{{tickets.ticketSubject}}</td>
+                            <td>
+                                <h2 class="table-avatar">
+                                    <a class="avatar avatar-xs" routerLink="/employees/employeeprofile"><img alt=""
+                                            src="assets/img/profiles/avatar-{{i+ 1}}.jpg"></a>
+                                    <a routerLink="/employees/employeeprofile">{{tickets.assignedStaff}}</a>
+                                </h2>
+                            </td>
+                            <td>{{tickets.createdDate}}</td>
+                            <td>{{tickets.lastReply}}</td>
+                            <td>
+                                <div class="dropdown action-label">
+                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown"
+                                        aria-expanded="false"><i class="fa fa-dot-circle-o text-danger"></i> High </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" (click)="getStatus('High')"><i
+                                                class="fa fa-dot-circle-o text-danger"></i>
+                                            High</a>
+                                        <a class="dropdown-item" (click)="getStatus('Medium')"><i
+                                                class="fa fa-dot-circle-o text-warning"></i> Medium</a>
+                                        <a class="dropdown-item" (click)="getStatus('Low')"><i
+                                                class="fa fa-dot-circle-o text-success"></i> Low</a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="dropdown action-label">
+                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <i class="fa fa-dot-circle-o text-danger"></i> New
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" (click)="getStatus('Open')"><i
+                                                class="fa fa-dot-circle-o text-info"></i>
+                                            Open</a>
+                                        <a class="dropdown-item" (click)="getStatus('Reopened')"><i
+                                                class="fa fa-dot-circle-o text-info"></i>
+                                            Reopened</a>
+                                        <a class="dropdown-item" (click)="getStatus('OnHold')"><i
+                                                class="fa fa-dot-circle-o text-danger"></i>
+                                            On Hold</a>
+                                        <a class="dropdown-item" (click)="getStatus('Closed')"><i
+                                                class="fa fa-dot-circle-o text-success"></i> Closed</a>
+                                        <a class="dropdown-item" (click)="getStatus('InProgress')"><i
+                                                class="fa fa-dot-circle-o text-success"></i> In Progress</a>
+                                        <a class="dropdown-item" (click)="getStatus('Cancelled')"><i
+                                                class="fa fa-dot-circle-o text-danger"></i>
+                                            Cancelled</a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                <div class="dropdown dropdown-action">
+                                    <a class="action-icon dropdown-toggle" data-toggle="dropdown"
+                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#edit_ticket"
+                                            (click)="edit(tickets.id)"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                        <a class="dropdown-item" data-toggle="modal" (click)="tempId = tickets.id"
+                                            data-target="#delete_ticket"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- Add Ticket Modal -->
+<div id="add_ticket" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Ticket</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="addTickets()" [formGroup]="addTicketForm">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Ticket Subject</label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="addTicketForm.get('ticketSubject').invalid && addTicketForm.get('ticketSubject').touched"
+                                    formControlName="ticketSubject">
+                                <div
+                                    *ngIf="addTicketForm.get('ticketSubject').invalid && addTicketForm.get('ticketSubject').touched">
+                                    <small
+                                        *ngIf="addTicketForm.get('ticketSubject').invalid && addTicketForm.get('ticketSubject').touched"
+                                        class="text-danger"> *Ticket Subject is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Ticket Id</label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="addTicketForm.get('ticketId').invalid && addTicketForm.get('ticketId').touched"
+                                    formControlName="ticketId">
+                                <div
+                                    *ngIf="addTicketForm.get('ticketId').invalid && addTicketForm.get('ticketId').touched">
+                                    <small
+                                        *ngIf="addTicketForm.get('ticketId').invalid && addTicketForm.get('ticketId').touched"
+                                        class="text-danger"> *Ticket Id is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Assign Staff</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addTicketForm.get('assignStaff').invalid && addTicketForm.get('assignStaff').touched"
+                                    formControlName="assignStaff">
+                                    <option>-</option>
+                                    <option>Mike Litorus</option>
+                                    <option>John Smith</option>
+                                </select>
+                                <div
+                                    *ngIf="addTicketForm.get('assignStaff').invalid && addTicketForm.get('assignStaff').touched">
+                                    <small
+                                        *ngIf="addTicketForm.get('assignStaff').invalid && addTicketForm.get('assignStaff').touched"
+                                        class="text-danger"> *Assign Staff is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Client</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addTicketForm.get('clientName').invalid && addTicketForm.get('clientName').touched"
+                                    formControlName="clientName">
+                                    <option>-</option>
+                                    <option>Delta Infotech</option>
+                                    <option>International Software Inc</option>
+                                </select>
+                                <div
+                                    *ngIf="addTicketForm.get('clientName').invalid && addTicketForm.get('clientName').touched">
+                                    <small
+                                        *ngIf="addTicketForm.get('clientName').invalid && addTicketForm.get('clientName').touched"
+                                        class="text-danger"> *Client name is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Priority</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addTicketForm.get('PriorityName').invalid && addTicketForm.get('PriorityName').touched"
+                                    formControlName="PriorityName">
+                                    <option>High</option>
+                                    <option>Medium</option>
+                                    <option>Low</option>
+                                </select>
+                                <div
+                                    *ngIf="addTicketForm.get('PriorityName').invalid && addTicketForm.get('PriorityName').touched">
+                                    <small
+                                        *ngIf="addTicketForm.get('PriorityName').invalid && addTicketForm.get('PriorityName').touched"
+                                        class="text-danger"> *Priority is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>CC</label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="addTicketForm.get('ccName').invalid && addTicketForm.get('ccName').touched"
+                                    formControlName="ccName">
+                                <div *ngIf="addTicketForm.get('ccName').invalid && addTicketForm.get('ccName').touched">
+                                    <small
+                                        *ngIf="addTicketForm.get('ccName').invalid && addTicketForm.get('ccName').touched"
+                                        class="text-danger"> *CC is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Assign</label>
+                                <input type="text" class="form-control"
+                                    [class.invalid]="addTicketForm.get('AssignName').invalid && addTicketForm.get('AssignName').touched"
+                                    formControlName="AssignName">
+                                <div
+                                    *ngIf="addTicketForm.get('AssignName').invalid && addTicketForm.get('AssignName').touched">
+                                    <small
+                                        *ngIf="addTicketForm.get('AssignName').invalid && addTicketForm.get('AssignName').touched"
+                                        class="text-danger"> *AssignName is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Ticket Assignee</label>
+                                <div class="project-members">
+                                    <a title="John Smith" data-placement="top" data-toggle="tooltip" class="avatar">
+                                        <img src="assets/img/profiles/avatar-2.jpg" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Add Followers</label>
+                                <input type="text" class="form-control"
+                                    [class.invalid]="addTicketForm.get('addFlowers').invalid && addTicketForm.get('addFlowers').touched"
+                                    formControlName="addFlowers">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Ticket Followers</label>
+                                <div class="project-members">
+                                    <a title="Richard Miles" data-toggle="tooltip" class="avatar">
+                                        <img src="assets/img/profiles/avatar-9.jpg" alt="">
+                                    </a>
+                                    <a title="John Smith" data-toggle="tooltip" class="avatar">
+                                        <img src="assets/img/profiles/avatar-10.jpg" alt="">
+                                    </a>
+                                    <a title="Mike Litorus" data-toggle="tooltip" class="avatar">
+                                        <img src="assets/img/profiles/avatar-5.jpg" alt="">
+                                    </a>
+                                    <a title="Wilmer Deluna" data-toggle="tooltip" class="avatar">
+                                        <img src="assets/img/profiles/avatar-11.jpg" alt="">
+                                    </a>
+                                    <span class="all-team">+2</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Upload Files</label>
+                                <input class="form-control" type="file">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Ticket Modal -->
+
+<!-- Edit Ticket Modal -->
+<div id="edit_ticket" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Ticket</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="editTicket()" [formGroup]="editTicketForm">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Ticket Subject</label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="editTicketForm.get('editTicketSubject').invalid && editTicketForm.get('editTicketSubject').touched"
+                                    formControlName="editTicketSubject">
+                                <div
+                                    *ngIf="editTicketForm.get('editTicketSubject').invalid && editTicketForm.get('editTicketSubject').touched">
+                                    <small
+                                        *ngIf="editTicketForm.get('editTicketSubject').invalid && editTicketForm.get('editTicketSubject').touched"
+                                        class="text-danger"> *Ticket Subject is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Ticket Id</label>
+                                <input class="form-control" type="text" value="TKT-0001"
+                                    [class.invalid]="editTicketForm.get('editTicketId').invalid && editTicketForm.get('editTicketId').touched"
+                                    formControlName="editTicketId">
+                                <div
+                                    *ngIf="editTicketForm.get('editTicketId').invalid && editTicketForm.get('editTicketId').touched">
+                                    <small
+                                        *ngIf="editTicketForm.get('editTicketId').invalid && editTicketForm.get('editTicketId').touched"
+                                        class="text-danger"> *Ticket Id is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Assign Staff</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editTicketForm.get('editAssignStaff').invalid && editTicketForm.get('editAssignStaff').touched"
+                                    formControlName="editAssignStaff">
+                                    <option>-</option>
+                                    <option selected>Mike Litorus</option>
+                                    <option>John Smith</option>
+                                    <option>Catherine Manseau</option>
+                                </select>
+                                <div
+                                    *ngIf="editTicketForm.get('editAssignStaff').invalid && editTicketForm.get('editAssignStaff').touched">
+                                    <small
+                                        *ngIf="editTicketForm.get('editAssignStaff').invalid && editTicketForm.get('editAssignStaff').touched"
+                                        class="text-danger"> *Assign Staff is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Client</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editTicketForm.get('editClientName').invalid && editTicketForm.get('editClientName').touched"
+                                    formControlName="editClientName">
+                                    <option>-</option>
+                                    <option>Delta Infotech</option>
+                                    <option>International Software Inc</option>
+                                </select>
+                                <div
+                                    *ngIf="editTicketForm.get('editClientName').invalid && editTicketForm.get('editClientName').touched">
+                                    <small
+                                        *ngIf="editTicketForm.get('editClientName').invalid && editTicketForm.get('editClientName').touched"
+                                        class="text-danger"> *Client name is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Priority</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editTicketForm.get('editPriorityName').invalid && editTicketForm.get('editPriorityName').touched"
+                                    formControlName="editPriorityName">
+                                    <option>High</option>
+                                    <option selected>Medium</option>
+                                    <option>Low</option>
+                                </select>
+                                <div
+                                    *ngIf="editTicketForm.get('editPriorityName').invalid && editTicketForm.get('editPriorityName').touched">
+                                    <small
+                                        *ngIf="editTicketForm.get('editPriorityName').invalid && editTicketForm.get('editPriorityName').touched"
+                                        class="text-danger"> *Priority is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>CC</label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="editTicketForm.get('editccName').invalid && editTicketForm.get('editccName').touched"
+                                    formControlName="editccName">
+                                <div
+                                    *ngIf="editTicketForm.get('editccName').invalid && editTicketForm.get('editccName').touched">
+                                    <small
+                                        *ngIf="editTicketForm.get('editccName').invalid && editTicketForm.get('editccName').touched"
+                                        class="text-danger"> *CC is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Assign</label>
+                                <input type="text" class="form-control"
+                                    [class.invalid]="editTicketForm.get('editccName').invalid && editTicketForm.get('editccName').touched"
+                                    formControlName="editccName">
+                                <div
+                                    *ngIf="editTicketForm.get('editccName').invalid && editTicketForm.get('editccName').touched">
+                                    <small
+                                        *ngIf="editTicketForm.get('editccName').invalid && editTicketForm.get('editccName').touched"
+                                        class="text-danger"> *Assign is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Ticket Assignee</label>
+                                <div class="project-members">
+                                    <a title="John Smith" data-placement="top" data-toggle="tooltip" class="avatar">
+                                        <img src="assets/img/profiles/avatar-2.jpg" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Add Followers</label>
+                                <input type="text" class="form-control"
+                                    [class.invalid]="editTicketForm.get('editaddFlowers').invalid && editTicketForm.get('editaddFlowers').touched"
+                                    formControlName="editaddFlowers">
+                                <div
+                                    *ngIf="editTicketForm.get('editaddFlowers').invalid && editTicketForm.get('editaddFlowers').touched">
+                                    <small
+                                        *ngIf="editTicketForm.get('editaddFlowers').invalid && editTicketForm.get('editaddFlowers').touched"
+                                        class="text-danger"> *Add Followers is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Ticket Followers</label>
+                                <div class="project-members">
+                                    <a title="Richard Miles" data-toggle="tooltip" class="avatar">
+                                        <img src="assets/img/profiles/avatar-9.jpg" alt="">
+                                    </a>
+                                    <a title="John Smith" data-toggle="tooltip" class="avatar">
+                                        <img src="assets/img/profiles/avatar-10.jpg" alt="">
+                                    </a>
+                                    <a title="Mike Litorus" data-toggle="tooltip" class="avatar">
+                                        <img src="assets/img/profiles/avatar-5.jpg" alt="">
+                                    </a>
+                                    <a title="Wilmer Deluna" data-toggle="tooltip" class="avatar">
+                                        <img src="assets/img/profiles/avatar-11.jpg" alt="">
+                                    </a>
+                                    <span class="all-team">+2</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Upload Files</label>
+                                <input class="form-control" type="file">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Edit Ticket Modal -->
+
+<!-- Delete Ticket Modal -->
+<div class="modal custom-modal fade" id="delete_ticket" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete Ticket</h3>
+                    <p>Are you sure want to delete?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a  class="btn btn-primary continue-btn"
+                                (click)="deleteTicket()">Delete</a>
+                        </div>
+                        <div class=" col-6">
+                            <a  data-dismiss="modal"
+                                class="btn btn-primary cancel-btn">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete Ticket Modal -->

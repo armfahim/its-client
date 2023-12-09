@@ -1,0 +1,288 @@
+
+<!-- Contact Main Row -->
+<div class="chat-main-row">
+
+    <!-- Contact Wrapper -->
+    <div class="chat-main-wrapper">
+        <div class="col-lg-12 message-view">
+            <div class="chat-window">
+                <div class="fixed-header">
+                    <div class="row">
+                        <div class="col-6">
+                            <h4 class="page-title mb-0">Contacts</h4>
+                        </div>
+                        <div class="col-6">
+                            <div class="navbar justify-content-end">
+                                <div class="search-box m-t-0">
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control" [(ngModel)]="searchText"
+                                            placeholder="Search">
+                                        <span class="input-group-append">
+                                            <button class="btn" type="button"><i class="fa fa-search"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <ul class="nav float-right custom-menu">
+                                    <li class="nav-item dropdown dropdown-action">
+                                        <a href="javascript:void(0)" class="nav-link dropdown-toggle" data-toggle="dropdown"
+                                            aria-expanded="false"><i class="fa fa-cog"></i></a>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="javascript:void(0)">Menu 1</a>
+                                            <a class="dropdown-item" href="javascript:void(0)">Menu 2</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-contents">
+                    <div class="chat-content-wrap">
+                        <div class="chat-wrap-inner">
+                            <div class="contact-box">
+                                <div class="row">
+                                    <div class="contact-cat col-sm-4 col-lg-3">
+                                        <a href="javascript:void(0)" class="btn btn-primary btn-block" data-toggle="modal"
+                                            data-target="#add_contact"><i class="fa fa-plus"></i> Add Contact</a>
+                                        <div class="roles-menu">
+                                            <ul>
+                                                <li class="active"><a >All</a></li>
+                                                <li *ngFor="let item of contactSidebar">
+                                                    <a href="javascript:void(0)">{{item | titlecase}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="contacts-list col-sm-8 col-lg-9">
+                                        <ul class="contact-list">
+                                            <li *ngFor="let item of allContacts | filter:searchText;let i = index ">
+                                                <div class="contact-cont">
+                                                    <div class="float-left user-img">
+                                                        <a href="javascript:void(0)" class="avatar">
+                                                            <img class="rounded-circle" alt=""
+                                                                src="assets/img/profiles/avatar-{{ i + 1 }}.jpg">
+                                                            <span class="status online"></span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="contact-info">
+                                                        <span class="contact-name text-ellipsis">{{ item.name }}</span>
+                                                        <span class="contact-date">{{ item.role }}</span>
+                                                    </div>
+                                                    <ul class="contact-action">
+                                                        <li class="dropdown dropdown-action">
+                                                            <a href="javascript:void(0)" class="dropdown-toggle action-icon"
+                                                                data-toggle="dropdown" aria-expanded="false"><i
+                                                                    class="material-icons">more_vert</i></a>
+                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                <a class="dropdown-item" href="javascript:void(0)"
+                                                                    data-toggle="modal" data-target="#edit_contact"
+                                                                    (click)="edit(item.id)">Edit</a>
+                                                                <a class="dropdown-item" href="javascript:void(0)"
+                                                                    (click)="tempId = item.id" data-toggle="modal"
+                                                                    data-target="#delete_contact">Delete</a>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="contact-alphapets">
+                                        <div class="alphapets-inner">
+                                            <a href="javascript:void(0)">A</a>
+                                            <a href="javascript:void(0)">B</a>
+                                            <a href="javascript:void(0)">C</a>
+                                            <a href="javascript:void(0)">D</a>
+                                            <a href="javascript:void(0)">E</a>
+                                            <a href="javascript:void(0)">F</a>
+                                            <a href="javascript:void(0)">G</a>
+                                            <a href="javascript:void(0)">H</a>
+                                            <a href="javascript:void(0)">I</a>
+                                            <a href="javascript:void(0)">J</a>
+                                            <a href="javascript:void(0)">K</a>
+                                            <a href="javascript:void(0)">L</a>
+                                            <a href="javascript:void(0)">M</a>
+                                            <a href="javascript:void(0)">N</a>
+                                            <a href="javascript:void(0)">O</a>
+                                            <a href="javascript:void(0)">P</a>
+                                            <a href="javascript:void(0)">Q</a>
+                                            <a href="javascript:void(0)">R</a>
+                                            <a href="javascript:void(0)">S</a>
+                                            <a href="javascript:void(0)">T</a>
+                                            <a href="javascript:void(0)">U</a>
+                                            <a href="javascript:void(0)">V</a>
+                                            <a href="javascript:void(0)">W</a>
+                                            <a href="javascript:void(0)">X</a>
+                                            <a href="javascript:void(0)">Y</a>
+                                            <a href="javascript:void(0)">Z</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Contact Wrapper -->
+
+</div>
+<!-- /Contact Main Row -->
+
+<!-- Add Contact Modal -->
+<div class="modal custom-modal fade" id="add_contact" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Contact</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="addContact()" [formGroup]="addContactForm">
+                    <div class="form-group">
+                        <label>Name <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text"
+                            [class.invalid]="addContactForm.get('contactName').invalid && addContactForm.get('contactName').touched"
+                            formControlName="contactName">
+                        <div
+                            *ngIf="addContactForm.get('contactName').invalid && addContactForm.get('contactName').touched">
+                            <small
+                                *ngIf="addContactForm.get('contactName').invalid && addContactForm.get('contactName').touched"
+                                class="text-danger"> *Name is required</small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input class="form-control" type="email"
+                            [class.invalid]="addContactForm.get('contactEmail').invalid && addContactForm.get('contactEmail').touched"
+                            formControlName="contactEmail">
+                        <div
+                            *ngIf="addContactForm.get('contactEmail').invalid && addContactForm.get('contactEmail').touched">
+                            <small
+                                *ngIf="addContactForm.get('contactEmail').invalid && addContactForm.get('contactEmail').touched"
+                                class="text-danger"> *Email is required</small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Number <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text"
+                            [class.invalid]="addContactForm.get('contactNumber').invalid && addContactForm.get('contactNumber').touched"
+                            formControlName="contactNumber">
+                        <div
+                            *ngIf="addContactForm.get('contactNumber').invalid && addContactForm.get('contactNumber').touched">
+                            <small
+                                *ngIf="addContactForm.get('contactNumber').invalid && addContactForm.get('contactNumber').touched"
+                                class="text-danger"> *Contact number is required</small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="d-block">Status</label>
+                        <div class="status-toggle">
+                            <input type="checkbox" id="contact_status" class="check">
+                            <label for="contact_status" class="checktoggle">checkbox</label>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Contact Modal -->
+
+<!-- Edit Contact Modal -->
+<div class="modal custom-modal fade" id="edit_contact" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Contact</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="editContact()" [formGroup]="editContactForm">
+                    <div class="form-group">
+                        <label>Name <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text"
+                            [class.invalid]="editContactForm.get('editContactName').invalid && editContactForm.get('editContactName').touched"
+                            formControlName="editContactName">
+                        <div
+                            *ngIf="editContactForm.get('editContactName').invalid && editContactForm.get('editContactName').touched">
+                            <small
+                                *ngIf="editContactForm.get('editContactName').invalid && editContactForm.get('editContactName').touched"
+                                class="text-danger"> *Name is required</small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input class="form-control" type="email"
+                            [class.invalid]="editContactForm.get('editContactEmail').invalid && editContactForm.get('editContactEmail').touched"
+                            formControlName="editContactEmail">
+                        <div
+                            *ngIf="editContactForm.get('editContactEmail').invalid && editContactForm.get('editContactEmail').touched">
+                            <small
+                                *ngIf="editContactForm.get('editContactEmail').invalid && editContactForm.get('editContactEmail').touched"
+                                class="text-danger"> *Email is required</small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Number <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text"
+                            [class.invalid]="editContactForm.get('editContactNumber').invalid && editContactForm.get('editContactNumber').touched"
+                            formControlName="editContactNumber">
+                        <div
+                            *ngIf="editContactForm.get('editContactNumber').invalid && editContactForm.get('editContactNumber').touched">
+                            <small
+                                *ngIf="editContactForm.get('editContactNumber').invalid && editContactForm.get('editContactNumber').touched"
+                                class="text-danger"> *Contact number is required</small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="d-block">Status</label>
+                        <div class="status-toggle">
+                            <input type="checkbox" id="edit_contact_status" class="check">
+                            <label for="edit_contact_status" class="checktoggle">checkbox</label>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Edit Contact Modal -->
+
+<!-- Delete Contact Modal -->
+<div class="modal custom-modal fade" id="delete_contact" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete Contact</h3>
+                    <p>Are you sure want to delete?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a  (click)="deleteContact()"
+                                class="btn btn-primary continue-btn">Delete</a>
+                        </div>
+                        <div class="col-6">
+                            <a  data-dismiss="modal"
+                                class="btn btn-primary cancel-btn">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete Contact Modal -->

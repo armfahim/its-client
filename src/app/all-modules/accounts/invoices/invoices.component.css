@@ -1,0 +1,26 @@
+.label-info-border {
+    border: 1px solid #009efb;
+    color: #009efb;
+    background-color: #fff;
+    display: inline-block;
+    min-width: 80px;
+}
+
+.label-success-border {
+    border: 1px solid #55ce63;
+    color: #55ce63;
+    background-color: #fff;
+    display: inline-block;
+    min-width: 80px;
+}
+
+.label-warning-border {
+    border: 1px solid #ffbc34;
+    color: #ffbc34;
+    background-color: #fff;
+    display: inline-block;
+    min-width: 80px;
+}
+.content {
+    padding: 30px;
+}

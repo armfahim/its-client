@@ -1,0 +1,343 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Provident Fund</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Provident Fund</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <a class="btn add-btn" data-toggle="modal" data-target="#add_pf"><i class="fa fa-plus"></i> Add
+                    Provident Fund</a>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                    class="table table-striped custom-table datatable mb-0">
+                    <thead>
+                        <tr>
+                            <th>Employee Name</th>
+                            <th>Provident Fund Type</th>
+                            <th>Employee Share</th>
+                            <th>Organization Share</th>
+                            <th>Status</th>
+                            <th class="text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let provident of allProvidentfund;let i = index">
+                            <td>
+                                <h2 class="table-avatar">
+                                    <a routerLink="/employees/employeeprofile" class="avatar"><img alt=""
+                                            src="assets/img/profiles/avatar-{{i+ 1}}.jpg"></a>
+                                    <a routerLink="/employees/employeeprofile">{{provident.employeeName}}<span>Web
+                                            Designer</span></a>
+                                </h2>
+                            </td>
+                            <td>{{provident.providentFundType}}</td>
+                            <td>{{provident.employeeShare}}</td>
+                            <td>{{provident.organizationShare}}</td>
+                            <td>
+                                <div class="dropdown action-label">
+                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" 
+                                        data-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-dot-circle-o text-danger"></i> Pending
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" ><i class="fa fa-dot-circle-o text-danger"></i>
+                                            Pending</a>
+                                        <a class="dropdown-item" ><i
+                                                class="fa fa-dot-circle-o text-success"></i> Approved</a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                <div class="dropdown dropdown-action">
+                                    <a  class="action-icon dropdown-toggle" data-toggle="dropdown"
+                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item"  data-toggle="modal" data-target="#edit_pf"
+                                            (click)="edit(provident.id)"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                        <a class="dropdown-item"  data-toggle="modal" data-target="#delete_pf"
+                                            (click)="tempId = provident.id"><i class="fa fa-trash-o m-r-5"></i>
+                                            Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- Add PF Modal -->
+<div id="add_pf" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Provident Fund</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="addProvident()" [formGroup]="addProvidentfund">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Employee Name</label>
+                                <select class="form-control select"
+                                    [class.invalid]="addProvidentfund.get('employeeName').invalid && addProvidentfund.get('employeeName').touched"
+                                    formControlName="employeeName">
+                                    <option value="John Doe">John Doe </option>
+                                    <option value="Richard Miles">Richard Miles</option>
+                                </select>
+                                <div
+                                    *ngIf="addProvidentfund.get('employeeName').invalid && addProvidentfund.get('employeeName').touched">
+                                    <small
+                                        *ngIf="addProvidentfund.get('employeeName').invalid && addProvidentfund.get('employeeName').touched"
+                                        class="text-danger"> *Employee name is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Provident Fund Type</label>
+                                <select class="form-control select"
+                                    [class.invalid]="addProvidentfund.get('providentType').invalid && addProvidentfund.get('providentType').touched"
+                                    formControlName="providentType">
+                                    <option value="Fixed Amount" selected="">Fixed Amount</option>
+                                    <option value="Percentage of Basic Salary">Percentage of Basic Salary</option>
+                                </select>
+                                <div
+                                    *ngIf="addProvidentfund.get('providentType').invalid && addProvidentfund.get('providentType').touched">
+                                    <small
+                                        *ngIf="addProvidentfund.get('providentType').invalid && addProvidentfund.get('providentType').touched"
+                                        class="text-danger"> *Provident fund type is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="show-fixed-amount">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Employee Share (Amount)</label>
+                                            <input class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Organization Share (Amount)</label>
+                                            <input class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="show-basic-salary">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Employee Share (%)</label>
+                                            <input class="form-control" type="text"
+                                                [class.invalid]="addProvidentfund.get('employeeShare').invalid && addProvidentfund.get('employeeShare').touched"
+                                                formControlName="employeeShare">
+                                            <div
+                                                *ngIf="addProvidentfund.get('employeeShare').invalid && addProvidentfund.get('employeeShare').touched">
+                                                <small
+                                                    *ngIf="addProvidentfund.get('employeeShare').invalid && addProvidentfund.get('employeeShare').touched"
+                                                    class="text-danger"> *Employee share is required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Organization Share (%)</label>
+                                            <input class="form-control" type="text"
+                                                [class.invalid]="addProvidentfund.get('organisationShare').invalid && addProvidentfund.get('organisationShare').touched"
+                                                formControlName="organisationShare">
+                                            <div
+                                                *ngIf="addProvidentfund.get('organisationShare').invalid && addProvidentfund.get('organisationShare').touched">
+                                                <small
+                                                    *ngIf="addProvidentfund.get('organisationShare').invalid && addProvidentfund.get('organisationShare').touched"
+                                                    class="text-danger"> *Organisation share is required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea class="form-control" rows="4"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add PF Modal -->
+
+<!-- Edit PF Modal -->
+<div id="edit_pf" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Provident Fund</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="editProvident()" [formGroup]="editProvidentForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Employee Name</label>
+                                <select class="form-control select"
+                                    [class.invalid]="editProvidentForm.get('employeeName').invalid && editProvidentForm.get('employeeName').touched"
+                                    formControlName="employeeName">
+                                    <option value="John Doe">John Doe </option>
+                                    <option value="Richard Miles">Richard Miles </option>
+                                </select>
+                                <div
+                                    *ngIf="editProvidentForm.get('employeeName').invalid && editProvidentForm.get('employeeName').touched">
+                                    <small
+                                        *ngIf="editProvidentForm.get('employeeName').invalid && editProvidentForm.get('employeeName').touched"
+                                        class="text-danger"> *Employee name is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Provident Fund Type</label>
+                                <select class="form-control select"
+                                    [class.invalid]="editProvidentForm.get('providentType').invalid && editProvidentForm.get('providentType').touched"
+                                    formControlName="providentType">
+                                    <option value="Fixed Amount" selected="">Fixed Amount</option>
+                                    <option value="Percentage of Basic Salary">Percentage of Basic Salary</option>
+                                </select>
+                                <div
+                                    *ngIf="editProvidentForm.get('providentType').invalid && editProvidentForm.get('providentType').touched">
+                                    <small
+                                        *ngIf="editProvidentForm.get('providentType').invalid && editProvidentForm.get('providentType').touched"
+                                        class="text-danger"> *Provident fund type is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="show-fixed-amount">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Employee Share (Amount)</label>
+                                            <input class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Organization Share (Amount)</label>
+                                            <input class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="show-basic-salary">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Employee Share (%)</label>
+                                            <input class="form-control" type="text" value="2%"
+                                                [class.invalid]="editProvidentForm.get('employeeShare').invalid && editProvidentForm.get('employeeShare').touched"
+                                                formControlName="employeeShare">
+                                            <div
+                                                *ngIf="editProvidentForm.get('employeeShare').invalid && editProvidentForm.get('employeeShare').touched">
+                                                <small
+                                                    *ngIf="editProvidentForm.get('employeeShare').invalid && editProvidentForm.get('employeeShare').touched"
+                                                    class="text-danger"> *Employee share is required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Organization Share (%)</label>
+                                            <input class="form-control" type="text" value="2%"
+                                                [class.invalid]="editProvidentForm.get('organisationShare').invalid && editProvidentForm.get('organisationShare').touched"
+                                                formControlName="organisationShare">
+                                            <div
+                                                *ngIf="editProvidentForm.get('organisationShare').invalid && editProvidentForm.get('organisationShare').touched">
+                                                <small
+                                                    *ngIf="editProvidentForm.get('organisationShare').invalid && editProvidentForm.get('organisationShare').touched"
+                                                    class="text-danger"> *Organisation share is required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea class="form-control" rows="4"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Edit PF Modal -->
+
+<!-- Delete PF Modal -->
+<div class="modal custom-modal fade" id="delete_pf" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete Provident Fund</h3>
+                    <p>Are you sure want to delete?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a  class="btn btn-primary continue-btn"
+                                (click)="deleteProvident()">Delete</a>
+                        </div>
+                        <div class="col-6">
+                            <a  data-dismiss="modal"
+                                class="btn btn-primary cancel-btn">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete PF Modal -->

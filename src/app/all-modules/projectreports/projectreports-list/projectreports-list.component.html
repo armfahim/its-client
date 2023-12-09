@@ -1,0 +1,135 @@
+<div>
+
+<!-- Page Wrapper -->
+            <div class="page-wrapper">
+            
+                <!-- Page Content -->
+                <div class="content container-fluid">
+                    
+                    <!-- Page Header -->
+                    <div class="page-header">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h3 class="page-title">Project Reports</h3>
+                                <ul class="breadcrumb">
+                                    <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+                                    <li class="breadcrumb-item active">Project Reports</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /Page Header -->
+                 
+                    
+                    <!-- Content Starts -->
+                    
+                        <!-- Search Filter -->
+                    <div class="row filter-row">
+                        
+                        <div class="col-sm-6 col-md-3">  
+                            <div class="form-group form-focus">
+                                
+                                    <select class="form-control floating select">
+                                        <option>
+                                            Name1
+                                        </option>
+                                        <option>
+                                            Name2
+                                        </option>
+                                    </select>
+                                
+                                <label class="focus-label">Project Name</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-3">  
+                            <div class="form-group form-focus">
+                                
+                                    <select class="form-control floating select" (input)="searchStatus($event.target.value)">
+                                        <option>
+                                            Active
+                                        </option>
+                                        <option>
+                                            Pending
+                                        </option>
+                                    </select>
+                                
+                                <label class="focus-label">Status</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-3">  
+                            <a href="#" class="btn btn-success btn-block"> Search </a>  
+                        </div>     
+                    </div>
+                    <!-- /Search Filter -->
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Project Title</th>
+                                            <th>Client Name</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Status</th>
+                                            <th>Team</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of lstProjectreports">
+                                            <td>{{item.id}}</td>
+                                            <td>
+                                                <a routerLink="/projects/projectview/:id">{{item.projecttitle}}</a>
+                                            </td>
+                                            <td>
+                                                <h2 class="table-avatar">
+                                                    <a routerLink="/clientsprofile/:id" class="avatar"><img src="assets/img/profiles/avatar-19.jpg" alt=""></a>
+                                                    <a routerLink="/clientsprofile/:id">{{item.clientname}}</a>
+                                                </h2>
+                                            </td>
+                                            <td>{{item.startdate}}</td>
+                                            <td>{{item.expiredate}}</td>
+                                            <td>
+                                                <div class="dropdown action-label">
+                                                    <a href="#" class="btn btn-white btn-sm btn-rounded"><i class="fa fa-dot-circle-o text-success"></i> {{item.status}} </a>
+                                                    
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <ul class="team-members">
+                                                    <li>
+                                                        <a href="#" title="" data-toggle="tooltip" data-original-title="John Doe"><img alt="" src="assets/img/profiles/avatar-2.jpg"></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" title="" data-toggle="tooltip" data-original-title="Richard Miles"><img alt="" src="assets/img/profiles/avatar-9.jpg"></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" title="" data-toggle="tooltip" data-original-title="John Smith"><img alt="" src="assets/img/profiles/avatar-10.jpg"></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" title="" data-toggle="tooltip" data-original-title="Mike Litorus"><img alt="" src="assets/img/profiles/avatar-5.jpg"></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" class="all-users">+15</a>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- /Content End -->
+                    
+                </div>
+                <!-- /Page Content -->
+                
+            </div>
+            <!-- /Page Wrapper -->
+
+</div>

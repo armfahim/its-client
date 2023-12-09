@@ -1,0 +1,61 @@
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-inner slimscroll">
+        <div class="sidebar-menu">
+            <ul>
+                <li> 
+                    <a routerLink="/dashboard"><i class="la la-home"></i> <span>Back to Home</span></a>
+                </li>
+                <li class="menu-title">Settings</li>
+                <li [ngClass]="{'active' : urlComplete.subUrl === 'company-settings'}"> 
+                    <a routerLink = "/settings/company-settings"><i class="la la-building"></i> <span>Company Settings</span></a>
+                </li>
+                <li  [ngClass]="{'active' : urlComplete.subUrl === 'localization'}"> 
+                    <a routerLink = "/settings/localization"><i class="la la-clock-o"></i> <span>Localization</span></a>
+                </li>
+                <li  [ngClass]="{'active' : urlComplete.subUrl === 'theme-settings'}"> 
+                    <a routerLink = "/settings/theme-settings"><i class="la la-photo"></i> <span>Theme Settings</span></a>
+                </li>
+                <li  [ngClass]="{'active' : urlComplete.subUrl === 'role'}"> 
+                    <a routerLink = "/settings/role"><i class="la la-key"></i> <span>Roles & Permissions</span></a>
+                </li>
+                <li  [ngClass]="{'active' : urlComplete.subUrl === 'email-settings'}"> 
+                    <a routerLink = "/settings/email-settings"><i class="la la-at"></i> <span>Email Settings</span></a>
+                </li>
+                <li [ngClass]="{'active' : urlComplete.subUrl === 'performance-settings'}">  
+                    <a routerLink = "/settings/performance-settings"><i class="la la-chart-bar"></i> <span>Performance Settings</span></a>
+                </li>
+                <li [ngClass]="{'active' : urlComplete.subUrl === 'approval-settings'}"> 
+                    <a routerLink = "/settings/approval-settings"><i class="la la-thumbs-up"></i> <span>Approval Settings</span></a>
+                </li>
+                 <li  [ngClass]="{'active' : urlComplete.subUrl === 'invoice-settings'}"> 
+                    <a routerLink = "/settings/invoice-settings"><i class="la la-pencil-square"></i> <span>Invoice Settings</span></a>
+                </li>
+                <li  [ngClass]="{'active' : urlComplete.subUrl === 'salary-settings'}"> 
+                    <a routerLink = "/settings/salary-settings"><i class="la la-money"></i> <span>Salary Settings</span></a>
+                </li>
+                <li  [ngClass]="{'active' : urlComplete.subUrl === 'notifications'}"> 
+                    <a routerLink = "/settings/notifications"><i class="la la-globe"></i> <span>Notifications</span></a>
+                </li>
+                <li  [ngClass]="{'active' : urlComplete.subUrl === 'change-password'}"> 
+                    <a routerLink = "/settings/change-password"><i class="la la-lock"></i> <span>Change Password</span></a>
+                </li>
+                <li  [ngClass]="{'active' : urlComplete.subUrl === 'leave-type'}"> 
+                    <a routerLink = "/settings/leave-type"><i class="la la-cogs"></i> <span>Leave Type</span></a>
+                </li>
+                <li [ngClass]="{'active' : urlComplete.subUrl === 'tokbox-settings'}"> 
+                    <a routerLink = "/settings/tokbox-settings"><i class="la la-comment"></i> <span>ToxBox Settings</span></a>
+                </li>
+                <li [ngClass]="{'active' : urlComplete.subUrl === 'cron-settings'}"> 
+                    <a routerLink = "/settings/cron-settings"><i class="la la-rocket"></i> <span>Cron Settings</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- Sidebar -->
+<!-- Page Wrapper -->
+<div class="page-wrapper" (resized)="onResize($event)" [ngStyle]="{ 'height' : innerHeight }">
+    <router-outlet></router-outlet>
+    </div>
+    <!-- /Page Wrapper -->

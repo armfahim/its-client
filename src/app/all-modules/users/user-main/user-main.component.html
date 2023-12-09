@@ -1,0 +1,584 @@
+<!-- Page Wrapper -->
+            <div class="page-wrapper">
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Users</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Users</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <a  class="btn add-btn" data-toggle="modal" data-target="#add_user"><i class="fa fa-plus"></i>
+                    Add User</a>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <!-- Search Filter -->
+    <div class="row filter-row">
+        <div class="col-sm-6 col-md-3">
+            <div class="form-group form-focus">
+                <input type="text" class="form-control floating" (input)="searchName($event.target.value)" (focusout) = "rerender()">
+                <label class="focus-label">Name</label>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <div class="form-group form-focus select-focus">
+                <select class="select form-control" (input)="searchStatus($event.target.value)">
+                    <option value = "">Select Company</option>
+                    <option value = "Global Technologies">Global Technologies</option>
+                    <option value = "Delta Infotech">Delta Infotech</option>
+                </select>
+                <label class="focus-label">Company</label>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <div class="form-group form-focus select-focus">
+                <select class="select form-control" (input)="searchRole($event.target.value)">
+                    <option value = "">Select Roll</option>
+                    <option value = "Web Developer">Web Developer</option>
+                    <option value = "Web Designer">Web Designer</option>
+                    <option value = "Android Developer">Android Developer</option>
+                    <option value = "Ios Developer">Ios Developer</option>
+                </select>
+                <label class="focus-label">Role</label>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <a  class="btn btn-success btn-block"> Search </a>
+        </div>
+    </div>
+    <!-- /Search Filter -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"class="table table-striped custom-table datatable"  id = "datatable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Company</th>
+                            <th>Created Date</th>
+                            <th>Role</th>
+                            <th class="text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let users of allUsers;let i = index">
+                            <td>
+                                <h2 class="table-avatar">
+                                    <a routerLink = "/employees/employeeprofile" class="avatar"><img src="assets/img/profiles/avatar-{{ i + 1 }}.jpg"
+                                            alt=""></a>
+                                    <a routerLink = "/employees/employeeprofile">{{users.name}} <span>{{users.designation}}</span></a>
+                                </h2>
+                            </td>
+                            <td>{{users.email}}</td>
+                            <td>{{users.company}}</td>
+                            <td>1 Jan 2013</td>
+                            <td>
+                                <span class="badge bg-inverse-danger">{{users.role}}</span>
+                            </td>
+                            <td class="text-right">
+                                <div class="dropdown dropdown-action">
+                                    <a  class="action-icon dropdown-toggle" data-toggle="dropdown"
+                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item"  data-toggle="modal"
+                                            data-target="#edit_user" (click)="edit(users.id)"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                        <a class="dropdown-item"  data-toggle="modal"
+                                            data-target="#delete_user" (click)="tempId = users.id"><i class="fa fa-trash-o m-r-5"></i>
+                                            Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="allUsers.length === 0">
+                            <td colspan="10">
+                                <h5 style="text-align: center;">No data found</h5>
+                            </td>
+                           
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- Add User Modal -->
+<div id="add_user" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="addUsersSubmit()" [formGroup]="addUsers">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>First Name <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" >
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Last Name</label>
+                                <input class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Username <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" [class.invalid]="addUsers.get('addUserName').invalid && addUsers.get('addUserName').touched"
+                                formControlName="addUserName">
+                                <div
+                                *ngIf="addUsers.get('addUserName').invalid && addUsers.get('addUserName').touched">
+                                <small
+                                    *ngIf="addUsers.get('addUserName').invalid && addUsers.get('addUserName').touched"
+                                    class="text-danger"> *User name is required</small>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Email <span class="text-danger">*</span></label>
+                                <input class="form-control" type="email" [class.invalid]="addUsers.get('addEmail').invalid && addUsers.get('addEmail').touched"
+                                formControlName="addEmail">
+                                <div
+                                *ngIf="addUsers.get('addEmail').invalid && addUsers.get('addEmail').touched">
+                                <small
+                                    *ngIf="addUsers.get('addEmail').invalid && addUsers.get('addEmail').touched"
+                                    class="text-danger"> *Email is required</small>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input class="form-control" type="password">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Confirm Password</label>
+                                <input class="form-control" type="password">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Phone </label>
+                                <input class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Role</label>
+                                <select class="select form-control" [class.invalid]="addUsers.get('addRole').invalid && addUsers.get('addRole').touched"
+                                formControlName="addRole">
+                                    <option>Admin</option>
+                                    <option>Client</option>
+                                    <option>Employee</option>
+                                </select>
+                                <div
+                                *ngIf="addUsers.get('addRole').invalid && addUsers.get('addRole').touched">
+                                <small
+                                    *ngIf="addUsers.get('addRole').invalid && addUsers.get('addRole').touched"
+                                    class="text-danger"> *Role is required</small>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Company</label>
+                                <select class="select form-control" [class.invalid]="addUsers.get('addCompany').invalid && addUsers.get('addCompany').touched"
+                                formControlName="addCompany">
+                                    <option>Global Technologies</option>
+                                    <option>Delta Infotech</option>
+                                </select>
+                                <div
+                                *ngIf="addUsers.get('addCompany').invalid && addUsers.get('addCompany').touched">
+                                <small
+                                    *ngIf="addUsers.get('addCompany').invalid && addUsers.get('addCompany').touched"
+                                    class="text-danger"> *Company is required</small>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Employee ID <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control floating">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive m-t-15">
+                        <table class="table table-striped custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Module Permission</th>
+                                    <th class="text-center">Read</th>
+                                    <th class="text-center">Write</th>
+                                    <th class="text-center">Create</th>
+                                    <th class="text-center">Delete</th>
+                                    <th class="text-center">Import</th>
+                                    <th class="text-center">Export</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Employee</td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Holidays</td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Leaves</td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Events</td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add User Modal -->
+
+<!-- Edit User Modal -->
+<div id="edit_user" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="editUsersSubmit()" [formGroup]="editUsers">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>First Name <span class="text-danger">*</span></label>
+                                <input class="form-control" value="John" type="text">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Last Name</label>
+                                <input class="form-control" value="Doe" type="text">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Username <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" [class.invalid]="editUsers.get('editUsersName').invalid && editUsers.get('editUsersName').touched"
+                                formControlName="editUsersName">
+
+                                 <div
+                                    *ngIf="editUsers.get('editUsersName').invalid && editUsers.get('editUsersName').touched">
+                                    <small
+                                        *ngIf="editUsers.get('editUsersName').invalid && editUsers.get('editUsersName').touched"
+                                        class="text-danger"> *User name is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Email <span class="text-danger">*</span></label>
+                                <input class="form-control" type="email" [class.invalid]="editUsers.get('editEmail').invalid && editUsers.get('editEmail').touched"
+                                formControlName="editEmail">
+
+                                <div
+                                *ngIf="editUsers.get('editEmail').invalid && editUsers.get('editEmail').touched">
+                                <small
+                                    *ngIf="editUsers.get('editEmail').invalid && editUsers.get('editEmail').touched"
+                                    class="text-danger"> *Email is required</small>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input class="form-control" type="password">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Confirm Password</label>
+                                <input class="form-control" type="password">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Phone </label>
+                                <input class="form-control" value="9876543210" type="text">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Role</label>
+                                <select class="select form-control" [class.invalid]="editUsers.get('editRole').invalid && editUsers.get('editRole').touched"
+                                formControlName="editRole">
+                                    <option>Admin</option>
+                                    <option>Client</option>
+                                    <option selected>Employee</option>
+                                </select>
+                                <div
+                                *ngIf="editUsers.get('editRole').invalid && editUsers.get('editRole').touched">
+                                <small
+                                    *ngIf="editUsers.get('editRole').invalid && editUsers.get('editRole').touched"
+                                    class="text-danger"> *Role is required</small>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Company</label>
+                                <select class="select form-control"  [class.invalid]="editUsers.get('editCompany').invalid && editUsers.get('editCompany').touched"
+                                formControlName="editCompany">
+                                    <option>Global Technologies</option>
+                                    <option>Delta Infotech</option>
+                                </select>
+                                <div
+                                *ngIf="editUsers.get('editCompany').invalid && editUsers.get('editCompany').touched">
+                                <small
+                                    *ngIf="editUsers.get('editCompany').invalid && editUsers.get('editCompany').touched"
+                                    class="text-danger"> *Company is required</small>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Employee ID <span class="text-danger">*</span></label>
+                                <input type="text" value="FT-0001" class="form-control floating">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive m-t-15">
+                        <table class="table table-striped custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Module Permission</th>
+                                    <th class="text-center">Read</th>
+                                    <th class="text-center">Write</th>
+                                    <th class="text-center">Create</th>
+                                    <th class="text-center">Delete</th>
+                                    <th class="text-center">Import</th>
+                                    <th class="text-center">Export</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Employee</td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Holidays</td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Leaves</td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Events</td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                    <td class="text-center">
+                                        <input checked="" type="checkbox">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Edit User Modal -->
+
+<!-- Delete User Modal -->
+<div class="modal custom-modal fade" id="delete_user" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete User</h3>
+                    <p>Are you sure want to delete?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a  class="btn btn-primary continue-btn" (click)="deleteUsers()">Delete</a>
+                        </div>
+                        <div class="col-6">
+                            <a  data-dismiss="modal"
+                                class="btn btn-primary cancel-btn">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete User Modal -->
+</div>

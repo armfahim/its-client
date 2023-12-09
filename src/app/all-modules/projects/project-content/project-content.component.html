@@ -1,0 +1,577 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Projects</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Projects</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <a class="btn add-btn" data-toggle="modal" data-target="#create_project"><i class="fa fa-plus"></i>
+                    Create Project</a>
+                <div class="view-icons">
+                    <a routerLink="/projects/projectpage" class="grid-view btn btn-link active"><i
+                            class="fa fa-th"></i></a>
+                    <a routerLink="/projects/projectlist" class="list-view btn btn-link"><i class="fa fa-bars"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <!-- Search Filter -->
+    <div class="row filter-row">
+        <div class="col-sm-6 col-md-3">
+            <div class="form-group form-focus">
+                <input type="text" class="form-control floating" (input)="searchName($event.target.value)">
+                <label class="focus-label">Project Name</label>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <div class="form-group form-focus">
+                <input type="text" class="form-control floating" (input)="searchByEmpname($event.target.value)">
+                <label class="focus-label">Employee Name</label>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <div class="form-group form-focus select-focus">
+                <select class="select floating form-control">
+                    <option>Select Roll</option>
+                    <option>Web Developer</option>
+                    <option>Web Designer</option>
+                    <option>Android Developer</option>
+                    <option>Ios Developer</option>
+                </select>
+                <label class="focus-label">Designation</label>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <a class="btn btn-success btn-block"> Search </a>
+        </div>
+    </div>
+    <!-- Search Filter -->
+
+    <div class="row">
+        <div *ngFor="let project of projects" class="col-lg-4 col-sm-6 col-md-4 col-xl-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="dropdown dropdown-action profile-action">
+                        <a class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
+                                class="material-icons">more_vert</i></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" data-toggle="modal" data-target="#edit_project"
+                                (click)="editProject(project.id)"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                            <a class="dropdown-item" data-toggle="modal" data-target="#delete_project"
+                                (click)="tempId = project.id"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                        </div>
+                    </div>
+                    <h4 class="project-title"><a routerLink="/projects/projectview/{{project.id}}">{{project.name}}</a>
+                    </h4>
+                    <small class="block text-ellipsis m-b-15">
+                        <span class="text-xs">1</span> <span class="text-muted">open tasks, </span>
+                        <span class="text-xs">9</span> <span class="text-muted">tasks completed</span>
+                    </small>
+                    <p class="text-muted">{{project.description}}
+                    </p>
+                    <div class="pro-deadline m-b-15">
+                        <div class="sub-title">
+                            Deadline:
+                        </div>
+                        <div class="text-muted">
+                            {{project.endDate}}
+                        </div>
+                    </div>
+                    <div class="project-members m-b-15">
+                        <div>Project Leader :</div>
+                        <ul class="team-members">
+                            <li>
+                                <a data-toggle="tooltip" title="Jeffery Lalor"><img alt=""
+                                        src="assets/img/profiles/avatar-9.jpg"></a>
+                            </li>
+                            <li>
+                                <a data-toggle="tooltip" title="Jeffery Lalor"><img alt=""
+                                        src="assets/img/profiles/avatar-8.jpg"></a>
+                            </li>
+                            <li>
+                                <a data-toggle="tooltip" title="Jeffery Lalor"><img alt=""
+                                        src="assets/img/profiles/avatar-7.jpg"></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="project-members m-b-15">
+                        <div>Team :</div>
+                        <ul class="team-members">
+                            <li>
+                                <a data-toggle="tooltip" title="John Doe"><img alt=""
+                                        src="assets/img/profiles/avatar-2.jpg"></a>
+                            </li>
+                            <li>
+                                <a data-toggle="tooltip" title="Richard Miles"><img alt=""
+                                        src="assets/img/profiles/avatar-9.jpg"></a>
+                            </li>
+                            <li>
+                                <a data-toggle="tooltip" title="John Smith"><img alt=""
+                                        src="assets/img/profiles/avatar-8.jpg"></a>
+                            </li>
+                            <li>
+                                <a data-toggle="tooltip" title="Mike Litorus"><img alt=""
+                                        src="assets/img/profiles/avatar-5.jpg"></a>
+                            </li>
+                            <li class="dropdown avatar-dropdown">
+                                <a class="all-users dropdown-toggle" data-toggle="dropdown"
+                                    aria-expanded="false">+15</a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <div class="avatar-group">
+                                        <a class="avatar avatar-xs">
+                                            <img alt="" src="assets/img/profiles/avatar-2.jpg">
+                                        </a>
+                                        <a class="avatar avatar-xs">
+                                            <img alt="" src="assets/img/profiles/avatar-9.jpg">
+                                        </a>
+                                        <a class="avatar avatar-xs">
+                                            <img alt="" src="assets/img/profiles/avatar-8.jpg">
+                                        </a>
+                                        <a class="avatar avatar-xs">
+                                            <img alt="" src="assets/img/profiles/avatar-5.jpg">
+                                        </a>
+                                        <a class="avatar avatar-xs">
+                                            <img alt="" src="assets/img/profiles/avatar-6.jpg">
+                                        </a>
+                                        <a class="avatar avatar-xs">
+                                            <img alt="" src="assets/img/profiles/avatar-7.jpg">
+                                        </a>
+                                        <a class="avatar avatar-xs">
+                                            <img alt="" src="assets/img/profiles/avatar-9.jpg">
+                                        </a>
+                                        <a class="avatar avatar-xs">
+                                            <img alt="" src="assets/img/profiles/avatar-1.jpg">
+                                        </a>
+                                        <a class="avatar avatar-xs">
+                                            <img alt="" src="assets/img/profiles/avatar-5.jpg">
+                                        </a>
+                                    </div>
+                                    <div class="avatar-pagination">
+                                        <ul class="pagination">
+                                            <li class="page-item">
+                                                <a class="page-link" aria-label="Previous">
+                                                    <span aria-hidden="true">«</span>
+                                                    <span class="sr-only">Previous</span>
+                                                </a>
+                                            </li>
+                                            <li class="page-item"><a class="page-link">1</a></li>
+                                            <li class="page-item"><a class="page-link">2</a></li>
+                                            <li class="page-item">
+                                                <a class="page-link" aria-label="Next">
+                                                    <span aria-hidden="true">»</span>
+                                                    <span class="sr-only">Next</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <p class="m-b-5">Progress <span class="text-success float-right">40%</span></p>
+                    <div class="progress progress-xs mb-0">
+                        <div class="progress-bar bg-success" role="progressbar" data-toggle="tooltip" title="40%"
+                            style="width: 40%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- Create Project Modal -->
+<div id="create_project" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Project</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="addProjectForm">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Project Name</label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="addProjectForm.get('projectName').invalid && addProjectForm.get('projectName').touched"
+                                    formControlName="projectName">
+                                <div
+                                    *ngIf="addProjectForm.get('projectName').invalid && addProjectForm.get('projectName').touched">
+                                    <small
+                                        *ngIf="addProjectForm.get('projectName').invalid && addProjectForm.get('projectName').touched"
+                                        class="text-danger"> *Name is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Client</label>
+                                <select class="select form-control">
+                                    <option>Global Technologies</option>
+                                    <option>Delta Infotech</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Start Date</label>
+                                <div class="cal-icon">
+                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
+                                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                                        [class.invalid]="addProjectForm.get('projectStartDate').invalid && addProjectForm.get('projectStartDate').touched"
+                                        formControlName="projectStartDate">
+                                </div>
+                                <div
+                                    *ngIf="addProjectForm.get('projectStartDate').invalid && addProjectForm.get('projectStartDate').touched">
+                                    <small
+                                        *ngIf="addProjectForm.get('projectStartDate').invalid && addProjectForm.get('projectStartDate').touched"
+                                        class="text-danger"> *Start Date is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>End Date</label>
+                                <div class="cal-icon">
+                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
+                                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                                        [class.invalid]="addProjectForm.get('projectEndDate').invalid && addProjectForm.get('projectEndDate').touched"
+                                        formControlName="projectEndDate">
+                                </div>
+                                <div
+                                    *ngIf="addProjectForm.get('projectEndDate').invalid && addProjectForm.get('projectEndDate').touched">
+                                    <small
+                                        *ngIf="addProjectForm.get('projectEndDate').invalid && addProjectForm.get('projectEndDate').touched"
+                                        class="text-danger"> *Date is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label>Rate</label>
+                                <input placeholder="$50" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label>&nbsp;</label>
+                                <select class="select form-control">
+                                    <option>Hourly</option>
+                                    <option>Fixed</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Priority</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addProjectForm.get('projectPriority').invalid && addProjectForm.get('projectPriority').touched"
+                                    formControlName="projectPriority">
+                                    <option>High</option>
+                                    <option>Medium</option>
+                                    <option>Low</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Add Project Leader</label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="addProjectForm.get('projectLeader').invalid && addProjectForm.get('projectLeader').touched"
+                                    formControlName="projectLeader">
+                                <div
+                                    *ngIf="addProjectForm.get('projectLeader').invalid && addProjectForm.get('projectLeader').touched">
+                                    <small
+                                        *ngIf="addProjectForm.get('projectLeader').invalid && addProjectForm.get('projectLeader').touched"
+                                        class="text-danger"> *Project Leader is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Team Leader</label>
+                                <div class="project-members">
+                                    <a data-toggle="tooltip" title="Jeffery Lalor" class="avatar">
+                                        <img src="assets/img/profiles/avatar-9.jpg" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Add Team</label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="addProjectForm.get('addTeamMembers').invalid && addProjectForm.get('addTeamMembers').touched"
+                                    formControlName="addTeamMembers">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Team Members</label>
+                                <div class="project-members">
+                                    <a data-toggle="tooltip" title="John Doe" class="avatar">
+                                        <img src="assets/img/profiles/avatar-1.jpg" alt="">
+                                    </a>
+                                    <a data-toggle="tooltip" title="Richard Miles" class="avatar">
+                                        <img src="assets/img/profiles/avatar-9.jpg" alt="">
+                                    </a>
+                                    <a data-toggle="tooltip" title="John Smith" class="avatar">
+                                        <img src="assets/img/profiles/avatar-2.jpg" alt="">
+                                    </a>
+                                    <a data-toggle="tooltip" title="Mike Litorus" class="avatar">
+                                        <img src="assets/img/profiles/avatar-5.jpg" alt="">
+                                    </a>
+                                    <span class="all-team">+2</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea rows="4" class="form-control summernote" placeholder="Enter your message here"
+                            [class.invalid]="addProjectForm.get('projectDescription').invalid && addProjectForm.get('projectDescription').touched"
+                            formControlName="projectDescription"></textarea>
+                        <div
+                            *ngIf="addProjectForm.get('projectDescription').invalid && addProjectForm.get('projectDescription').touched">
+                            <small
+                                *ngIf="addProjectForm.get('projectDescription').invalid && addProjectForm.get('projectDescription').touched"
+                                class="text-danger"> *Description is required</small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Upload Files</label>
+                        <input class="form-control" type="file">
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" (click)="addProject()">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Create Project Modal -->
+
+<!-- Edit Project Modal -->
+<div id="edit_project" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Project</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="editProjectForm">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Project Name</label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="editProjectForm.get('editProjectName').invalid && editProjectForm.get('editProjectName').touched"
+                                    formControlName="editProjectName">
+                                <div
+                                    *ngIf="editProjectForm.get('editProjectName').invalid && editProjectForm.get('editProjectName').touched">
+                                    <small
+                                        *ngIf="editProjectForm.get('editProjectName').invalid && editProjectForm.get('editProjectName').touched"
+                                        class="text-danger"> *Name is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Client</label>
+                                <select class="select form-control">
+                                    <option>Global Technologies</option>
+                                    <option>Delta Infotech</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Start Date</label>
+                                <div class="cal-icon">
+                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
+                                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                                        [class.invalid]="editProjectForm.get('editProjectStartDate').invalid && editProjectForm.get('editProjectStartDate').touched"
+                                        formControlName="editProjectStartDate">
+                                    <div
+                                        *ngIf="editProjectForm.get('editProjectStartDate').invalid && editProjectForm.get('editProjectStartDate').touched">
+                                        <small
+                                            *ngIf="editProjectForm.get('editProjectStartDate').invalid && editProjectForm.get('editProjectStartDate').touched"
+                                            class="text-danger"> *Start date is required</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>End Date</label>
+                                <div class="cal-icon">
+                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
+                                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                                        [class.invalid]="editProjectForm.get('editProjectEndDate').invalid && editProjectForm.get('editProjectEndDate').touched"
+                                        formControlName="editProjectEndDate">
+                                    <div
+                                        *ngIf="editProjectForm.get('editProjectEndDate').invalid && editProjectForm.get('editProjectEndDate').touched">
+                                        <small
+                                            *ngIf="editProjectForm.get('editProjectEndDate').invalid && editProjectForm.get('editProjectEndDate').touched"
+                                            class="text-danger"> *End date is required</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label>Rate</label>
+                                <input placeholder="$50" class="form-control" value="$5000" type="text">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label>&nbsp;</label>
+                                <select class="select form-control">
+                                    <option>Hourly</option>
+                                    <option selected>Fixed</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Priority</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editProjectForm.get('editProjectPriority').invalid && editProjectForm.get('editProjectPriority').touched"
+                                    formControlName="editProjectPriority">
+                                    <option selected>High</option>
+                                    <option>Medium</option>
+                                    <option>Low</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Add Project Leader</label>
+                                <input class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Team Leader</label>
+                                <div class="project-members">
+                                    <a data-toggle="tooltip" title="Jeffery Lalor" class="avatar">
+                                        <img src="assets/img/profiles/avatar-5.jpg" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Add Team</label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="editProjectForm.get('editaddTeamMembers').invalid && editProjectForm.get('editaddTeamMembers').touched"
+                                    formControlName="editaddTeamMembers">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Team Members</label>
+                                <div class="project-members">
+                                    <a data-toggle="tooltip" title="John Doe" class="avatar">
+                                        <img src="assets/img/profiles/avatar-8.jpg" alt="">
+                                    </a>
+                                    <a data-toggle="tooltip" title="Richard Miles" class="avatar">
+                                        <img src="assets/img/profiles/avatar-9.jpg" alt="">
+                                    </a>
+                                    <a data-toggle="tooltip" title="John Smith" class="avatar">
+                                        <img src="assets/img/profiles/avatar-5.jpg" alt="">
+                                    </a>
+                                    <a data-toggle="tooltip" title="Mike Litorus" class="avatar">
+                                        <img src="assets/img/profiles/avatar-4.jpg" alt="">
+                                    </a>
+                                    <span class="all-team">+2</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea rows="4" class="form-control summernote" placeholder="Enter your message here"
+                            [class.invalid]="editProjectForm.get('editProjectDescription').invalid && editProjectForm.get('editProjectDescription').touched"
+                            formControlName="editProjectDescription"></textarea>
+                        <div
+                            *ngIf="editProjectForm.get('editProjectDescription').invalid && editProjectForm.get('editProjectDescription').touched">
+                            <small
+                                *ngIf="editProjectForm.get('editProjectDescription').invalid && editProjectForm.get('editProjectDescription').touched"
+                                class="text-danger"> *Description is required</small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Upload Files</label>
+                        <input class="form-control" type="file">
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" (click)="saveProject()">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Edit Project Modal -->
+
+<!-- Delete Project Modal -->
+<div class="modal custom-modal fade" id="delete_project" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete Project</h3>
+                    <p>Are you sure want to delete?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a  class="btn btn-primary continue-btn"
+                                (click)="deleteProject()">Delete</a>
+                        </div>
+                        <div class="col-6">
+                            <a  data-dismiss="modal"
+                                class="btn btn-primary cancel-btn">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete Project Modal -->

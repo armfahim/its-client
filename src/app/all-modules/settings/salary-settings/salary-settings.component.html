@@ -1,0 +1,278 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3 class="page-title">Salary Settings</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- /Page Header -->
+
+            <form (ngSubmit)="submitSalarySettings()" [formGroup]="salarySettings">
+
+                <!-- DA and HRA Settings -->
+                <div class="settings-widget">
+                    <div class="h3 card-title with-switch">
+                        DA and HRA
+                        <div class="onoffswitch">
+                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch_hra"
+                                checked>
+                            <label class="onoffswitch-label" for="switch_hra">
+                                <span class="onoffswitch-inner"></span>
+                                <span class="onoffswitch-switch"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>DA (%)</label>
+                                <input type="text" class="form-control" [class.invalid]="salarySettings.get('da').invalid && salarySettings.get('da').touched"
+                                formControlName="da">
+                                <div
+                                *ngIf="salarySettings.get('da').invalid && salarySettings.get('da').touched">
+                                <small
+                                    *ngIf="salarySettings.get('da').invalid && salarySettings.get('da').touched"
+                                    class="text-danger"> *DA is required</small>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>HRA (%)</label>
+                                <input class="form-control" type="text" [class.invalid]="salarySettings.get('hra').invalid && salarySettings.get('hra').touched"
+                                formControlName="hra">
+                                <div
+                                *ngIf="salarySettings.get('hra').invalid && salarySettings.get('hra').touched">
+                                <small
+                                    *ngIf="salarySettings.get('hra').invalid && salarySettings.get('hra').touched"
+                                    class="text-danger"> *HRA is required</small>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /DA and HRA Settings -->
+
+                <!-- Provident Fund Settings -->
+                <div class="settings-widget">
+                    <div class="h3 card-title with-switch">
+                        Provident Fund Settings
+                        <div class="onoffswitch">
+                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch_pf"
+                                checked>
+                            <label class="onoffswitch-label" for="switch_pf">
+                                <span class="onoffswitch-inner"></span>
+                                <span class="onoffswitch-switch"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Employee Share (%)</label>
+                                <input class="form-control" type="text" [class.invalid]="salarySettings.get('employeeShare').invalid && salarySettings.get('employeeShare').touched"
+                                formControlName="employeeShare">
+                                <div
+                                *ngIf="salarySettings.get('employeeShare').invalid && salarySettings.get('employeeShare').touched">
+                                <small
+                                    *ngIf="salarySettings.get('employeeShare').invalid && salarySettings.get('employeeShare').touched"
+                                    class="text-danger"> *Employee share is required</small>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Organization Share (%)</label>
+                                <input class="form-control" type="text" [class.invalid]="salarySettings.get('organisationShare').invalid && salarySettings.get('organisationShare').touched"
+                                formControlName="organisationShare">
+                                <div
+                                *ngIf="salarySettings.get('organisationShare').invalid && salarySettings.get('organisationShare').touched">
+                                <small
+                                    *ngIf="salarySettings.get('organisationShare').invalid && salarySettings.get('organisationShare').touched"
+                                    class="text-danger"> *Organisation share is required</small>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Provident Fund Settings -->
+
+                <!-- ESI Settings -->
+                <div class="settings-widget">
+                    <div class="h3 card-title with-switch">
+                        ESI Settings
+                        <div class="onoffswitch">
+                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch_esi">
+                            <label class="onoffswitch-label" for="switch_esi">
+                                <span class="onoffswitch-inner"></span>
+                                <span class="onoffswitch-switch"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Employee Share (%)</label>
+                                <input class="form-control" type="text" [class.invalid]="salarySettings.get('esiEmployeeShare').invalid && salarySettings.get('esiEmployeeShare').touched"
+                                formControlName="esiEmployeeShare">
+                                <div
+                                *ngIf="salarySettings.get('esiEmployeeShare').invalid && salarySettings.get('esiEmployeeShare').touched">
+                                <small
+                                    *ngIf="salarySettings.get('esiEmployeeShare').invalid && salarySettings.get('esiEmployeeShare').touched"
+                                    class="text-danger"> *Employee share is required</small>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Organization Share (%)</label>
+                                <input class="form-control" type="text" [class.invalid]="salarySettings.get('esiOrganisationShare').invalid && salarySettings.get('esiOrganisationShare').touched"
+                                formControlName="esiOrganisationShare">
+                                <div
+                                *ngIf="salarySettings.get('esiOrganisationShare').invalid && salarySettings.get('esiOrganisationShare').touched">
+                                <small
+                                    *ngIf="salarySettings.get('esiOrganisationShare').invalid && salarySettings.get('esiOrganisationShare').touched"
+                                    class="text-danger"> *Organisation share is required</small>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /ESI Settings -->
+
+                <!-- TDS Settings -->
+                <div class="settings-widget">
+                    <div class="h3 card-title with-switch">
+                        TDS&nbsp; <small class="form-text text-muted">Annual Salary</small>
+                        <div class="onoffswitch">
+                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch_tds">
+                            <label class="onoffswitch-label" for="switch_tds">
+                                <span class="onoffswitch-inner"></span>
+                                <span class="onoffswitch-switch"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row row-sm">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Salary From</label>
+                                <input class="form-control" type="text" [class.invalid]="salarySettings.get('annualSalaryFrom1').invalid && salarySettings.get('annualSalaryFrom1').touched"
+                                formControlName="annualSalaryFrom1">
+                                <div
+                                *ngIf="salarySettings.get('annualSalaryFrom1').invalid && salarySettings.get('annualSalaryFrom1').touched">
+                                <small
+                                    *ngIf="salarySettings.get('annualSalaryFrom1').invalid && salarySettings.get('annualSalaryFrom1').touched"
+                                    class="text-danger"> *Salary is required</small>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Salary To</label>
+                                <input class="form-control" type="text"[class.invalid]="salarySettings.get('annualSalaryTo1').invalid && salarySettings.get('annualSalaryTo1').touched"
+                                formControlName="annualSalaryTo1">
+                                <div
+                                *ngIf="salarySettings.get('annualSalaryTo1').invalid && salarySettings.get('annualSalaryTo1').touched">
+                                <small
+                                    *ngIf="salarySettings.get('annualSalaryTo1').invalid && salarySettings.get('annualSalaryTo1').touched"
+                                    class="text-danger"> *Salary is required</small>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label>%</label>
+                                <input class="form-control" type="text" [class.invalid]="salarySettings.get('annualpercentage1').invalid && salarySettings.get('annualpercentage1').touched"
+                                formControlName="annualpercentage1">
+                                <div
+                                *ngIf="salarySettings.get('annualpercentage1').invalid && salarySettings.get('annualpercentage1').touched">
+                                <small
+                                    *ngIf="salarySettings.get('annualpercentage1').invalid && salarySettings.get('annualpercentage1').touched"
+                                    class="text-danger"> *Salary percentage is required</small>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="d-none d-sm-block">&nbsp;</label>
+                                <button class="btn btn-danger btn-block set-btn" type="button"><i
+                                        class="fa fa-trash-o"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-sm">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Salary From</label>
+                                <input class="form-control" type="text"[class.invalid]="salarySettings.get('annualSalaryFrom2').invalid && salarySettings.get('annualSalaryFrom2').touched"
+                                formControlName="annualSalaryFrom2">
+                                <div
+                                *ngIf="salarySettings.get('annualSalaryFrom2').invalid && salarySettings.get('annualSalaryFrom2').touched">
+                                <small
+                                    *ngIf="salarySettings.get('annualSalaryFrom2').invalid && salarySettings.get('annualSalaryFrom2').touched"
+                                    class="text-danger"> *Salary is required</small>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Salary To</label>
+                                <input class="form-control" type="text" [class.invalid]="salarySettings.get('annualSalaryTo2').invalid && salarySettings.get('annualSalaryTo2').touched"
+                                formControlName="annualSalaryTo2">
+                                <div
+                                *ngIf="salarySettings.get('annualSalaryTo2').invalid && salarySettings.get('annualSalaryTo2').touched">
+                                <small
+                                    *ngIf="salarySettings.get('annualSalaryTo2').invalid && salarySettings.get('annualSalaryTo2').touched"
+                                    class="text-danger"> *Salary is required</small>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label>%</label>
+                                <input class="form-control" type="text" [class.invalid]="salarySettings.get('annualpercentage2').invalid && salarySettings.get('annualpercentage2').touched"
+                                formControlName="annualpercentage2">
+                                <div
+                                *ngIf="salarySettings.get('annualpercentage2').invalid && salarySettings.get('annualpercentage2').touched">
+                                <small
+                                    *ngIf="salarySettings.get('annualpercentage2').invalid && salarySettings.get('annualpercentage2').touched"
+                                    class="text-danger"> *Salary percentage is required</small>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="d-none d-sm-block">&nbsp;</label>
+                                <button class="btn btn-danger btn-block set-btn" type="button"><i
+                                        class="fa fa-trash-o"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-sm">
+                        <div class="col-sm-2 ml-auto">
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-block" type="button"><i
+                                        class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /TDS Settings -->
+
+                <!-- Submit Button -->
+                <div class="submit-section">
+                    <button class="btn btn-primary submit-btn" type="submit">Save</button>
+                </div>
+                <!-- /Submit Button -->
+
+            </form>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->

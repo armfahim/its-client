@@ -1,0 +1,491 @@
+<div class="page-wrapper">
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Training</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Training</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <a class="btn add-btn" data-toggle="modal" data-target="#add_training"><i class="fa fa-plus"></i> Add
+                    New </a>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="datatable"
+                    class="table table-striped custom-table mb-0 datatable">
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;">#</th>
+                            <th>Training Type</th>
+                            <th>Trainer</th>
+                            <th>Employee</th>
+                            <th>Time Duration</th>
+                            <th>Description </th>
+                            <th>Cost </th>
+                            <th>Status </th>
+                            <th class="text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of lstTraininglist;let i = index">
+                            <td>{{item.id}}</td>
+                            <td>{{item.trainingType}}</td>
+                            <td>
+                                <h2 class="table-avatar">
+                                    <a routerLink="/employees/employeeprofile" class="avatar"><img alt=""
+                                            src="assets/img/profiles/avatar-{{i+ 1}}.jpg"></a>
+                                    <a routerLink="/employees/employeeprofile">{{item.trainer}} </a>
+                                </h2>
+                            </td>
+                            <td>
+                                <ul class="team-members">
+                                    <li>
+                                        <a title="Bernardo Galaviz" data-toggle="tooltip"><img alt=""
+                                                src="assets/img/profiles/avatar-{{i+ 1}}.jpg"></a>
+                                    </li>
+                                    <li>
+                                        <a title="Richard Miles" data-toggle="tooltip"><img alt=""
+                                                src="assets/img/profiles/avatar-{{i+ 1}}.jpg"></a>
+                                    </li>
+                                    <li class="dropdown avatar-dropdown">
+                                        <a class="all-users dropdown-toggle" data-toggle="dropdown"
+                                            aria-expanded="false">+15</a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <div class="avatar-group">
+                                                <a class="avatar avatar-xs">
+                                                    <img alt="" src="assets/img/profiles/avatar-2.jpg">
+                                                </a>
+                                                <a class="avatar avatar-xs">
+                                                    <img alt="" src="assets/img/profiles/avatar-9.jpg">
+                                                </a>
+                                                <a class="avatar avatar-xs">
+                                                    <img alt="" src="assets/img/profiles/avatar-5.jpg">
+                                                </a>
+                                                <a class="avatar avatar-xs">
+                                                    <img alt="" src="assets/img/profiles/avatar-5.jpg">
+                                                </a>
+                                                <a class="avatar avatar-xs">
+                                                    <img alt="" src="assets/img/profiles/avatar-6.jpg">
+                                                </a>
+                                                <a class="avatar avatar-xs">
+                                                    <img alt="" src="assets/img/profiles/avatar-9.jpg">
+                                                </a>
+                                                <a class="avatar avatar-xs">
+                                                    <img alt="" src="assets/img/profiles/avatar-8.jpg">
+                                                </a>
+                                                <a class="avatar avatar-xs">
+                                                    <img alt="" src="assets/img/profiles/avatar-1.jpg">
+                                                </a>
+                                                <a class="avatar avatar-xs">
+                                                    <img alt="" src="assets/img/profiles/avatar-6.jpg">
+                                                </a>
+                                            </div>
+                                            <div class="avatar-pagination">
+                                                <ul class="pagination">
+                                                    <li class="page-item">
+                                                        <a class="page-link" aria-label="Previous">
+                                                            <span aria-hidden="true">«</span>
+                                                            <span class="sr-only">Previous</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="page-item"><a class="page-link">1</a></li>
+                                                    <li class="page-item"><a class="page-link">2</a></li>
+                                                    <li class="page-item">
+                                                        <a class="page-link" aria-label="Next">
+                                                            <span aria-hidden="true">»</span>
+                                                            <span class="sr-only">Next</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td>{{item.timeDuration}}</td>
+                            <td>{{item.description}}</td>
+                            <td>{{item.cost}}</td>
+                            <td>
+                                <div class="dropdown action-label">
+                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <i class="fa fa-dot-circle-o text-success"></i> {{item.status || statusValue}}
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" (click)="getStatus('Active')"><i
+                                                class="fa fa-dot-circle-o text-success"></i> Active</a>
+                                        <a class="dropdown-item" (click)="getStatus('Inactive')"><i
+                                                class="fa fa-dot-circle-o text-danger"></i>
+                                            Inactive</a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                <div class="dropdown dropdown-action">
+                                    <a class="action-icon dropdown-toggle" data-toggle="dropdown"
+                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#edit_training"
+                                            (click)="edit(item.id)"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#delete_training"
+                                            (click)="tempId =item.id"><i class="fa fa-trash-o m-r-5"></i>
+                                            Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- Add Training List Modal -->
+<div id="add_training" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Training</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="addTrainingType()" [formGroup]="addTrainerForm">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Training Type</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addTrainerForm.get('Type').invalid && addTrainerForm.get('Type').touched"
+                                    formControlName="Type">
+                                    <option>Node Training</option>
+                                    <option>Swift Training</option>
+                                </select>
+                                <div *ngIf="addTrainerForm.get('Type').invalid && addTrainerForm.get('Type').touched">
+                                    <small
+                                        *ngIf="addTrainerForm.get('Type').invalid && addTrainerForm.get('Type').touched"
+                                        class="text-danger"> *Type is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Trainer</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addTrainerForm.get('TranierName').invalid && addTrainerForm.get('TranierName').touched"
+                                    formControlName="TranierName">
+                                    <option>Mike Litorus </option>
+                                    <option>John Doe</option>
+                                </select>
+                                <div
+                                    *ngIf="addTrainerForm.get('TranierName').invalid && addTrainerForm.get('TranierName').touched">
+                                    <small
+                                        *ngIf="addTrainerForm.get('TranierName').invalid && addTrainerForm.get('TranierName').touched"
+                                        class="text-danger"> *Trainer is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Employees</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addTrainerForm.get('EmployeeName').invalid && addTrainerForm.get('EmployeeName').touched"
+                                    formControlName="EmployeeName">
+                                    <option>Bernardo Galaviz</option>
+                                    <option>Jeffrey Warden</option>
+                                </select>
+                                <div
+                                    *ngIf="addTrainerForm.get('EmployeeName').invalid && addTrainerForm.get('EmployeeName').touched">
+                                    <small
+                                        *ngIf="addTrainerForm.get('EmployeeName').invalid && addTrainerForm.get('EmployeeName').touched"
+                                        class="text-danger"> *Employee is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Training Cost <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="addTrainerForm.get('costName').invalid && addTrainerForm.get('costName').touched"
+                                    formControlName="costName">
+                                <div
+                                    *ngIf="addTrainerForm.get('costName').invalid && addTrainerForm.get('costName').touched">
+                                    <small
+                                        *ngIf="addTrainerForm.get('costName').invalid && addTrainerForm.get('costName').touched"
+                                        class="text-danger"> *Cost is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Start Date <span class="text-danger">*</span></label>
+                                <div class="cal-icon">
+                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
+                                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                                        [class.invalid]="addTrainerForm.get('startDateTime').invalid && addTrainerForm.get('startDateTime').touched"
+                                        formControlName="startDateTime">
+                                    <div
+                                        *ngIf="addTrainerForm.get('startDateTime').invalid && addTrainerForm.get('startDateTime').touched">
+                                        <small
+                                            *ngIf="addTrainerForm.get('startDateTime').invalid && addTrainerForm.get('startDateTime').touched"
+                                            class="text-danger"> *Start Date is required</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>End Date <span class="text-danger">*</span></label>
+                                <div class="cal-icon">
+                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
+                                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                                        [class.invalid]="addTrainerForm.get('endDateTime').invalid && addTrainerForm.get('endDateTime').touched"
+                                        formControlName="endDateTime">
+                                    <div
+                                        *ngIf="addTrainerForm.get('endDateTime').invalid && addTrainerForm.get('endDateTime').touched">
+                                        <small
+                                            *ngIf="addTrainerForm.get('endDateTime').invalid && addTrainerForm.get('endDateTime').touched"
+                                            class="text-danger"> *End Date is required</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Description <span class="text-danger">*</span></label>
+                                <textarea class="form-control" rows="4"
+                                    [class.invalid]="addTrainerForm.get('Description').invalid && addTrainerForm.get('Description').touched"
+                                    formControlName="Description">
+                            </textarea>
+                                <div
+                                    *ngIf="addTrainerForm.get('Description').invalid && addTrainerForm.get('Description').touched">
+                                    <small
+                                        *ngIf="addTrainerForm.get('Description').invalid && addTrainerForm.get('Description').touched"
+                                        class="text-danger"> *Description is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Status</label>
+                                <select class="select form-control"
+                                    [class.invalid]="addTrainerForm.get('StatusName').invalid && addTrainerForm.get('StatusName').touched"
+                                    formControlName="StatusName">
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                </select>
+                                <div
+                                    *ngIf="addTrainerForm.get('StatusName').invalid && addTrainerForm.get('StatusName').touched">
+                                    <small
+                                        *ngIf="addTrainerForm.get('StatusName').invalid && addTrainerForm.get('StatusName').touched"
+                                        class="text-danger"> *Status is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Training List Modal -->
+
+<!-- Edit Training List Modal -->
+<div id="edit_training" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Training List</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="editTrainingType()" [formGroup]="editTrainerForm">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Training Type</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editTrainerForm.get('Type').invalid && editTrainerForm.get('Type').touched"
+                                    formControlName="Type">
+                                    <option>Node Training</option>
+                                    <option>Swift Training</option>
+                                </select>
+                                <div *ngIf="editTrainerForm.get('Type').invalid && editTrainerForm.get('Type').touched">
+                                    <small
+                                        *ngIf="editTrainerForm.get('Type').invalid && editTrainerForm.get('Type').touched"
+                                        class="text-danger"> *Type is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Trainer</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editTrainerForm.get('TranierName').invalid && editTrainerForm.get('TranierName').touched"
+                                    formControlName="TranierName">
+                                    <option>Mike Litorus </option>
+                                    <option>John Doe</option>
+                                </select>
+                                <div
+                                    *ngIf="editTrainerForm.get('TranierName').invalid && editTrainerForm.get('TranierName').touched">
+                                    <small
+                                        *ngIf="editTrainerForm.get('TranierName').invalid && editTrainerForm.get('TranierName').touched"
+                                        class="text-danger"> *Trainer is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Employees</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editTrainerForm.get('EmployeeName').invalid && editTrainerForm.get('EmployeeName').touched"
+                                    formControlName="EmployeeName">
+                                    <option>Bernardo Galaviz</option>
+                                    <option>Jeffrey Warden</option>
+                                </select>
+                                <div
+                                    *ngIf="editTrainerForm.get('EmployeeName').invalid && editTrainerForm.get('EmployeeName').touched">
+                                    <small
+                                        *ngIf="editTrainerForm.get('EmployeeName').invalid && editTrainerForm.get('EmployeeName').touched"
+                                        class="text-danger"> *Employee is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Training Cost <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="editTrainerForm.get('costName').invalid && editTrainerForm.get('costName').touched"
+                                    formControlName="costName">
+                                <div
+                                    *ngIf="editTrainerForm.get('costName').invalid && editTrainerForm.get('costName').touched">
+                                    <small
+                                        *ngIf="editTrainerForm.get('costName').invalid && editTrainerForm.get('costName').touched"
+                                        class="text-danger"> *Cost is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Start Date <span class="text-danger">*</span></label>
+                                <div class="cal-icon">
+                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
+                                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                                        [class.invalid]="editTrainerForm.get('startDateTime').invalid && editTrainerForm.get('startDateTime').touched"
+                                        formControlName="startDateTime"(bsValueChange)="from($event)">
+                                    <div
+                                        *ngIf="editTrainerForm.get('startDateTime').invalid && editTrainerForm.get('startDateTime').touched">
+                                        <small
+                                            *ngIf="editTrainerForm.get('startDateTime').invalid && editTrainerForm.get('startDateTime').touched"
+                                            class="text-danger" (bsValueChange)="to($event)"> *Start Date is required</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>End Date <span class="text-danger">*</span></label>
+                                <div class="cal-icon">
+                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
+                                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                                        [class.invalid]="editTrainerForm.get('endDateTime').invalid && editTrainerForm.get('endDateTime').touched"
+                                        formControlName="endDateTime">
+                                    <div
+                                        *ngIf="editTrainerForm.get('endDateTime').invalid && editTrainerForm.get('endDateTime').touched">
+                                        <small
+                                            *ngIf="editTrainerForm.get('endDateTime').invalid && editTrainerForm.get('endDateTime').touched"
+                                            class="text-danger"> *End Date is required</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Description <span class="text-danger">*</span></label>
+                                <textarea class="form-control" rows="4"
+                                    [class.invalid]="editTrainerForm.get('Description').invalid && editTrainerForm.get('Description').touched"
+                                    formControlName="Description">
+                            </textarea>
+                                <div
+                                    *ngIf="editTrainerForm.get('Description').invalid && editTrainerForm.get('Description').touched">
+                                    <small
+                                        *ngIf="editTrainerForm.get('Description').invalid && editTrainerForm.get('Description').touched"
+                                        class="text-danger"> *Description is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Status</label>
+                                <select class="select form-control"
+                                    [class.invalid]="editTrainerForm.get('StatusName').invalid && editTrainerForm.get('StatusName').touched"
+                                    formControlName="StatusName">
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                </select>
+                                <div
+                                    *ngIf="editTrainerForm.get('StatusName').invalid && editTrainerForm.get('StatusName').touched">
+                                    <small
+                                        *ngIf="editTrainerForm.get('StatusName').invalid && editTrainerForm.get('StatusName').touched"
+                                        class="text-danger"> *Status is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Edit Training List Modal -->
+
+<!-- Delete Training List Modal -->
+<div class="modal custom-modal fade" id="delete_training" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete Training List</h3>
+                    <p>Are you sure want to delete?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a class="btn btn-primary continue-btn" (click)="deleteTraining()">Delete</a>
+                        </div>
+                        <div class="col-6">
+                            <a data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete Training List Modal -->
+</div>

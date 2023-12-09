@@ -1,0 +1,254 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3 class="page-title">Edit Invoice</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Edit Invoice</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <form  [formGroup]="editInvoiceForm">
+                <div class="row">
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group">
+                            <label>Client <span class="text-danger">*</span></label>
+                            <select class="select form-control" name="client" [class.invalid]="editInvoiceForm.get('client').invalid && editInvoiceForm.get('client').touched"
+                            formControlName="client">
+                                <option>Please Select</option>
+                                <option>Global Technologies</option>
+                                <option>Delta Infotech</option>
+                            </select>
+                            <div
+                            *ngIf="editInvoiceForm.get('client').invalid && editInvoiceForm.get('client').touched">
+                            <small
+                                *ngIf="editInvoiceForm.get('client').invalid && editInvoiceForm.get('client').touched"
+                                class="text-danger"> *Client is required</small>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group">
+                            <label>Project <span class="text-danger">*</span></label>
+                            <select class="select form-control" [class.invalid]="editInvoiceForm.get('project').invalid && editInvoiceForm.get('project').touched"
+                            formControlName="project">
+                                <option>Select Project</option>
+                                <option selected>Office Management</option>
+                                <option>Project Management</option>
+                            </select>
+                            <div
+                            *ngIf="editInvoiceForm.get('project').invalid && editInvoiceForm.get('project').touched">
+                            <small
+                                *ngIf="editInvoiceForm.get('project').invalid && editInvoiceForm.get('project').touched"
+                                class="text-danger"> *Project is required</small>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input class="form-control" type="email" name="email" [class.invalid]="editInvoiceForm.get('email').invalid && editInvoiceForm.get('email').touched"
+                            formControlName="email">
+                            <div
+                            *ngIf="editInvoiceForm.get('email').invalid && editInvoiceForm.get('email').touched">
+                            <small
+                                *ngIf="editInvoiceForm.get('email').invalid && editInvoiceForm.get('email').touched"
+                                class="text-danger"> *Email is required</small>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group">
+                            <label>Tax</label>
+                            <select class="select form-control" name="tax" [class.invalid]="editInvoiceForm.get('tax').invalid && editInvoiceForm.get('tax').touched"
+                            formControlName="tax">
+                                <option>Select Tax</option>
+                                <option>VAT</option>
+                                <option selected>GST</option>
+                                <option>No Tax</option>
+                            </select>
+                            <div
+                            *ngIf="editInvoiceForm.get('tax').invalid && editInvoiceForm.get('tax').touched">
+                            <small
+                                *ngIf="editInvoiceForm.get('tax').invalid && editInvoiceForm.get('tax').touched"
+                                class="text-danger"> *Tax is required</small>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group">
+                            <label>Client Address</label>
+                            <textarea class="form-control" rows="3"[class.invalid]="editInvoiceForm.get('client_address').invalid && editInvoiceForm.get('client_address').touched"
+                            formControlName="client_address"></textarea>
+                            <div
+                            *ngIf="editInvoiceForm.get('client_address').invalid && editInvoiceForm.get('client_address').touched">
+                            <small
+                                *ngIf="editInvoiceForm.get('client_address').invalid && editInvoiceForm.get('client_address').touched"
+                                class="text-danger"> *Client address is required</small>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group">
+                            <label>Billing Address</label>
+                            <textarea class="form-control" rows="3" [class.invalid]="editInvoiceForm.get('billing_address').invalid && editInvoiceForm.get('billing_address').touched"
+                            formControlName="billing_address"></textarea>
+                            <div
+                            *ngIf="editInvoiceForm.get('billing_address').invalid && editInvoiceForm.get('billing_address').touched">
+                            <small
+                                *ngIf="editInvoiceForm.get('billing_address').invalid && editInvoiceForm.get('billing_address').touched"
+                                class="text-danger"> *Billing address is required</small>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group">
+                            <label>Invoice date <span class="text-danger">*</span></label>
+                            <div class="cal-icon">
+                                <input class="form-control datetimepicker" type="text" [class.invalid]="editInvoiceForm.get('invoice_date').invalid && editInvoiceForm.get('invoice_date').touched"
+                                formControlName="invoice_date" bsDatepicker type="text" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"(onChange) = "selected(true)">
+                                <div
+                                *ngIf="editInvoiceForm.get('invoice_date').invalid && editInvoiceForm.get('invoice_date').touched">
+                                <small
+                                    *ngIf="editInvoiceForm.get('invoice_date').invalid && editInvoiceForm.get('invoice_date').touched"
+                                    class="text-danger"> *Invoice date is required</small>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group">
+                            <label>Due Date <span class="text-danger">*</span></label>
+                            <div class="cal-icon">
+                                <input class="form-control datetimepicker" type="text" [class.invalid]="editInvoiceForm.get('due_date').invalid && editInvoiceForm.get('due_date').touched"
+                                formControlName="due_date" bsDatepicker type="text" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }" (onChange) = "selected(true)">
+                                <div
+                                *ngIf="editInvoiceForm.get('due_date').invalid && editInvoiceForm.get('due_date').touched">
+                                <small
+                                    *ngIf="editInvoiceForm.get('due_date').invalid && editInvoiceForm.get('due_date').touched"
+                                    class="text-danger"> *Due date is required</small>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-white">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 20px">#</th>
+                                        <th class="col-sm-2">Item</th>
+                                        <th class="col-md-6">Description</th>
+                                        <th style="width:100px;">Unit Cost</th>
+                                        <th style="width:80px;">Qty</th>
+                                        <th>Amount</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody formArrayName="items">
+                                    <tr *ngFor="let item of editInvoiceForm.get('items')['controls']; let i=index" [formGroupName]="i">
+                                        
+                                        <td>{{i+1}}</td>
+                                        <td>
+                                            <input class="form-control" name="item" formControlName="item" type="text" style="min-width:150px">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" formControlName="description" type="text" style="min-width:150px">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" formControlName="unit_cost" style="width:100px" type="text" (input)="changePrice(i)">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" formControlName="qty" style="width:80px" type="text" (input)="changePrice(i)">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" formControlName="amount" readonly style="width:120px" type="text">
+                                        </td>
+                                        <td><a (click)="addItems()" class="text-success font-18" title="Add"><i
+                                                    class="fa fa-plus"></i></a></td>
+                                         <td *ngIf="i != 0">
+                                            <a (click)="removeItems(i)" class="text-danger font-18" title="Remove">
+                                                <i class="fa fa-trash-o"></i>
+                                            </a>
+                                        </td>
+                                    
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-white">
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="text-right">Total</td>
+                                        <td style="text-align: right; width: 230px"><input class="form-control text-right"  readonly type="text"
+                                            formControlName="totalamount"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" style="text-align: right">Tax</td>
+                                        <td style="text-align: right;width: 230px">
+                                            <input class="form-control text-right" value="5%" readonly type="text">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" style="text-align: right">
+                                            Discount %
+                                        </td>
+                                        <td style="text-align: right; width: 230px">
+                                            <input class="form-control text-right" type="text"[class.invalid]="editInvoiceForm.get('discount').invalid && editInvoiceForm.get('discount').touched"
+                                            formControlName="discount" (input)="changePrice(0)">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" style="text-align: right; font-weight: bold">
+                                            Grand Total
+                                        </td>
+                                        <td
+                                            style="text-align: right; padding-right: 30px; font-weight: bold; font-size: 16px;width: 230px">
+                                            <input class="form-control text-right"  readonly type="text" [class.invalid]="editInvoiceForm.get('grandTotal').invalid && editInvoiceForm.get('grandTotal').touched"
+                                            formControlName="grandTotal">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Other Information</label>
+                                    <textarea class="form-control" rows="4" [class.invalid]="editInvoiceForm.get('other_information').invalid && editInvoiceForm.get('other_information').touched"
+                                    formControlName="other_information"></textarea>
+                                    <div
+                                    *ngIf="editInvoiceForm.get('other_information').invalid && editInvoiceForm.get('other_information').touched">
+                                    <small
+                                        *ngIf="editInvoiceForm.get('other_information').invalid && editInvoiceForm.get('other_information').touched"
+                                        class="text-danger"> *Other information is required</small>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="submit-section">
+                    <button class="btn btn-primary submit-btn" (click)="savesend()">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->

@@ -1,0 +1,76 @@
+<!-- Page Wrapper -->
+            <div class="page-wrapper">
+			
+				<!-- Page Content -->
+                <div class="content container-fluid">
+				
+					<!-- Page Header -->
+					<div class="page-header">
+						<div class="row align-items-center">
+							<div class="col-12">
+								<h3 class="page-title">Aptitude Result</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+									<li class="breadcrumb-item">Jobs</li>
+									<li class="breadcrumb-item active">Aptitude Result</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!-- /Page Header -->
+					
+					<div class="row">
+						<div class="col-md-12">
+							<div class="table-responsive">
+								<table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped custom-table mb-0 datatable">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Name</th>
+											<th>Job Title</th>
+											<th>Department</th>
+											<th>Category Wise Mark</th>
+											<th>Total Mark</th>
+											<th class="text-center">Status</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr *ngFor="let fees of lstFees;let i = index">
+											<td>{{fees.id}}</td>
+											<td>
+												<h2 class="table-avatar">
+													<a routerLink="/profile/profile-list" class="avatar"><img alt="" src="assets/img/profiles/avatar-2.jpg"></a>
+													<a routerLink="/profile/profile-list">{{fees.name1}} <span>{{fees.name2}}</span></a>
+												</h2>
+											</td>
+											<td><a routerLink="/jobs/job-details">{{fees.jobtitle}}</a></td>
+											<td>{{fees.department}}</td>
+											<td>{{fees.categorywise}}<b>{{fees.categorywisemark}}</b><br>{{fees.categorywise1}}<b>{{fees.categorywisemark1}}</b><br></td>
+											<td class="text-center">{{fees.totalmark}}</td>
+											<td class="text-center">
+												<div class="dropdown action-label">
+													<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+													<i class="fa fa-dot-circle-o text-danger"></i> {{fees.status}}								</a>	
+													<div class="dropdown-menu dropdown-menu-right">
+														<a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-info"></i> Resume selected</a>
+														<a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i>  Resume Rejected</a>
+														<a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i>  Aptitude Selected</a>
+														<a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i>  Aptitude rejected</a>
+														<a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i>  video call selected</a>
+														<a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i>  Video call rejected</a>
+														<a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i>  Offered</a>
+													</div> 
+												</div>
+											</td>
+										</tr>
+										
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+                </div>
+				<!-- /Page Content -->
+					
+            </div>
+			<!-- /Page Wrapper -->

@@ -1,0 +1,47 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3 class="page-title">Knowledgebase</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Knowledgebase</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-xl-4 col-md-6 col-sm-6" *ngFor="let knowledgebase of allKnowledgeBase;let i = index">
+            <div class="topics">
+                <h3 class="topic-title"><a ><i class="fa fa-folder-o"></i> {{knowledgebase.title}}
+                        <span>{{11 + i}}</span></a></h3>
+                <ul class="topics-list">
+                    <li><a routerLink = "/knowledgebase/knowledgebase-view"> {{knowledgebase.list1}} </a>
+                    </li>
+                    <li><a routerLink = "/knowledgebase/knowledgebase-view"> {{knowledgebase.list2}} </a>
+                    </li>
+                    <li><a routerLink = "/knowledgebase/knowledgebase-view"> {{knowledgebase.list3}} </a>
+                    </li>
+                    <li><a routerLink = "/knowledgebase/knowledgebase-view"> {{knowledgebase.list4}} </a>
+                    </li>
+                    <li><a routerLink = "/knowledgebase/knowledgebase-view"> {{knowledgebase.list5}} </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+       
+       
+      
+       
+       
+       
+        
+    </div>
+
+</div>
+<!-- /Page Content -->

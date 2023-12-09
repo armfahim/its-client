@@ -1,0 +1,53 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3 class="page-title">Payments</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Payments</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped custom-table datatable mb-0">
+                    <thead>
+                        <tr>
+                            <th>Invoice ID</th>
+                            <th>Client</th>
+                            <th>Payment Type</th>
+                            <th>Paid Date</th>
+                            <th>Paid Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let payments of allPayments;let i = index">
+                            <td><a routerLink = "/accounts/invoice-view">{{payments.invoiceId}}</a></td>
+                            <td>
+                                <h2><a>{{payments.client}}</a></h2>
+                            </td>
+                            <td>{{payments.paymenttype}}</td>
+                            <td>{{payments.paidDate}}</td>
+                            <td>{{payments.paidAmount}}</td>
+                        </tr>
+                        <tr *ngIf="allPayments.length === 0">
+                            <td colspan="10">
+                                <h5 style="text-align: center;">No data found</h5>
+                            </td>
+                           
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->

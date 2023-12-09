@@ -1,0 +1,115 @@
+<!-- Page Wrapper -->
+            <div class="page-wrapper">
+			
+				<!-- Page Content -->
+                <div class="content container-fluid">
+					
+					<!-- Page Header -->
+					<div class="page-header">
+						<div class="row">
+							<div class="col-sm-12">
+								<h3 class="page-title">Payslip Reports</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+									<li class="breadcrumb-item active">Payslip Reports</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!-- /Page Header -->
+					
+						<!-- Content Starts -->
+						<!-- Search Filter -->
+					<div class="row filter-row">
+						
+						<div class="col-sm-6 col-md-3">  
+							<div class="form-group form-focus">
+								<input type="text" class="form-control floating" (input)="searchEmployee($event.target.value)">
+								<label class="focus-label">Employee Name</label>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-3">  
+							<div class="form-group form-focus">
+								
+								<select class="form-control floating select" (input)="searchMonth($event.target.value)">
+										<option>
+											Jan
+										</option>
+										<option>
+											Feb
+										</option>
+										<option>
+											Mar
+										</option>
+									</select>
+								
+								<label class="focus-label">Month</label>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-3">  
+							<div class="form-group form-focus">
+								
+									<select class="form-control floating select" (input)="searchYear($event.target.value)">
+										<option>
+											2018
+										</option>
+										<option>
+											2019
+										</option>
+										<option>
+											2020
+										</option>
+									</select>
+								
+								<label class="focus-label">Year</label>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-3">  
+							<a href="#" class="btn btn-success btn-block"> Search </a>  
+						</div>     
+                    </div>
+					<!-- /Search Filter -->
+					
+					<div class="row">
+						<div class="col-md-12">
+							<div class="table-responsive">
+								<table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                    class="table table-striped custom-table datatable mb-0">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Employee Name</th>
+											<th>Paid Amount</th>
+											<th>Payment Month</th>
+											<th>Payment Year</th>
+											<th class="text-center">Actions</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr *ngFor="let item of lstPaylip">
+											<td>{{item.id}}</td>
+											<td>
+												<h2 class="table-avatar">
+													<a routerLink="/profile/profilelist" class="avatar"><img alt="" src="assets/img/profiles/avatar-13.jpg"></a>
+													<a routerLink="/profile/profilelist">{{item.name1}} <span>{{item.name2}}</span></a>
+												</h2>
+											</td>
+											<td>{{item.paidamount}}</td>
+											<td>{{item.paymentmonth}}</td>
+											<td>{{item.paymentyear}}</td>
+											<td class="text-center"> <a href="#" class="btn btn-sm btn-primary">{{item.actions}}</a></td>
+										</tr>
+										
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+                
+					<!-- /Content End -->
+					
+                </div>
+				<!-- /Page Content -->
+				
+            </div>
+			<!-- /Page Wrapper -->
