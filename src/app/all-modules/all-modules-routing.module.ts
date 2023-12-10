@@ -17,6 +17,12 @@ const routes: Routes = [
         loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
       },
       {
+        path: 'suppliers',
+        loadChildren: () => import('./suppliers/suppliers.module').then(m => m.SuppliersModule)
+      },
+
+      /** Below are template's routing */
+      {
         path: 'apps',
         loadChildren: () => import('./apps/apps.module').then(m => m.AppsModule)
       },

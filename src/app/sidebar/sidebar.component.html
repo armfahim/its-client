@@ -77,7 +77,7 @@
                     <li class="menu-title">
                         <span>Employees</span>
                     </li>
-                         <li class="submenu" [ngClass]="{ 'active' : urlComplete.mainUrl === 'employees' && urlComplete.subUrl === 'employeepage'
+                    <li class="submenu" [ngClass]="{ 'active' : urlComplete.mainUrl === 'employees' && urlComplete.subUrl === 'employeepage'
                          || urlComplete.mainUrl === 'employees' && urlComplete.subUrl === 'holidays' || urlComplete.mainUrl === 'employees' && urlComplete.subUrl === 'adminleaves'
                         || urlComplete.mainUrl === 'employees' && urlComplete.subUrl === 'employeeleaves' || urlComplete.mainUrl === 'employees' && urlComplete.subUrl === 'leavesettings'
                         || urlComplete.mainUrl === 'employees' && urlComplete.subUrl === 'attendanceadmin' || urlComplete.mainUrl === 'employees' && urlComplete.subUrl === 'attendanceemployee'
@@ -153,12 +153,12 @@
                                 <a href="javascript:" [ngClass]="{ 'active' : urlComplete.subUrl === 'overtime'}">Overtime</a>
                             </li>
                         </ul>
+                    </li> -->
+                    <li [ngClass]="{ 'active' : urlComplete.subUrl === 'clientspage' || urlComplete.subUrl === 'supplierslist' }">
+                        <a routerLink="/suppliers/supplierslist" ><i
+                                class="la la-users"></i> <span>Suppliers</span></a>
                     </li>
-                    <li [ngClass]="{ 'active' : urlComplete.subUrl === 'clientspage' || urlComplete.subUrl === 'clientslist' }">
-                        <a routerLink="/clients/clientspage" ><i
-                                class="la la-users"></i> <span>Clients</span></a>
-                    </li>
-                    <li class="submenu" [ngClass]="{ 'active' : urlComplete.mainUrl === 'projects' || urlComplete.subUrl === 'projectlist'|| urlComplete.subUrl === 'projectview' }">
+                    <!-- <li class="submenu" [ngClass]="{ 'active' : urlComplete.mainUrl === 'projects' || urlComplete.subUrl === 'projectlist'|| urlComplete.subUrl === 'projectview' }">
                         <a href="javascript:" [ngClass]="{ 'subdrop' : urlComplete.mainUrl === 'projects' || urlComplete.subUrl === 'projectlist'|| urlComplete.subUrl === 'projectview' }"href="javascript:"><i class="la la-rocket"></i> <span> Projects</span> <span
                                 class="menu-arrow"></span></a>
                         <ul style="display: none;"
@@ -572,7 +572,7 @@
                         </ul>
                     </li> -->
                 </ul>
-                <ul *ngIf="sidebarMenus.chat">
+                <!-- <ul *ngIf="sidebarMenus.chat">
                     <li routerLink="/dashboard/admin">
                         <a href="javascript:"><i class="la la-home"></i> <span>Back to Home</span></a>
                     </li>
@@ -599,7 +599,7 @@
                                 [hidden]="item.count < 1">{{item.count}}</span>
                         </a>
                     </li>
-                </ul>
+                </ul> -->
             </div>
         </perfect-scrollbar>
     </div>
