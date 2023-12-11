@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { AllModulesService } from '../../all-modules.service';
 import { ToastrService } from 'ngx-toastr';
 import { Suppliers } from '../../model/suppliers';
+
 declare const $: any;
 @Component({
   selector: 'app-suppliers-list',
@@ -16,7 +17,8 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
   @ViewChild(DataTableDirective, { static: false })
   public dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
-  public clientsData = [];
+  public suppliersData: any;
+
   public editedClient;
   public addSupplierForm: FormGroup;
   public editSupplierForm: FormGroup;
@@ -81,7 +83,7 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.destroy();
     });
-    this.clientsData = [];
+    // this.suppliersData = [];
     this.getClients();
     setTimeout(() => {
       this.dtTrigger.next();
@@ -89,17 +91,18 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
   }
   //Get all Clients data
   public getClients() {
-    this.allModulesService.get("clients").subscribe((data) => {
-      this.clientsData = data;
-      this.clientsData.map((client) => this.companiesList.push(client.company));
-      this.rows = this.clientsData;
+    this.allModulesService.get("http://localhost:9000/its/api/v1/supplier-details/list").subscribe((response) => {
+    this.suppliersData = response?.data;
+      console.log(this.suppliersData);
+      // this.clientsData.map((client) => this.companiesList.push(client.company));
+      this.rows = this.suppliersData;
       this.srch = [...this.rows];
     });
   }
 
   // Edit client
   public onEditClient(clientId: any) {
-    let client = this.clientsData.filter((client) => client.id === clientId);
+    let client = this.suppliersData.filter((client) => client.id === clientId);
     this.editSupplierForm.setValue({
       editClientName: client[0]?.name,
       editClientPhone: client[0]?.phone,
@@ -155,7 +158,7 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
       address: this.addSupplierForm.value.address
       // status: "Active",
     };
-    this.allModulesService.add(newSupplier, "/its/api/v1/supplier-details/save").subscribe((data) => {
+    this.allModulesService.add(newSupplier, "http://localhost:9000/its/api/v1/supplier-details/save").subscribe((data) => {
       $("#datatable").DataTable().clear();
       this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
         dtInstance.destroy();

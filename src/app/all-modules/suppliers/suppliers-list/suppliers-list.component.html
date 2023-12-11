@@ -63,37 +63,39 @@
                   class="table table-striped custom-table datatable">
                   <thead>
                       <tr>
-                          <th>Name</th>
-                          <th>Client ID</th>
-                          <th>Contact Person</th>
+                          <th>Supplier ID</th>
+                          <th>Supplier Name</th>
                           <th>Email</th>
-                          <th>Mobile</th>
+                          <th>Phone</th>
+                          <th>Contact Person</th>
+                          <th>Address</th>
                           <th>Status</th>
                           <th class="text-right">Action</th>
                       </tr>
                   </thead>
-                  <tbody>
-                      <tr *ngFor="let client of clientsData; let i = index">
+                  <tbody *ngIf="suppliersData">
+                      <tr *ngFor="let supplier of suppliersData; let i = index">
                           <td>
                               <h2 class="table-avatar">
-                                  <a routerLink="/clients/clientsprofile/{{client.id}}" class="avatar"><img
+                                  <a class="avatar"><img
                                           src="assets/img/profiles/avatar-{{ i + 1 }}.jpg" alt=""></a>
-                                  <a routerLink="/clients/clientsprofile/{{client.id}}">{{client.company}}</a>
+                                  <a>{{supplier.supplierID}}</a>
                               </h2>
                           </td>
-                          <td>{{client.clientId}}</td>
-                          <td>{{client.name}}</td>
-                          <td>{{client.email}}</td>
-                          <td>{{client.phone}}</td>
+                          <td>{{supplier.supplierName}}</td>
+                          <td>{{supplier.email}}</td>
+                          <td>{{supplier.phone}}</td>
+                          <td>{{supplier.contactPerson}}</td>
+                          <td>{{supplier.address}}</td>
                           <td>
                               <div class="dropdown action-label">
                                   <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown"
                                       aria-expanded="false"><i class="fa fa-dot-circle-o text-success"></i>
-                                      {{client.status || statusValue}} </a>
+                                      {{supplier.status || statusValue}} </a>
                                   <div class="dropdown-menu">
-                                      <a class="dropdown-item" (click)="getStatus('Active')"><i
+                                      <a class="dropdown-item" (click)="getStatus('ACTIVE')"><i
                                               class="fa fa-dot-circle-o text-success"></i> Active</a>
-                                      <a class="dropdown-item" (click)="getStatus('Inactive')"><i
+                                      <a class="dropdown-item" (click)="getStatus('INACTIVE')"><i
                                               class="fa fa-dot-circle-o text-danger"></i>
                                           Inactive</a>
                                   </div>
@@ -105,10 +107,10 @@
                                       aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                   <div class="dropdown-menu dropdown-menu-right">
                                       <a class="dropdown-item" data-toggle="modal" data-target="#edit_client"
-                                          (click)="onEditClient(client.id)"><i class="fa fa-pencil m-r-5"></i>
+                                          (click)="onEditClient(supplier.id)"><i class="fa fa-pencil m-r-5"></i>
                                           Edit</a>
                                       <a class="dropdown-item" data-toggle="modal" data-target="#delete_client"
-                                          (click)="tempId = client.id"><i class="fa fa-trash-o m-r-5"></i>
+                                          (click)="tempId = supplier.id"><i class="fa fa-trash-o m-r-5"></i>
                                           Delete</a>
                                   </div>
                               </div>

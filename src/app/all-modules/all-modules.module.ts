@@ -9,7 +9,7 @@ import { HeaderComponent } from '../header/header.component';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 
 // Api Interaction 
-import { InMemoryWebApiModule } from 'angular-in-memory-web-api'
+// import { InMemoryWebApiModule } from 'angular-in-memory-web-api'
 
 // Perfect Scrollbar
 import {
@@ -39,7 +39,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {};
     CommonModule,
     FormsModule,
     HttpClientModule,
-    InMemoryWebApiModule.forRoot(AllModulesData),
+    // InMemoryWebApiModule.forRoot(AllModulesData),
     PerfectScrollbarModule,
     AllModulesRoutingModule,
 

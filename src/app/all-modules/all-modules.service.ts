@@ -45,17 +45,17 @@ export class AllModulesService {
   }
 
   // Get Method Api
-  get(type): Observable<AllModulesData[]> {
-    this.apiurl = `api/${type}`;
-
+  get(type): Observable<any> {
+    // this.apiurl = `api/${type}`;
+    this.apiurl = type;
     return this.http
-      .get<AllModulesData[]>(this.apiurl)
+      .get<any>(this.apiurl)
       .pipe(tap(), catchError(this.handleError));
   }
 
   // Post Method Api
   add(user: any, type): Observable<any> {
-    this.apiurl = `api/${type}`;
+    this.apiurl = type;
     user.id = null;
     return this.http
       .post<any>(this.apiurl, user, this.httpOptions)
