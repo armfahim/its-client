@@ -50,7 +50,7 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     var that = this;
-    
+
     this.dtOptions = {
       // ... skipped ...
         pageLength: 10,
@@ -73,7 +73,7 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
             });
         },
     };
-    
+
     // this.getClients();
 
     //Add clients form
@@ -202,18 +202,32 @@ onTableHeaderClick(columnIndex: number, columnName: string) {
       // status: "Active",
     };
     this.allModulesService.add(newSupplier, "http://localhost:9000/its/api/v1/supplier-details/save").subscribe((data) => {
-      if(data.status == false) {}
+    if(data.status == "error") {
+        this.toastr.error(data.errors,"Failed");
+        return;
+      }
+      $("#add_client").modal("hide");
+      this.addSupplierForm.reset();
+      this.toastr.success("Supplier added sucessfully!", "Success");
 
       $("#datatable").DataTable().clear();
       this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
         dtInstance.destroy();
       });
       this.dtTrigger.next();
+    },
+    (error) => {
+      console.error("API Error:", error);
+      // Extract error message from the API response
+      const customErrorMessage = error && error.error && error.error.errors
+      ? error.error.errors.toString()
+      : "Unknown error";
+
+      // Handle error, show toastr, etc.
+      this.toastr.error(customErrorMessage, "Error",{ timeOut: 5000 });
+      return;
     });
     // this.getClients();
-    $("#add_client").modal("hide");
-    this.addSupplierForm.reset();
-    this.toastr.success("Supplier added sucessfully!", "Success");
   }
 
   //Delete Client
