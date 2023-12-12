@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 // Bootstrap DataTable
 import { DataTablesModule } from 'angular-datatables';
 import { ToastrModule } from 'ngx-toastr';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -19,8 +20,8 @@ import { ToastrModule } from 'ngx-toastr';
     DataTablesModule,
     ToastrModule.forRoot(
       {
-        timeOut: 1500,
-        positionClass: 'toast-bottom-right',
+        timeOut: 2000,
+        positionClass: 'toast-top-right',
         preventDuplicates: true,
       }
     ),

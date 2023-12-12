@@ -4,6 +4,7 @@ import { throwError, Observable } from "rxjs";
 import { tap, catchError, map } from "rxjs/operators";
 import { AllModulesData } from "src/assets/all-modules-data/all-modules-data";
 import { id } from "src/assets/all-modules-data/id";
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: "root",
@@ -37,6 +38,8 @@ export class AllModulesService {
     headers: this.headers,
   };
 
+  public baseUrl = environment.baseUrl;
+
   constructor(private http: HttpClient) {}
 
   // Handling Errors
@@ -51,6 +54,14 @@ export class AllModulesService {
     return this.http
       .get<any>(this.apiurl)
       .pipe(tap(), catchError(this.handleError));
+  }
+
+  getPaginated(endPoint: any,params: any): Observable<any> {
+    // Include DataTables parameters in the API request
+    // "http://localhost:9000/its/api/v1/supplier-details/list",
+    // &sort=${params.orderColumnName}&dir=${params.order[0].dir}
+    const url = `${this.baseUrl}${endPoint}?page=${params.start / params.length + 1}&size=${params.length}&sortBy=${params.orderColumnName}&dir=${params.order[0].dir}`;
+    return this.http.get(url);
   }
 
   // Post Method Api

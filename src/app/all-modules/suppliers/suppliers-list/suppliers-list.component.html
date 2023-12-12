@@ -63,13 +63,13 @@
                   class="table table-striped custom-table datatable">
                   <thead>
                       <tr>
-                          <th>Supplier ID</th>
-                          <th>Supplier Name</th>
-                          <th>Email</th>
-                          <th>Phone</th>
-                          <th>Contact Person</th>
-                          <th>Address</th>
-                          <th>Status</th>
+                          <th (click)="onTableHeaderClick(0, 'supplierID')">Supplier ID</th>
+                          <th (click)="onTableHeaderClick(0, 'supplierName')">Supplier Name</th>
+                          <th (click)="onTableHeaderClick(0, 'email')">Email</th>
+                          <th (click)="onTableHeaderClick(0, 'phone')">Phone</th>
+                          <th (click)="onTableHeaderClick(0, 'contactPerson')">Contact Person</th>
+                          <th (click)="onTableHeaderClick(0, 'address')">Address</th>
+                          <!-- <th>Status</th> -->
                           <th class="text-right">Action</th>
                       </tr>
                   </thead>
@@ -87,7 +87,7 @@
                           <td>{{supplier.phone}}</td>
                           <td>{{supplier.contactPerson}}</td>
                           <td>{{supplier.address}}</td>
-                          <td>
+                          <!-- <td>
                               <div class="dropdown action-label">
                                   <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown"
                                       aria-expanded="false"><i class="fa fa-dot-circle-o text-success"></i>
@@ -100,7 +100,7 @@
                                           Inactive</a>
                                   </div>
                               </div>
-                          </td>
+                          </td> -->
                           <td class="text-right">
                               <div class="dropdown dropdown-action">
                                   <a class="action-icon dropdown-toggle" data-toggle="dropdown"

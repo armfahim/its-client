@@ -3,7 +3,25 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: true
+  production: false,
+
+    // Dev
+    baseUrl: 'http://localhost:9000/its/api',
+    contextPath:'',
+  
+    // Test Server - Windows PC
+    // production: false,
+    // baseUrl: 'http://192.168.61.71:8080/lms-api',
+    // contextPath:'',
+  
+    // Linux
+    // production: false,
+    // baseUrl: 'http://119.148.46.147:8080/lms-api',
+    // contextPath:'',
+  
+  
+    filePath: "/multimedia/photos/",
+    fileAttachmentPath: "/multimedia/attachments/",
 };
 
 /*

@@ -6,6 +6,8 @@ import { Subject } from 'rxjs';
 import { AllModulesService } from '../../all-modules.service';
 import { ToastrService } from 'ngx-toastr';
 import { Suppliers } from '../../model/suppliers';
+import { HttpClient } from '@angular/common/http';
+import { PaginatedResponse } from 'src/app/utils/paginated-response';
 
 declare const $: any;
 @Component({
@@ -14,6 +16,7 @@ declare const $: any;
   styleUrls: ['./suppliers-list.component.css']
 })
 export class SuppliersListComponent implements OnInit, OnDestroy {
+
   @ViewChild(DataTableDirective, { static: false })
   public dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
@@ -33,21 +36,45 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
 
   //Model
   suppliers: Suppliers = new Suppliers();
+  // Properties for dynamic column sorting
+  orderColumnIndex: number = 0;
+  orderColumnName: string = "supplierName";
 
 
   constructor(
     private allModulesService: AllModulesService,
     private toastr: ToastrService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private http: HttpClient
   ) { }
 
   ngOnInit() {
+    var that = this;
+    
     this.dtOptions = {
       // ... skipped ...
-      pageLength: 10,
-      dom: "lrtip",
+        pageLength: 10,
+        dom: "lrtip",
+        ordering: true,
+        serverSide: true,
+        processing: true,
+        searching:true,
+        ajax: (dataTablesParameters: any, callback) => {
+          // dataTablesParameters.orderColumnIndex = this.orderColumnIndex;
+          dataTablesParameters.orderColumnName = this.orderColumnName;
+          this.allModulesService.getPaginated("/v1/supplier-details/list",dataTablesParameters).subscribe(resp => {
+          this.suppliersData = resp?.data;
+          console.log(resp);
+              callback({
+                recordsTotal: resp.meta.total,
+                recordsFiltered: resp.meta.total,
+                data: []  // set data
+              });
+            });
+        },
     };
-    this.getClients();
+    
+    // this.getClients();
 
     //Add clients form
     this.addSupplierForm = this.formBuilder.group({
@@ -69,7 +96,19 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
       editAddress: ["", [Validators.required]],
       editId: ["", [Validators.required]],
     });
-  }
+}
+
+// Function to handle table header click
+onTableHeaderClick(columnIndex: number, columnName: string) {
+  // Update dynamic column properties
+  this.orderColumnIndex = columnIndex;
+  this.orderColumnName = columnName;
+
+  // Reload the DataTable with the new sorting parameters
+  // this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+  //   dtInstance.ajax.reload();
+  // });
+}
 
   ngAfterViewInit(): void {
     setTimeout(() => {
@@ -84,7 +123,7 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
       dtInstance.destroy();
     });
     // this.suppliersData = [];
-    this.getClients();
+    // this.getClients();
     setTimeout(() => {
       this.dtTrigger.next();
     }, 1000);
@@ -140,7 +179,7 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
         });
         this.dtTrigger.next();
       });
-    this.getClients();
+    // this.getClients();
     $("#edit_client").modal("hide");
     this.editSupplierForm.reset();
     this.toastr.success("Client updated sucessfully...!", "Success");
@@ -148,6 +187,10 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
 
   //Add new client
   public onAddSupplier() {
+    if (this.addSupplierForm.invalid) {
+      this.toastr.info("Please insert valid data");
+      return;
+    }
     let newSupplier = {
       supplierID: this.addSupplierForm.value.supplierID,
       // role: "CEO",
@@ -165,7 +208,7 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
       });
       this.dtTrigger.next();
     });
-    this.getClients();
+    // this.getClients();
     $("#add_client").modal("hide");
     this.addSupplierForm.reset();
     this.toastr.success("Supplier added sucessfully!", "Success");
@@ -180,7 +223,7 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
       });
       this.dtTrigger.next();
     });
-    this.getClients();
+    // this.getClients();
     $("#delete_client").modal("hide");
     this.toastr.success("Client deleted sucessfully...!", "Success");
   }
