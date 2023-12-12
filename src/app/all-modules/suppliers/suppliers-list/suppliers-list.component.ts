@@ -202,6 +202,8 @@ onTableHeaderClick(columnIndex: number, columnName: string) {
       // status: "Active",
     };
     this.allModulesService.add(newSupplier, "http://localhost:9000/its/api/v1/supplier-details/save").subscribe((data) => {
+      if(data.status == false) {}
+
       $("#datatable").DataTable().clear();
       this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
         dtInstance.destroy();
