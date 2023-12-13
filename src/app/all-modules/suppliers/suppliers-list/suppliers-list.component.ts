@@ -39,7 +39,7 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
   suppliers: Suppliers = new Suppliers();
   // Properties for dynamic column sorting
   orderColumnIndex: number = 0;
-  orderColumnName: string = "supplier_name";
+  orderColumnName: string = "supplierName";
 
   //Search Form
   searchForm: FormGroup;
@@ -145,8 +145,8 @@ onSearch(){
     // this.getClients();
     setTimeout(() => {
       this.dtTrigger.next();
-    }, 1000);
-    
+    }, 500);
+
     //Init search form data, if any
     this.searchFormData = this.searchForm?.value;
   }
@@ -201,7 +201,7 @@ onSearch(){
         $("#edit_supplier").modal("hide");
         this.editSupplierForm.reset();
         this.toastr.success("Supplier updated sucessfully!", "Success");
-        
+
         $("#datatable").DataTable().clear();
         this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
           dtInstance.destroy();
