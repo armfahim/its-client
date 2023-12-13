@@ -39,7 +39,7 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
   suppliers: Suppliers = new Suppliers();
   // Properties for dynamic column sorting
   orderColumnIndex: number = 0;
-  orderColumnName: string = "supplierName";
+  orderColumnName: string = "";
 
   //Search Form
   searchForm: FormGroup;
