@@ -63,9 +63,10 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
         ajax: (dataTablesParameters: any, callback) => {
           // dataTablesParameters.orderColumnIndex = this.orderColumnIndex;
           dataTablesParameters.orderColumnName = this.orderColumnName;
-          this.allModulesService.getPaginated("/v1/supplier-details/list",dataTablesParameters).subscribe(resp => {
+          this.allModulesService.getPaginatedData("/v1/supplier-details/list",dataTablesParameters).subscribe(resp => {
           this.suppliersData = resp?.data;
-          console.log(resp);
+          this.rows = this.suppliersData;
+          this.srch = [...this.rows];
               callback({
                 recordsTotal: resp.meta.total,
                 recordsFiltered: resp.meta.total,
@@ -133,7 +134,6 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
   public getClients() {
     this.allModulesService.get("http://localhost:9000/its/api/v1/supplier-details/list").subscribe((response) => {
     this.suppliersData = response?.data;
-      console.log(this.suppliersData);
       // this.clientsData.map((client) => this.companiesList.push(client.company));
       this.rows = this.suppliersData;
       this.srch = [...this.rows];
@@ -212,7 +212,7 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
       address: this.addSupplierForm.value.address
       // status: "Active",
     };
-    this.allModulesService.add(newSupplier, "http://localhost:9000/its/api/v1/supplier-details/save").subscribe((data) => {
+    this.allModulesService.add(newSupplier, "/v1/supplier-details/save").subscribe((data) => {
     if(data.status == "error") {
         this.toastr.error(data.errors,"Failed");
         return;
@@ -268,7 +268,7 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
     this.rows.splice(0, this.rows.length);
     let temp = this.srch.filter(function (d) {
       val = val.toLowerCase();
-      return d.clientId.toLowerCase().indexOf(val) !== -1 || !val;
+      return d.supplierID.toLowerCase().indexOf(val) !== -1 || !val;
     });
     this.rows.push(...temp);
   }
@@ -278,7 +278,7 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
     this.rows.splice(0, this.rows.length);
     let temp = this.srch.filter(function (d) {
       val = val.toLowerCase();
-      return d.name.toLowerCase().indexOf(val) !== -1 || !val;
+      return d.supplierName.toLowerCase().indexOf(val) !== -1 || !val;
     });
     this.rows.push(...temp);
   }
