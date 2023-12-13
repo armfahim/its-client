@@ -39,7 +39,11 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
   suppliers: Suppliers = new Suppliers();
   // Properties for dynamic column sorting
   orderColumnIndex: number = 0;
-  orderColumnName: string = "supplierName";
+  orderColumnName: string = "supplier_name";
+
+  //Search Form
+  searchForm: FormGroup;
+  searchFormData : any;
 
 
   constructor(
@@ -63,6 +67,8 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
         ajax: (dataTablesParameters: any, callback) => {
           // dataTablesParameters.orderColumnIndex = this.orderColumnIndex;
           dataTablesParameters.orderColumnName = this.orderColumnName;
+          dataTablesParameters.supplierId = this.searchFormData?.supplierID ? this.searchFormData.supplierID : "";
+          dataTablesParameters.supplierName = this.searchFormData?.supplierName ? this.searchFormData.supplierName : "";
           this.allModulesService.getPaginatedData("/v1/supplier-details/list",dataTablesParameters).subscribe(resp => {
           this.suppliersData = resp?.data;
           this.rows = this.suppliersData;
@@ -98,6 +104,17 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
       editAddress: ["", [Validators.required]],
       editId: ["", [Validators.required]],
     });
+
+    // Search Form
+    this.searchForm = this.formBuilder.group({
+      supplierID:["",[]],
+      supplierName:["",[]]
+    })
+}
+
+onSearch(){
+  this.searchFormData = this.searchForm.value;
+  this.rerender();
 }
 
   //Function to handle table header click
@@ -129,6 +146,9 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.dtTrigger.next();
     }, 1000);
+    
+    //Init search form data, if any
+    this.searchFormData = this.searchForm?.value;
   }
   //Get all Clients data
   public getClients() {

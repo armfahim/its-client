@@ -1,194 +1,307 @@
 <!-- Page Content -->
 <div class="content container-fluid">
 
-  <!-- Page Header -->
-  <div class="page-header">
-      <div class="row align-items-center">
-          <div class="col">
-              <h3 class="page-title">Suppliers</h3>
-              <ul class="breadcrumb">
-                  <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
-                  <li class="breadcrumb-item active">Suppliers</li>
-              </ul>
-          </div>
-          <div class="col-auto float-right ml-auto">
-              <a class="btn add-btn" data-toggle="modal" data-target="#add_supplier" (click)="resetForm()"><i
-                      class="fa fa-plus"></i>
-                  Add Suppliers</a>
-              <div class="view-icons">
-                  <!-- <a routerLink="/clients/clientspage" class="grid-view btn btn-link"><i class="fa fa-th"></i></a> -->
-                  <a routerLink="/suppliers/supplierslist" class="list-view btn btn-link active"><i
-                          class="fa fa-bars"></i></a>
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Suppliers</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Suppliers</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <a class="btn add-btn" data-toggle="modal" data-target="#add_supplier" (click)="resetForm()"><i
+                        class="fa fa-plus"></i>
+                    Add Suppliers</a>
+                <div class="view-icons">
+                    <!-- <a routerLink="/clients/clientspage" class="grid-view btn btn-link"><i class="fa fa-th"></i></a> -->
+                    <a routerLink="/suppliers/supplierslist" class="list-view btn btn-link active"><i
+                            class="fa fa-bars"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+  
+    <!-- Search Filter -->
+      <form (ngSubmit)="onSearch()" [formGroup]="searchForm">
+          <div class="row filter-row">
+              <div class="col-sm-6 col-md-3">
+                  <div class="form-group form-focus">
+                      <!-- (input)="searchID($event.target.value)" -->
+                      <input formControlName="supplierID" type="text" class="form-control floating" (focusout)="rerender()">
+                      <label class="focus-label">Suppliers ID</label>
+                  </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                  <div class="form-group form-focus">
+                      <!-- (input)="searchName($event.target.value)" -->
+                      <input formControlName="supplierName" type="text" class="form-control floating" 
+                          (focusout)="rerender()">
+                      <label class="focus-label">Suppliers Name</label>
+                  </div>
+              </div>
+              <!-- <div class="col-sm-6 col-md-3">
+                  <div class="form-group form-focus select-focus">
+                      <select class="select floating form-control" (input)="searchCompany($event.target.value)">
+                          <option>Select Company</option>
+                          <option>Global Technologies</option>
+                          <option>Delta Infotech</option>
+                      </select>
+                      <label class="focus-label">Company</label>
+                  </div>
+              </div> -->
+              <div class="col-sm-6 col-md-3">
+                <button class="btn btn-success btn-block" type="submit">Search</button>
+                  <!-- <a class="btn btn-success btn-block" type="submit" (click)="onSearch()"> Search </a> -->
               </div>
           </div>
-      </div>
+      </form>
+    <!-- Search Filter -->
+  
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="datatable"
+                    class="table table-striped custom-table datatable">
+                    <thead>
+                        <tr>
+                            <th (click)="onTableHeaderClick(0, 'supplier_id')">Supplier ID</th>
+                            <th (click)="onTableHeaderClick(0, 'supplier_name')">Supplier Name</th>
+                            <th (click)="onTableHeaderClick(0, 'email')">Email</th>
+                            <th (click)="onTableHeaderClick(0, 'phone')">Phone</th>
+                            <th (click)="onTableHeaderClick(0, 'contact_person')">Contact Person</th>
+                            <th (click)="onTableHeaderClick(0, 'address')">Address</th>
+                            <!-- <th>Status</th> -->
+                            <th class="text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="suppliersData">
+                        <tr *ngFor="let supplier of suppliersData; let i = index">
+                            <td>
+                                <h2 class="table-avatar">
+                                    <a class="avatar"><img
+                                            src="assets/img/profiles/avatar-{{ i + 1 }}.jpg" alt=""></a>
+                                    <a>{{supplier.supplierID}}</a>
+                                </h2>
+                            </td>
+                            <td>{{supplier.supplierName}}</td>
+                            <td>{{supplier.email}}</td>
+                            <td>{{supplier.phone}}</td>
+                            <td>{{supplier.contactPerson}}</td>
+                            <td>{{supplier.address}}</td>
+                            <!-- <td>
+                                <div class="dropdown action-label">
+                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown"
+                                        aria-expanded="false"><i class="fa fa-dot-circle-o text-success"></i>
+                                        {{supplier.status || statusValue}} </a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" (click)="getStatus('ACTIVE')"><i
+                                                class="fa fa-dot-circle-o text-success"></i> Active</a>
+                                        <a class="dropdown-item" (click)="getStatus('INACTIVE')"><i
+                                                class="fa fa-dot-circle-o text-danger"></i>
+                                            Inactive</a>
+                                    </div>
+                                </div>
+                            </td> -->
+                            <td class="text-right">
+                                <div class="dropdown dropdown-action">
+                                    <a class="action-icon dropdown-toggle" data-toggle="dropdown"
+                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#edit_supplier"
+                                            (click)="onEditSupplier(supplier.id)"><i class="fa fa-pencil m-r-5"></i>
+                                            Edit</a>
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#delete_supplier"
+                                            (click)="tempId = supplier.id"><i class="fa fa-trash-o m-r-5"></i>
+                                            Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
   </div>
-  <!-- /Page Header -->
-
-  <!-- Search Filter -->
-  <div class="row filter-row">
-      <div class="col-sm-6 col-md-3">
-          <div class="form-group form-focus">
-              <input type="text" class="form-control floating" (input)="searchID($event.target.value)">
-              <label class="focus-label">Suppliers ID</label>
-          </div>
-      </div>
-      <div class="col-sm-6 col-md-3">
-          <div class="form-group form-focus">
-              <input type="text" class="form-control floating" (input)="searchName($event.target.value)"
-                  (focusout)="rerender()">
-              <label class="focus-label">Suppliers Name</label>
-          </div>
-      </div>
-      <!-- <div class="col-sm-6 col-md-3">
-          <div class="form-group form-focus select-focus">
-              <select class="select floating form-control" (input)="searchCompany($event.target.value)">
-                  <option>Select Company</option>
-                  <option>Global Technologies</option>
-                  <option>Delta Infotech</option>
-              </select>
-              <label class="focus-label">Company</label>
-          </div>
-      </div> -->
-      <div class="col-sm-6 col-md-3">
-          <a class="btn btn-success btn-block"> Search </a>
-      </div>
-  </div>
-  <!-- Search Filter -->
-
-  <div class="row">
-      <div class="col-md-12">
-          <div class="table-responsive">
-              <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="datatable"
-                  class="table table-striped custom-table datatable">
-                  <thead>
-                      <tr>
-                          <th (click)="onTableHeaderClick(0, 'supplierID')">Supplier ID</th>
-                          <th (click)="onTableHeaderClick(0, 'supplierName')">Supplier Name</th>
-                          <th (click)="onTableHeaderClick(0, 'email')">Email</th>
-                          <th (click)="onTableHeaderClick(0, 'phone')">Phone</th>
-                          <th (click)="onTableHeaderClick(0, 'contactPerson')">Contact Person</th>
-                          <th (click)="onTableHeaderClick(0, 'address')">Address</th>
-                          <!-- <th>Status</th> -->
-                          <th class="text-right">Action</th>
-                      </tr>
-                  </thead>
-                  <tbody *ngIf="suppliersData">
-                      <tr *ngFor="let supplier of suppliersData; let i = index">
-                          <td>
-                              <h2 class="table-avatar">
-                                  <a class="avatar"><img
-                                          src="assets/img/profiles/avatar-{{ i + 1 }}.jpg" alt=""></a>
-                                  <a>{{supplier.supplierID}}</a>
-                              </h2>
-                          </td>
-                          <td>{{supplier.supplierName}}</td>
-                          <td>{{supplier.email}}</td>
-                          <td>{{supplier.phone}}</td>
-                          <td>{{supplier.contactPerson}}</td>
-                          <td>{{supplier.address}}</td>
-                          <!-- <td>
-                              <div class="dropdown action-label">
-                                  <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown"
-                                      aria-expanded="false"><i class="fa fa-dot-circle-o text-success"></i>
-                                      {{supplier.status || statusValue}} </a>
-                                  <div class="dropdown-menu">
-                                      <a class="dropdown-item" (click)="getStatus('ACTIVE')"><i
-                                              class="fa fa-dot-circle-o text-success"></i> Active</a>
-                                      <a class="dropdown-item" (click)="getStatus('INACTIVE')"><i
-                                              class="fa fa-dot-circle-o text-danger"></i>
-                                          Inactive</a>
-                                  </div>
-                              </div>
-                          </td> -->
-                          <td class="text-right">
-                              <div class="dropdown dropdown-action">
-                                  <a class="action-icon dropdown-toggle" data-toggle="dropdown"
-                                      aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                  <div class="dropdown-menu dropdown-menu-right">
-                                      <a class="dropdown-item" data-toggle="modal" data-target="#edit_supplier"
-                                          (click)="onEditSupplier(supplier.id)"><i class="fa fa-pencil m-r-5"></i>
-                                          Edit</a>
-                                      <a class="dropdown-item" data-toggle="modal" data-target="#delete_supplier"
-                                          (click)="tempId = supplier.id"><i class="fa fa-trash-o m-r-5"></i>
-                                          Delete</a>
-                                  </div>
-                              </div>
-                          </td>
-                      </tr>
-                  </tbody>
-              </table>
-          </div>
-      </div>
-  </div>
-</div>
-<!-- /Page Content -->
-
-<!-- Add Supplier Modal -->
-<div id="add_supplier" class="modal custom-modal fade" role="dialog">
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title">Add Suppliers</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-              </button>
-          </div>
-          <div class="modal-body">
-              <form [formGroup]="addSupplierForm">
-                  <div class="row">
-                      <div class="col-md-6">
-                          <div class="form-group">
-                              <label class="col-form-label">Supplier ID <span class="text-danger">*</span></label>
-                              <input class="form-control" type="text"
-                                  [class.invalid]="addSupplierForm.get('supplierID').invalid && addSupplierForm.get('supplierID').touched"
-                                  formControlName="supplierID">
+  <!-- /Page Content -->
+  
+  <!-- Add Supplier Modal -->
+  <div id="add_supplier" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Suppliers</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="addSupplierForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Supplier ID <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="addSupplierForm.get('supplierID').invalid && addSupplierForm.get('supplierID').touched"
+                                    formControlName="supplierID">
+                                <div
+                                    *ngIf="addSupplierForm.get('supplierID').invalid && addSupplierForm.get('supplierID').touched">
+                                    <small
+                                        *ngIf="addSupplierForm.get('supplierID').invalid && addSupplierForm.get('supplierID').touched"
+                                        class="text-danger"> *Supplier ID is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Supplier Name <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                  [class.invalid]="addSupplierForm.get('supplierName').invalid && addSupplierForm.get('supplierName').touched"
+                                    formControlName="supplierName">
+                                <div
+                                    *ngIf="addSupplierForm.get('supplierName').invalid && addSupplierForm.get('supplierName').touched">
+                                    <small
+                                        *ngIf="addSupplierForm.get('supplierName').invalid && addSupplierForm.get('supplierName').touched"
+                                        class="text-danger"> *Supplier Name is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Contact Person <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                  [class.invalid]="addSupplierForm.get('contactPerson').invalid && addSupplierForm.get('contactPerson').touched"
+                                    formControlName="contactPerson">
+                                <div
+                                    *ngIf="addSupplierForm.get('contactPerson').invalid && addSupplierForm.get('contactPerson').touched">
+                                    <small
+                                        *ngIf="addSupplierForm.get('contactPerson').invalid && addSupplierForm.get('contactPerson').touched"
+                                        class="text-danger"> *Contact Person is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Email <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="addSupplierForm.get('email').invalid && addSupplierForm.get('email').touched"
+                                    formControlName="email">
+                                <div
+                                    *ngIf="addSupplierForm.get('email').invalid && addSupplierForm.get('email').touched">
+                                    <small
+                                        *ngIf="addSupplierForm.get('email').invalid && addSupplierForm.get('email').touched"
+                                        class="text-danger"> *Email is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Phone <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                  [class.invalid]="addSupplierForm.get('phone').invalid && addSupplierForm.get('phone').touched"
+                                  formControlName="phone">
                               <div
-                                  *ngIf="addSupplierForm.get('supplierID').invalid && addSupplierForm.get('supplierID').touched">
+                                  *ngIf="addSupplierForm.get('phone').invalid && addSupplierForm.get('phone').touched">
                                   <small
-                                      *ngIf="addSupplierForm.get('supplierID').invalid && addSupplierForm.get('supplierID').touched"
-                                      class="text-danger"> *Supplier ID is required</small>
+                                      *ngIf="addSupplierForm.get('phone').invalid && addSupplierForm.get('phone').touched"
+                                      class="text-danger"> *Phone is required</small>
                               </div>
-                          </div>
-                      </div>
-                      <div class="col-md-6">
-                          <div class="form-group">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Address <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                  [class.invalid]="addSupplierForm.get('address').invalid && addSupplierForm.get('address').touched"
+                                  formControlName="address">
+                              <div
+                                  *ngIf="addSupplierForm.get('address').invalid && addSupplierForm.get('address').touched">
+                                  <small
+                                      *ngIf="addSupplierForm.get('address').invalid && addSupplierForm.get('address').touched"
+                                      class="text-danger"> *Address is required</small>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" (click)="onAddSupplier()">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- /Add Supplier Modal -->
+  
+  <!-- Edit Supplier Modal -->
+  <div id="edit_supplier" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Supplier</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="editSupplierForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                              <label class="col-form-label">Supplier ID <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="editSupplierForm.get('editSupplierID').invalid && editSupplierForm.get('editSupplierID').touched"
+                                    formControlName="editSupplierID">
+                                <div
+                                    *ngIf="editSupplierForm.get('editSupplierID').invalid && editSupplierForm.get('editSupplierID').touched">
+                                    <small
+                                        *ngIf="editSupplierForm.get('editSupplierID').invalid && editSupplierForm.get('editSupplierID').touched"
+                                        class="text-danger"> *Supplier ID is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
                               <label class="col-form-label">Supplier Name <span class="text-danger">*</span></label>
                               <input class="form-control" type="text"
-                                [class.invalid]="addSupplierForm.get('supplierName').invalid && addSupplierForm.get('supplierName').touched"
-                                  formControlName="supplierName">
+                                [class.invalid]="editSupplierForm.get('editSupplierName').invalid && editSupplierForm.get('editSupplierName').touched"
+                                  formControlName="editSupplierName">
                               <div
-                                  *ngIf="addSupplierForm.get('supplierName').invalid && addSupplierForm.get('supplierName').touched">
+                                  *ngIf="editSupplierForm.get('editSupplierName').invalid && editSupplierForm.get('editSupplierName').touched">
                                   <small
-                                      *ngIf="addSupplierForm.get('supplierName').invalid && addSupplierForm.get('supplierName').touched"
+                                      *ngIf="editSupplierForm.get('editSupplierName').invalid && editSupplierForm.get('editSupplierName').touched"
                                       class="text-danger"> *Supplier Name is required</small>
                               </div>
-                          </div>
-                      </div>
-                      <div class="col-md-6">
-                          <div class="form-group">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
                               <label class="col-form-label">Contact Person <span class="text-danger">*</span></label>
                               <input class="form-control" type="text"
-                                [class.invalid]="addSupplierForm.get('contactPerson').invalid && addSupplierForm.get('contactPerson').touched"
-                                  formControlName="contactPerson">
+                                [class.invalid]="editSupplierForm.get('editContactPerson').invalid && editSupplierForm.get('editContactPerson').touched"
+                                  formControlName="editContactPerson">
                               <div
-                                  *ngIf="addSupplierForm.get('contactPerson').invalid && addSupplierForm.get('contactPerson').touched">
+                                  *ngIf="editSupplierForm.get('editContactPerson').invalid && editSupplierForm.get('editContactPerson').touched">
                                   <small
-                                      *ngIf="addSupplierForm.get('contactPerson').invalid && addSupplierForm.get('contactPerson').touched"
+                                      *ngIf="editSupplierForm.get('editContactPerson').invalid && editSupplierForm.get('editContactPerson').touched"
                                       class="text-danger"> *Contact Person is required</small>
                               </div>
-                          </div>
-                      </div>
-                      <div class="col-md-6">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
                           <div class="form-group">
                               <label class="col-form-label">Email <span class="text-danger">*</span></label>
                               <input class="form-control" type="text"
-                                  [class.invalid]="addSupplierForm.get('email').invalid && addSupplierForm.get('email').touched"
-                                  formControlName="email">
+                                  [class.invalid]="editSupplierForm.get('editEmail').invalid && editSupplierForm.get('editEmail').touched"
+                                  formControlName="editEmail">
                               <div
-                                  *ngIf="addSupplierForm.get('email').invalid && addSupplierForm.get('email').touched">
+                                  *ngIf="editSupplierForm.get('editEmail').invalid && editSupplierForm.get('editEmail').touched">
                                   <small
-                                      *ngIf="addSupplierForm.get('email').invalid && addSupplierForm.get('email').touched"
+                                      *ngIf="editSupplierForm.get('editEmail').invalid && editSupplierForm.get('editEmail').touched"
                                       class="text-danger"> *Email is required</small>
                               </div>
                           </div>
@@ -197,12 +310,12 @@
                           <div class="form-group">
                               <label class="col-form-label">Phone <span class="text-danger">*</span></label>
                               <input class="form-control" type="text"
-                                [class.invalid]="addSupplierForm.get('phone').invalid && addSupplierForm.get('phone').touched"
-                                formControlName="phone">
+                                [class.invalid]="editSupplierForm.get('editPhone').invalid && editSupplierForm.get('editPhone').touched"
+                                formControlName="editPhone">
                             <div
-                                *ngIf="addSupplierForm.get('phone').invalid && addSupplierForm.get('phone').touched">
+                                *ngIf="editSupplierForm.get('editPhone').invalid && editSupplierForm.get('editPhone').touched">
                                 <small
-                                    *ngIf="addSupplierForm.get('phone').invalid && addSupplierForm.get('phone').touched"
+                                    *ngIf="editSupplierForm.get('editPhone').invalid && editSupplierForm.get('editPhone').touched"
                                     class="text-danger"> *Phone is required</small>
                             </div>
                           </div>
@@ -211,159 +324,52 @@
                           <div class="form-group">
                               <label class="col-form-label">Address <span class="text-danger">*</span></label>
                               <input class="form-control" type="text"
-                                [class.invalid]="addSupplierForm.get('address').invalid && addSupplierForm.get('address').touched"
-                                formControlName="address">
+                                [class.invalid]="editSupplierForm.get('editAddress').invalid && editSupplierForm.get('editAddress').touched"
+                                formControlName="editAddress">
                             <div
-                                *ngIf="addSupplierForm.get('address').invalid && addSupplierForm.get('address').touched">
+                                *ngIf="editSupplierForm.get('editAddress').invalid && editSupplierForm.get('editAddress').touched">
                                 <small
-                                    *ngIf="addSupplierForm.get('address').invalid && addSupplierForm.get('address').touched"
+                                    *ngIf="editSupplierForm.get('editAddress').invalid && editSupplierForm.get('editAddress').touched"
                                     class="text-danger"> *Address is required</small>
                             </div>
                           </div>
                       </div>
-                  </div>
-                  <div class="submit-section">
-                      <button class="btn btn-primary submit-btn" (click)="onAddSupplier()">Submit</button>
-                  </div>
-              </form>
-          </div>
-      </div>
+                    </div>
+  
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" (click)="onSave()">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
   </div>
-</div>
-<!-- /Add Supplier Modal -->
-
-<!-- Edit Supplier Modal -->
-<div id="edit_supplier" class="modal custom-modal fade" role="dialog">
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title">Edit Supplier</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-              </button>
-          </div>
-          <div class="modal-body">
-              <form [formGroup]="editSupplierForm">
-                  <div class="row">
-                      <div class="col-md-6">
-                          <div class="form-group">
-                            <label class="col-form-label">Supplier ID <span class="text-danger">*</span></label>
-                              <input class="form-control" type="text"
-                                  [class.invalid]="editSupplierForm.get('editSupplierID').invalid && editSupplierForm.get('editSupplierID').touched"
-                                  formControlName="editSupplierID">
-                              <div
-                                  *ngIf="editSupplierForm.get('editSupplierID').invalid && editSupplierForm.get('editSupplierID').touched">
-                                  <small
-                                      *ngIf="editSupplierForm.get('editSupplierID').invalid && editSupplierForm.get('editSupplierID').touched"
-                                      class="text-danger"> *Supplier ID is required</small>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="col-md-6">
-                          <div class="form-group">
-                            <label class="col-form-label">Supplier Name <span class="text-danger">*</span></label>
-                            <input class="form-control" type="text"
-                              [class.invalid]="editSupplierForm.get('editSupplierName').invalid && editSupplierForm.get('editSupplierName').touched"
-                                formControlName="editSupplierName">
-                            <div
-                                *ngIf="editSupplierForm.get('editSupplierName').invalid && editSupplierForm.get('editSupplierName').touched">
-                                <small
-                                    *ngIf="editSupplierForm.get('editSupplierName').invalid && editSupplierForm.get('editSupplierName').touched"
-                                    class="text-danger"> *Supplier Name is required</small>
-                            </div>
-                          </div>
-                      </div>
-                      <div class="col-md-6">
-                          <div class="form-group">
-                            <label class="col-form-label">Contact Person <span class="text-danger">*</span></label>
-                            <input class="form-control" type="text"
-                              [class.invalid]="editSupplierForm.get('editContactPerson').invalid && editSupplierForm.get('editContactPerson').touched"
-                                formControlName="editContactPerson">
-                            <div
-                                *ngIf="editSupplierForm.get('editContactPerson').invalid && editSupplierForm.get('editContactPerson').touched">
-                                <small
-                                    *ngIf="editSupplierForm.get('editContactPerson').invalid && editSupplierForm.get('editContactPerson').touched"
-                                    class="text-danger"> *Contact Person is required</small>
-                            </div>
-                          </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="col-form-label">Email <span class="text-danger">*</span></label>
-                            <input class="form-control" type="text"
-                                [class.invalid]="editSupplierForm.get('editEmail').invalid && editSupplierForm.get('editEmail').touched"
-                                formControlName="editEmail">
-                            <div
-                                *ngIf="editSupplierForm.get('editEmail').invalid && editSupplierForm.get('editEmail').touched">
-                                <small
-                                    *ngIf="editSupplierForm.get('editEmail').invalid && editSupplierForm.get('editEmail').touched"
-                                    class="text-danger"> *Email is required</small>
-                            </div>
+  <!-- /Edit Supplier Modal -->
+  
+  <!-- Delete Supplier Modal -->
+  <div class="modal custom-modal fade" id="delete_supplier" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete Supplier</h3>
+                    <p>Are you sure want to delete?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a  class="btn btn-primary continue-btn"
+                                (click)="onDelete()">Delete</a>
+                        </div>
+                        <div class="col-6">
+                            <a  data-dismiss="modal"
+                                class="btn btn-primary cancel-btn">Cancel</a>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="col-form-label">Phone <span class="text-danger">*</span></label>
-                            <input class="form-control" type="text"
-                              [class.invalid]="editSupplierForm.get('editPhone').invalid && editSupplierForm.get('editPhone').touched"
-                              formControlName="editPhone">
-                          <div
-                              *ngIf="editSupplierForm.get('editPhone').invalid && editSupplierForm.get('editPhone').touched">
-                              <small
-                                  *ngIf="editSupplierForm.get('editPhone').invalid && editSupplierForm.get('editPhone').touched"
-                                  class="text-danger"> *Phone is required</small>
-                          </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="col-form-label">Address <span class="text-danger">*</span></label>
-                            <input class="form-control" type="text"
-                              [class.invalid]="editSupplierForm.get('editAddress').invalid && editSupplierForm.get('editAddress').touched"
-                              formControlName="editAddress">
-                          <div
-                              *ngIf="editSupplierForm.get('editAddress').invalid && editSupplierForm.get('editAddress').touched">
-                              <small
-                                  *ngIf="editSupplierForm.get('editAddress').invalid && editSupplierForm.get('editAddress').touched"
-                                  class="text-danger"> *Address is required</small>
-                          </div>
-                        </div>
-                    </div>
-                  </div>
-
-                  <div class="submit-section">
-                      <button class="btn btn-primary submit-btn" (click)="onSave()">Save</button>
-                  </div>
-              </form>
-          </div>
-      </div>
+                </div>
+            </div>
+        </div>
+    </div>
   </div>
-</div>
-<!-- /Edit Supplier Modal -->
-
-<!-- Delete Supplier Modal -->
-<div class="modal custom-modal fade" id="delete_supplier" role="dialog">
-  <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-          <div class="modal-body">
-              <div class="form-header">
-                  <h3>Delete Supplier</h3>
-                  <p>Are you sure want to delete?</p>
-              </div>
-              <div class="modal-btn delete-action">
-                  <div class="row">
-                      <div class="col-6">
-                          <a  class="btn btn-primary continue-btn"
-                              (click)="onDelete()">Delete</a>
-                      </div>
-                      <div class="col-6">
-                          <a  data-dismiss="modal"
-                              class="btn btn-primary cancel-btn">Cancel</a>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
-</div>
-<!-- /Delete Supplier Modal -->
+  <!-- /Delete Supplier Modal -->
+  

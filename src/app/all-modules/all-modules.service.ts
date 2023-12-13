@@ -58,15 +58,14 @@ export class AllModulesService {
 
   getPaginatedData(endPoint: any,params: any): Observable<any> {
     // Include DataTables parameters in the API request
-    // "http://localhost:9000/its/api/v1/supplier-details/list",
     // &sort=${params.orderColumnName}&dir=${params.order[0].dir}
-    const url = `${this.baseUrl}${endPoint}?page=${params.start / params.length + 1}&size=${params.length}&sortBy=${params.orderColumnName}&dir=${params.order[0].dir}`;
+    const url = `${this.baseUrl}${endPoint}?page=${params.start / params.length + 1}&size=${params.length}&sortBy=${params.orderColumnName}&dir=${params.order[0].dir}&supplierId=${params.supplierId}&supplierName=${params.supplierName}`;
     return this.http.get(url);
   }
 
   // Post Method Api
-  add(user: any, type): Observable<any> {
-    const url = type;
+  add(user: any, endPoint): Observable<any> {
+    const url = `${this.baseUrl}${endPoint}`;
     user.id = null;
     return this.http
       .post<any>(url, user, this.httpOptions)
