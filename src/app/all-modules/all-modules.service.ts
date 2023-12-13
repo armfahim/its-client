@@ -56,7 +56,7 @@ export class AllModulesService {
       .pipe(tap(), catchError(this.handleError));
   }
 
-  getPaginated(endPoint: any,params: any): Observable<any> {
+  getPaginatedData(endPoint: any,params: any): Observable<any> {
     // Include DataTables parameters in the API request
     // "http://localhost:9000/its/api/v1/supplier-details/list",
     // &sort=${params.orderColumnName}&dir=${params.order[0].dir}
