@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { throwError, Observable } from "rxjs";
 import { tap, catchError, map } from "rxjs/operators";
 import { AllModulesData } from "src/assets/all-modules-data/all-modules-data";
@@ -28,7 +28,7 @@ export class AllModulesService {
 
   // Api Methods for All modules
 
-  public apiurl;
+  // public apiurl;
 
   // Headers Setup
   headers = new HttpHeaders()
@@ -50,9 +50,9 @@ export class AllModulesService {
   // Get Method Api
   get(type): Observable<any> {
     // this.apiurl = `api/${type}`;
-    this.apiurl = type;
+    const url = type;
     return this.http
-      .get<any>(this.apiurl)
+      .get<any>(url)
       .pipe(tap(), catchError(this.handleError));
   }
 
@@ -66,17 +66,17 @@ export class AllModulesService {
 
   // Post Method Api
   add(user: any, type): Observable<any> {
-    this.apiurl = type;
+    const url = type;
     user.id = null;
     return this.http
-      .post<any>(this.apiurl, user, this.httpOptions)
+      .post<any>(url, user, this.httpOptions)
       .pipe(tap(), catchError(this.handleError));
   }
 
   // Update Method Api
-  update(user: any, type): Observable<any> {
-    this.apiurl = `api/${type}`;
-    const url = `${this.apiurl}/${user.id}`;
+  update(user: any, endPoint): Observable<any> {
+    const url = `${this.baseUrl}${endPoint}`;
+    // const url = `${this.apiurl}/${user.id}`;
     return this.http.put<any>(url, user, this.httpOptions).pipe(
       map(() => user),
       catchError(this.handleError)
@@ -84,11 +84,22 @@ export class AllModulesService {
   }
 
   // Delete Method Api
-  delete(id: id, type): Observable<id> {
-    this.apiurl = `api/${type}`;
-    const url = `${this.apiurl}/${id}`;
-    return this.http
-      .delete<id>(url, this.httpOptions)
-      .pipe(catchError(this.handleError));
+  delete(id: any, endPoint): Observable<id> {
+    const url = `${this.baseUrl}${endPoint}`;
+    return this.http.delete(url, {
+      params: new HttpParams().set('id', id)
+    }).pipe(
+      map((data: any) => data
+      ))
+  }
+
+  // Update Method Api
+  updateRecordStatus(user: any, endPoint): Observable<any> {
+    const url = `${this.baseUrl}${endPoint}`;
+    // const url = `${this.apiurl}/${user.id}`;
+    return this.http.put<any>(url, user, this.httpOptions).pipe(
+      map(() => user),
+      catchError(this.handleError)
+    );
   }
 }

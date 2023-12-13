@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Suppliers } from '../../model/suppliers';
 import { HttpClient } from '@angular/common/http';
 import { PaginatedResponse } from 'src/app/utils/paginated-response';
+import { RecordStatus } from 'src/app/utils/enums.enum';
 
 declare const $: any;
 @Component({
@@ -22,7 +23,7 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
   dtOptions: DataTables.Settings = {};
   public suppliersData: any;
 
-  public editedClient;
+  public editedSupplier;
   public addSupplierForm: FormGroup;
   public editSupplierForm: FormGroup;
   public tempId: any;
@@ -98,17 +99,17 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
     });
 }
 
-// Function to handle table header click
-onTableHeaderClick(columnIndex: number, columnName: string) {
-  // Update dynamic column properties
-  this.orderColumnIndex = columnIndex;
-  this.orderColumnName = columnName;
+  //Function to handle table header click
+  onTableHeaderClick(columnIndex: number, columnName: string) {
+    // Update dynamic column properties
+    this.orderColumnIndex = columnIndex;
+    this.orderColumnName = columnName;
 
-  // Reload the DataTable with the new sorting parameters
-  // this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-  //   dtInstance.ajax.reload();
-  // });
-}
+    // Reload the DataTable with the new sorting parameters
+    // this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+    //   dtInstance.ajax.reload();
+    // });
+  }
 
   ngAfterViewInit(): void {
     setTimeout(() => {
@@ -139,17 +140,17 @@ onTableHeaderClick(columnIndex: number, columnName: string) {
     });
   }
 
-  // Edit client
-  public onEditClient(clientId: any) {
-    let client = this.suppliersData.filter((client) => client.id === clientId);
+  // Edit Supplier
+  public onEditSupplier(supplierId: any) {
+    let supplier = this.suppliersData.filter((client) => client.id === supplierId);
     this.editSupplierForm.setValue({
-      editClientName: client[0]?.name,
-      editClientPhone: client[0]?.phone,
-      editClientEmail: client[0]?.email,
-      editClientCompany: client[0]?.company,
-      editClientRole: client[0]?.role,
-      editClientId: client[0]?.clientId,
-      editId: client[0]?.id,
+      editSupplierName: supplier[0]?.supplierName,
+      editPhone: supplier[0]?.phone,
+      editEmail: supplier[0]?.email,
+      editSupplierID: supplier[0]?.supplierID,
+      editContactPerson: supplier[0]?.contactPerson,
+      editAddress: supplier[0]?.address,
+      editId: supplier[0]?.id,
     });
   }
 
@@ -158,31 +159,42 @@ onTableHeaderClick(columnIndex: number, columnName: string) {
     this.addSupplierForm.reset();
   }
 
-  // Update Client
+  // Update Supplier
   public onSave() {
-    this.editedClient = {
-      name: this.editSupplierForm.value.editClientName,
-      role: "CEO",
-      company: this.editSupplierForm.value.editClientCompany,
-      clientId: this.editSupplierForm.value.editClientId,
-      email: this.editSupplierForm.value.editClientEmail,
-      phone: this.editSupplierForm.value.editClientPhone,
-      status: "Active",
+    if (this.editSupplierForm.invalid) {
+      this.toastr.info("Please insert valid data");
+      return;
+    }
+    this.editedSupplier = {
+      supplierName: this.editSupplierForm.value.editSupplierName,
+      supplierID: this.editSupplierForm.value.editSupplierID,
+      email: this.editSupplierForm.value.editEmail,
+      phone: this.editSupplierForm.value.editPhone,
+      contactPerson: this.editSupplierForm.value.editContactPerson,
+      address: this.editSupplierForm.value.editAddress,
+      // status: "Active",
       id: this.editSupplierForm.value.editId,
     };
     this.allModulesService
-      .update(this.editedClient, "clients")
+      .update(this.editedSupplier, "/v1/supplier-details/update")
       .subscribe((data) => {
+        $("#edit_supplier").modal("hide");
+        this.editSupplierForm.reset();
+        this.toastr.success("Supplier updated sucessfully!", "Success");
+        
         $("#datatable").DataTable().clear();
         this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
           dtInstance.destroy();
         });
         this.dtTrigger.next();
+      },
+      (error) => {
+        console.error("API Error:", error);
+        // Extract error message from the API response
+        const customErrorMessage = error && error.error && error.error.errors ? error.error.errors.toString(): "Unknown error";
+        this.toastr.error(customErrorMessage, "Error",{ timeOut: 5000 });
+        return;
       });
-    // this.getClients();
-    $("#edit_client").modal("hide");
-    this.editSupplierForm.reset();
-    this.toastr.success("Client updated sucessfully...!", "Success");
   }
 
   //Add new client
@@ -193,7 +205,6 @@ onTableHeaderClick(columnIndex: number, columnName: string) {
     }
     let newSupplier = {
       supplierID: this.addSupplierForm.value.supplierID,
-      // role: "CEO",
       supplierName: this.addSupplierForm.value.supplierName,
       contactPerson: this.addSupplierForm.value.contactPerson,
       phone: this.addSupplierForm.value.phone,
@@ -206,7 +217,7 @@ onTableHeaderClick(columnIndex: number, columnName: string) {
         this.toastr.error(data.errors,"Failed");
         return;
       }
-      $("#add_client").modal("hide");
+      $("#add_supplier").modal("hide");
       this.addSupplierForm.reset();
       this.toastr.success("Supplier added sucessfully!", "Success");
 
@@ -219,11 +230,7 @@ onTableHeaderClick(columnIndex: number, columnName: string) {
     (error) => {
       console.error("API Error:", error);
       // Extract error message from the API response
-      const customErrorMessage = error && error.error && error.error.errors
-      ? error.error.errors.toString()
-      : "Unknown error";
-
-      // Handle error, show toastr, etc.
+      const customErrorMessage = error && error.error && error.error.errors ? error.error.errors.toString(): "Unknown error";
       this.toastr.error(customErrorMessage, "Error",{ timeOut: 5000 });
       return;
     });
@@ -232,16 +239,28 @@ onTableHeaderClick(columnIndex: number, columnName: string) {
 
   //Delete Client
   onDelete() {
-    this.allModulesService.delete(this.tempId, "clients").subscribe((data) => {
+    // let updateStatusDto = {
+    //   status: RecordStatus.Deleted,
+    //   id: this.editSupplierForm.value.editId,
+    // };
+
+    this.allModulesService.delete(this.tempId, "/v1/supplier-details/delete").subscribe((data) => {
+      $("#delete_supplier").modal("hide");
+      this.toastr.success("Supplier deleted sucessfully...!", "Success");
+
       $("#datatable").DataTable().clear();
       this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
         dtInstance.destroy();
       });
       this.dtTrigger.next();
-    });
-    // this.getClients();
-    $("#delete_client").modal("hide");
-    this.toastr.success("Client deleted sucessfully...!", "Success");
+    },
+      (error) => {
+        console.error("API Error:", error);
+        // Extract error message from the API response
+        const customErrorMessage = error && error.error && error.error.errors ? error.error.errors.toString(): "Unknown error";
+        this.toastr.error(customErrorMessage, "Error",{ timeOut: 5000 });
+        return;
+      });
   }
 
   //search by name
