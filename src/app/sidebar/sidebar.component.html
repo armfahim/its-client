@@ -23,7 +23,11 @@
                                     href="javascript:">Employee Dashboard</a></li>
                         </ul>
                     </li>
-                    <!-- <li class="submenu" [ngClass]="{ 'active' : urlComplete.mainUrl === 'apps' }">
+                    <li [ngClass]="{ 'active' : urlComplete.subUrl === 'clientspage' || urlComplete.subUrl === 'supplierslist' }">
+                        <a routerLink="/suppliers/supplierslist" ><i
+                                class="la la-users"></i> <span>Suppliers</span></a>
+                    </li>
+                    <li class="submenu" [ngClass]="{ 'active' : urlComplete.mainUrl === 'apps' }">
                         <a href="javascript:" [ngClass]="{ 'subdrop' : urlComplete.mainUrl === 'apps' }">
                             <i class="la la-cube"></i>
                             <span> Apps</span>
@@ -153,12 +157,8 @@
                                 <a href="javascript:" [ngClass]="{ 'active' : urlComplete.subUrl === 'overtime'}">Overtime</a>
                             </li>
                         </ul>
-                    </li> -->
-                    <li [ngClass]="{ 'active' : urlComplete.subUrl === 'clientspage' || urlComplete.subUrl === 'supplierslist' }">
-                        <a routerLink="/suppliers/supplierslist" ><i
-                                class="la la-users"></i> <span>Suppliers</span></a>
                     </li>
-                    <!-- <li class="submenu" [ngClass]="{ 'active' : urlComplete.mainUrl === 'projects' || urlComplete.subUrl === 'projectlist'|| urlComplete.subUrl === 'projectview' }">
+                    <li class="submenu" [ngClass]="{ 'active' : urlComplete.mainUrl === 'projects' || urlComplete.subUrl === 'projectlist'|| urlComplete.subUrl === 'projectview' }">
                         <a href="javascript:" [ngClass]="{ 'subdrop' : urlComplete.mainUrl === 'projects' || urlComplete.subUrl === 'projectlist'|| urlComplete.subUrl === 'projectview' }"href="javascript:"><i class="la la-rocket"></i> <span> Projects</span> <span
                                 class="menu-arrow"></span></a>
                         <ul style="display: none;"
@@ -570,7 +570,7 @@
                                 <a href="javascript:"> <span>Level 1</span></a>
                             </li>
                         </ul>
-                    </li> -->
+                    </li>
                 </ul>
                 <!-- <ul *ngIf="sidebarMenus.chat">
                     <li routerLink="/dashboard/admin">

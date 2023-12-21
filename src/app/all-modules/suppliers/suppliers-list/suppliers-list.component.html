@@ -215,9 +215,9 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="col-form-label">Address <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text"
-                                  [class.invalid]="addSupplierForm.get('address').invalid && addSupplierForm.get('address').touched"
-                                  formControlName="address">
+                                <textarea rows="4" class="form-control"
+                                [class.invalid]="addSupplierForm.get('address').invalid && addSupplierForm.get('address').touched"
+                                formControlName="address"></textarea>
                               <div
                                   *ngIf="addSupplierForm.get('address').invalid && addSupplierForm.get('address').touched">
                                   <small
@@ -323,9 +323,9 @@
                       <div class="col-md-6">
                           <div class="form-group">
                               <label class="col-form-label">Address <span class="text-danger">*</span></label>
-                              <input class="form-control" type="text"
-                                [class.invalid]="editSupplierForm.get('editAddress').invalid && editSupplierForm.get('editAddress').touched"
-                                formControlName="editAddress">
+                              <textarea rows="4" class="form-control"
+                                [class.invalid]="addSupplierForm.get('address').invalid && addSupplierForm.get('address').touched"
+                                formControlName="address"></textarea>
                             <div
                                 *ngIf="editSupplierForm.get('editAddress').invalid && editSupplierForm.get('editAddress').touched">
                                 <small

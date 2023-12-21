@@ -95,7 +95,6 @@ export class AllModulesService {
   // Update Method Api
   updateRecordStatus(user: any, endPoint): Observable<any> {
     const url = `${this.baseUrl}${endPoint}`;
-    // const url = `${this.apiurl}/${user.id}`;
     return this.http.put<any>(url, user, this.httpOptions).pipe(
       map(() => user),
       catchError(this.handleError)
