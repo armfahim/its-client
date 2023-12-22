@@ -1,14 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 
 import { AllModulesRoutingModule } from './all-modules-routing.module';
 import { AllModulesComponent } from './all-modules.component';
 import { HeaderComponent } from '../header/header.component';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 
-// Api Interaction 
+// Api Interaction
 // import { InMemoryWebApiModule } from 'angular-in-memory-web-api'
 
 // Perfect Scrollbar
@@ -31,14 +30,13 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {};
     AllModulesComponent,
     HeaderComponent,
     SidebarComponent,
-  
+
 
 
   ],
   imports: [
     CommonModule,
     FormsModule,
-    HttpClientModule,
     // InMemoryWebApiModule.forRoot(AllModulesData),
     PerfectScrollbarModule,
     AllModulesRoutingModule,

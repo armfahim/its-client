@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 // Bootstrap DataTable
 import { DataTablesModule } from 'angular-datatables';
 import { ToastrModule } from 'ngx-toastr';
+import { HttpClientModule } from '@angular/common/http';
+import { authInterceptorProviders } from './guard/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,7 @@ import { ToastrModule } from 'ngx-toastr';
     BrowserAnimationsModule,
     AppRoutingModule,
     DataTablesModule,
+    HttpClientModule,
     ToastrModule.forRoot(
       {
         timeOut: 2000,
@@ -26,7 +29,7 @@ import { ToastrModule } from 'ngx-toastr';
       }
     ),
   ],
-  providers: [],
+  providers: [authInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

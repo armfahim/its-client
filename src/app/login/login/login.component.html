@@ -8,40 +8,60 @@
         </div>
         <!-- /Account Logo -->
 
-        <div class="account-box">
-            <div class="account-wrapper">
-                <h3 class="account-title">Login</h3>
-                <p class="account-subtitle">Access to our dashboard</p>
+          <div class="account-box">
+              <div class="account-wrapper">
+                  <h3 class="account-title">Login</h3>
+                  <p class="account-subtitle">Access to our dashboard</p>
 
-                <!-- Account Form -->
-                <form>
-                    <div class="form-group">
-                        <label>User Name</label>
-                        <input class="form-control" type="text">
-                    </div>
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col">
-                                <label>Password</label>
-                            </div>
-                            <div class="col-auto">
-                                <a class="text-muted" routerLink = "/login/forgot">
-                                    Forgot password?
-                                </a>
-                            </div>
-                        </div>
-                        <input class="form-control" type="password">
-                    </div>
-                    <div class="form-group text-center">
-                      <button class="btn btn-primary account-btn" type="button" [routerLink]="['/dashboard/admin']">Login</button>
-                    </div>
-                    <div class="account-footer">
-                        <!-- <p>Don't have an account yet? <a routerLink = "/login/register">Register</a></p> -->
-                    </div>
-                </form>
-                <!-- /Account Form -->
+                  <!-- Account Form -->
+                  <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
+                      <div class="form-group">
+                          <label>Username</label>
+                          <input class="form-control" type="text"
+                                    [class.invalid]="loginForm.get('username').invalid && loginForm.get('username').touched"
+                                    formControlName="username">
+                                <div
+                                    *ngIf="loginForm.get('username').invalid && loginForm.get('username').touched">
+                                    <small
+                                        *ngIf="loginForm.get('username').invalid && loginForm.get('username').touched"
+                                        class="text-danger"> *Username is required</small>
+                                </div>
+                      </div>
+                      <div class="form-group">
+                          <div class="row">
+                              <div class="col">
+                                  <label>Password</label>
+                              </div>
+                              <div class="col-auto">
+                                  <a class="text-muted" routerLink = "/login/forgot">
+                                      Forgot password?
+                                  </a>
+                              </div>
+                          </div>
+                          <input class="form-control" type="password"
+                            [class.invalid]="loginForm.get('password').invalid && loginForm.get('password').touched"
+                                    formControlName="password">
+                          <div
+                              *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched">
+                              <small
+                                  *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched"
+                                  class="text-danger"> *Password is required</small>
+                          </div>
+                      </div>
+                      <div class="form-group text-center">
+                        <button class="btn btn-primary account-btn" type="submit">
+                          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                          Login
+                        </button>
+                        <!-- [routerLink]="['/dashboard/admin']" -->
+                      </div>
+                      <div class="account-footer">
+                          <!-- <p>Don't have an account yet? <a routerLink = "/login/register">Register</a></p> -->
+                      </div>
+                  </form>
+                  <!-- /Account Form -->
 
-            </div>
-        </div>
+              </div>
+          </div>
     </div>
 </div>

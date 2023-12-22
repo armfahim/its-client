@@ -7,8 +7,6 @@ import { AllModulesService } from '../../all-modules.service';
 import { ToastrService } from 'ngx-toastr';
 import { Suppliers } from '../../model/suppliers';
 import { HttpClient } from '@angular/common/http';
-import { PaginatedResponse } from 'src/app/utils/paginated-response';
-import { RecordStatus } from 'src/app/utils/enums.enum';
 
 declare const $: any;
 @Component({

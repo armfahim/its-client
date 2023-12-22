@@ -39,7 +39,6 @@ import { FileManagerComponent } from './file-manager/file-manager.component';
 import { EmailPagecontentComponent } from './email/email-pagecontent/email-pagecontent.component';
 import { EmailComposeComponent } from './email/email-compose/email-compose.component';
 import { EmailEmailviewComponent } from './email/email-emailview/email-emailview.component';
-import { HttpClientModule } from '@angular/common/http';
 import { AppsServiceService } from './apps-service.service';
 
 @NgModule({
@@ -64,7 +63,6 @@ import { AppsServiceService } from './apps-service.service';
   ],
   imports: [
     CommonModule,
-    HttpClientModule,
     BsDatepickerModule.forRoot(),
     TooltipModule.forRoot(),
     FilePondModule,

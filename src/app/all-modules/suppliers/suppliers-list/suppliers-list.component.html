@@ -324,8 +324,8 @@
                           <div class="form-group">
                               <label class="col-form-label">Address <span class="text-danger">*</span></label>
                               <textarea rows="4" class="form-control"
-                                [class.invalid]="addSupplierForm.get('address').invalid && addSupplierForm.get('address').touched"
-                                formControlName="address"></textarea>
+                                [class.invalid]="editSupplierForm.get('editAddress').invalid && editSupplierForm.get('editAddress').touched"
+                                formControlName="editAddress"></textarea>
                             <div
                                 *ngIf="editSupplierForm.get('editAddress').invalid && editSupplierForm.get('editAddress').touched">
                                 <small
