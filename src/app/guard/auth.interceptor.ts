@@ -14,6 +14,11 @@ export class AuthInterceptor implements HttpInterceptor{
 
     private handleAuthError(err: HttpErrorResponse): Observable<any> {
         //handle your auth error or rethrow
+        if(err.status === 0){
+          this.toastr.error('You are not authorized','error',{timeOut: 4000});
+          this.login.logout();
+          this.router.navigate(['login']);
+        }
         if (err.status === 403) {
             //navigate /delete cookies or whatever
             this.toastr.error('you are not authorized or token has been expired','error');

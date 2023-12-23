@@ -52,6 +52,17 @@ export class LoginService {
   }
 
   //logout:: remove token from localstorage
+  public logoutWithoutToastr() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    if (this.clearTimeout) {
+      clearTimeout(this.clearTimeout);
+    }
+    return true;
+  }
+
+  //logout:: remove token from localstorage
   public logout() {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -81,7 +92,7 @@ export class LoginService {
     if (userStr != null) {
       return JSON.parse(userStr);
     } else {
-      this.logout();
+      this.logoutWithoutToastr();
       return null;
     }
   }
@@ -94,6 +105,7 @@ export class LoginService {
     if (loggedInUser != null) {
         return loggedInUser.role;
     }else{
+      this.logoutWithoutToastr();
       return null;
     }
 

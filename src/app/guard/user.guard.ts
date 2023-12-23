@@ -17,7 +17,7 @@ export class UserGuard implements CanActivate {
 
     let authorities = this.login.getLoggedInUserRole();
 
-    if(this.login.isLoggedIn() && ( authorities != null && authorities.includes("ADMIN")
+    if(this.login.isLoggedIn() && ( authorities != null && authorities && authorities?.includes("ADMIN")
       || authorities.includes("EMPLOYEE"))){
       return true;
     }
