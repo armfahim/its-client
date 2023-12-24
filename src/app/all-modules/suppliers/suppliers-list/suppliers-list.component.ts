@@ -66,7 +66,6 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
         ajax: (dataTablesParameters: any, callback) => {
           // dataTablesParameters.orderColumnIndex = this.orderColumnIndex;
           dataTablesParameters.orderColumnName = this.orderColumnName;
-          dataTablesParameters.supplierId = this.searchFormData?.supplierID ? this.searchFormData.supplierID : "";
           dataTablesParameters.supplierName = this.searchFormData?.supplierName ? this.searchFormData.supplierName : "";
           this.allModulesService.getPaginatedData("/v1/supplier-details/list",dataTablesParameters).subscribe(resp => {
           this.suppliersData = resp?.data;
@@ -85,17 +84,17 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
 
     //Add clients form
     this.addSupplierForm = this.formBuilder.group({
-      supplierID: ["", [Validators.required],WhiteSpaceValidator],
-      supplierName: ["", [Validators.required],WhiteSpaceValidator],
-      contactPerson: ["", [Validators.required],WhiteSpaceValidator],
-      phone: ["", [Validators.required],WhiteSpaceValidator],
-      email: ["", [Validators.required],WhiteSpaceValidator],
-      address: ["", [Validators.required],WhiteSpaceValidator],
+      // supplierID: ["", [Validators.required],WhiteSpaceValidator],
+      supplierName: ["", [Validators.required]],
+      contactPerson: ["", [Validators.required]],
+      phone: ["", [Validators.required]],
+      email: ["", [Validators.required]],
+      address: ["", [Validators.required]],
     });
 
     //Edit Clients Form
     this.editSupplierForm = this.formBuilder.group({
-      editSupplierID: ["", [Validators.required]],
+      // editSupplierID: ["", [Validators.required]],
       editSupplierName: ["", [Validators.required]],
       editContactPerson: ["", [Validators.required]],
       editPhone: ["", [Validators.required]],
@@ -106,7 +105,6 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
 
     // Search Form
     this.searchForm = this.formBuilder.group({
-      supplierID:["",[]],
       supplierName:["",[]]
     })
 }
@@ -166,7 +164,7 @@ onSearch(){
       editSupplierName: supplier[0]?.supplierName,
       editPhone: supplier[0]?.phone,
       editEmail: supplier[0]?.email,
-      editSupplierID: supplier[0]?.supplierID,
+      // editSupplierID: supplier[0]?.supplierID,
       editContactPerson: supplier[0]?.contactPerson,
       editAddress: supplier[0]?.address,
       editId: supplier[0]?.id,
@@ -186,7 +184,7 @@ onSearch(){
     }
     this.editedSupplier = {
       supplierName: this.editSupplierForm.value.editSupplierName,
-      supplierID: this.editSupplierForm.value.editSupplierID,
+      // supplierID: this.editSupplierForm.value.editSupplierID,
       email: this.editSupplierForm.value.editEmail,
       phone: this.editSupplierForm.value.editPhone,
       contactPerson: this.editSupplierForm.value.editContactPerson,
@@ -223,7 +221,7 @@ onSearch(){
       return;
     }
     let newSupplier = {
-      supplierID: this.addSupplierForm.value.supplierID,
+      // supplierID: this.addSupplierForm.value.supplierID,
       supplierName: this.addSupplierForm.value.supplierName,
       contactPerson: this.addSupplierForm.value.contactPerson,
       phone: this.addSupplierForm.value.phone,

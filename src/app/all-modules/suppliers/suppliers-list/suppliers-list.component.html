@@ -30,13 +30,6 @@
           <div class="row filter-row">
               <div class="col-sm-6 col-md-3">
                   <div class="form-group form-focus">
-                      <!-- (input)="searchID($event.target.value)" -->
-                      <input formControlName="supplierID" type="text" class="form-control floating" (focusout)="rerender()">
-                      <label class="focus-label">Suppliers ID</label>
-                  </div>
-              </div>
-              <div class="col-sm-6 col-md-3">
-                  <div class="form-group form-focus">
                       <!-- (input)="searchName($event.target.value)" -->
                       <input formControlName="supplierName" type="text" class="form-control floating"
                           (focusout)="rerender()">
@@ -68,25 +61,24 @@
                     class="table table-striped custom-table datatable">
                     <thead>
                         <tr>
-                            <th (click)="onTableHeaderClick(0, 'supplierID')">Supplier ID</th>
                             <th (click)="onTableHeaderClick(0, 'supplierName')">Supplier Name</th>
-                            <th (click)="onTableHeaderClick(0, 'email')">Email</th>
-                            <th (click)="onTableHeaderClick(0, 'phone')">Phone</th>
-                            <th (click)="onTableHeaderClick(0, 'contactPerson')">Contact Person</th>
-                            <th (click)="onTableHeaderClick(0, 'address')">Address</th>
+                            <th (click)="onTableHeaderClick(1, 'email')">Email</th>
+                            <th (click)="onTableHeaderClick(2, 'phone')">Phone</th>
+                            <th (click)="onTableHeaderClick(3, 'contactPerson')">Contact Person</th>
+                            <th (click)="onTableHeaderClick(4, 'address')">Address</th>
                             <!-- <th>Status</th> -->
                             <th class="text-right">Action</th>
                         </tr>
                     </thead>
                     <tbody *ngIf="suppliersData">
                         <tr *ngFor="let supplier of suppliersData; let i = index">
-                            <td>
+                            <!-- <td>
                                 <h2 class="table-avatar">
                                     <a class="avatar"><img
                                             src="assets/img/profiles/avatar-{{ i + 1 }}.jpg" alt=""></a>
                                     <a>{{supplier.supplierID}}</a>
                                 </h2>
-                            </td>
+                            </td> -->
                             <td>{{supplier.supplierName}}</td>
                             <td>{{supplier.email}}</td>
                             <td>{{supplier.phone}}</td>
@@ -142,20 +134,6 @@
             <div class="modal-body">
                 <form [formGroup]="addSupplierForm">
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Supplier ID <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text"
-                                    [class.invalid]="addSupplierForm.get('supplierID').invalid && addSupplierForm.get('supplierID').touched"
-                                    formControlName="supplierID">
-                                <div
-                                    *ngIf="addSupplierForm.get('supplierID').invalid && addSupplierForm.get('supplierID').touched">
-                                    <small
-                                        *ngIf="addSupplierForm.get('supplierID').invalid && addSupplierForm.get('supplierID').touched"
-                                        class="text-danger"> *Supplier ID is required</small>
-                                </div>
-                            </div>
-                        </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="col-form-label">Supplier Name <span class="text-danger">*</span></label>
@@ -250,20 +228,6 @@
             <div class="modal-body">
                 <form [formGroup]="editSupplierForm">
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                              <label class="col-form-label">Supplier ID <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text"
-                                    [class.invalid]="editSupplierForm.get('editSupplierID').invalid && editSupplierForm.get('editSupplierID').touched"
-                                    formControlName="editSupplierID">
-                                <div
-                                    *ngIf="editSupplierForm.get('editSupplierID').invalid && editSupplierForm.get('editSupplierID').touched">
-                                    <small
-                                        *ngIf="editSupplierForm.get('editSupplierID').invalid && editSupplierForm.get('editSupplierID').touched"
-                                        class="text-danger"> *Supplier ID is required</small>
-                                </div>
-                            </div>
-                        </div>
                         <div class="col-md-6">
                             <div class="form-group">
                               <label class="col-form-label">Supplier Name <span class="text-danger">*</span></label>
