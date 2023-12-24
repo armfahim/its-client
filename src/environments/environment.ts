@@ -6,11 +6,11 @@ export const environment = {
   production: false,
 
     // Dev
-    // baseUrl: 'https://invoicetracker.azurewebsites.net/its/api',
-    // contextPath:'',
-
-    baseUrl: 'http://localhost:8082/its/api',
+    baseUrl: 'https://invoicetracker.azurewebsites.net/its/api',
     contextPath:'',
+
+    // baseUrl: 'http://localhost:8082/its/api',
+    // contextPath:'',
 
     // Test Server - Windows PC
     // production: false,
