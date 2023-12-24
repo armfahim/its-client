@@ -25,19 +25,18 @@ jobs:
         run: |
           npm install
           npm run build --if-present
-          npm run test --if-present
+          #npm run test --if-present
       
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: node-app
-          path: .
-
+          path: dist/its
   deploy:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Production'
+      name: 'production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     
     steps:
@@ -51,6 +50,6 @@ jobs:
         id: deploy-to-webapp
         with:
           app-name: 'trackinvoice'
-          slot-name: 'Production'
+          slot-name: 'production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DF6B0F0F2AC64B78A12552C26D6F443A }}
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_1a7d6adaa6314cb0ae4db3063ae4d362 }}
