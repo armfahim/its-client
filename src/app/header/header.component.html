@@ -145,7 +145,7 @@
             <div class="dropdown-menu">
                 <!-- <a class="dropdown-item" routerLink="/employees/employeeprofile">My Profile</a>
                 <a class="dropdown-item" routerLink="/settings/company-settings">Settings</a> -->
-                <a class="dropdown-item" routerLink="/login">Logout</a>
+                <a class="dropdown-item" routerLink="/login" (click)="logout()" >Logout</a>
             </div>
         </li>
     </ul>
@@ -158,7 +158,7 @@
         <div class="dropdown-menu dropdown-menu-right">
             <a class="dropdown-item" routerLink="/employees/employeeprofile">My Profile</a>
             <a class="dropdown-item" href="javascript:">Settings</a>
-            <a class="dropdown-item" routerLink="/login">Logout</a>
+            <a class="dropdown-item" routerLink="/login" (click)="logout()">Logout</a>
         </div>
     </div>
     <!-- /Mobile Menu -->

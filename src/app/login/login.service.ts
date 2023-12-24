@@ -59,6 +59,7 @@ export class LoginService {
     if (this.clearTimeout) {
       clearTimeout(this.clearTimeout);
     }
+    // this.sendLogoutRequest(this.getUser());
     return true;
   }
 
@@ -72,6 +73,7 @@ export class LoginService {
     if (this.clearTimeout) {
       clearTimeout(this.clearTimeout);
     }
+    // this.sendLogoutRequest(this.getUser());
     this.toastr.warning("Thank You", "logout");
     return true;
   }
@@ -108,26 +110,10 @@ export class LoginService {
       this.logoutWithoutToastr();
       return null;
     }
+  }
 
-    // if (loginUser != null) {
-    //   $.each(loginUser.roles, function(index, element){
-    //     console.log("element " + element);
-    //     roles.push(element.roleKey);
-    //   });
-    // if (loginUser) {
-    //   let authorities = loginUser.roles;
-    //   console.log("inside the if of login user role");
-    //   console.log(authorities);
-    //   authorities.forEach((element) => {
-    //     userAuthorities = userAuthorities + element.authority + ",";
-    //   });
-    // }
-
-    // console.log("userAuthorities" + userAuthorities);
-    // console.log("userAuthorities" + roles);
-    // role = roles[0];
-    // return role;
-    // }
+  public sendLogoutRequest(user) {
+    return this.http.post(`${this.baseUrl}/v1/auth/logout`,user);
   }
 
 

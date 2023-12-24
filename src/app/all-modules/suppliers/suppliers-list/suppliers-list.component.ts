@@ -7,6 +7,7 @@ import { AllModulesService } from '../../all-modules.service';
 import { ToastrService } from 'ngx-toastr';
 import { Suppliers } from '../../model/suppliers';
 import { HttpClient } from '@angular/common/http';
+import { WhiteSpaceValidator } from 'src/app/utils/white-space-validator';
 
 declare const $: any;
 @Component({
@@ -84,12 +85,12 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
 
     //Add clients form
     this.addSupplierForm = this.formBuilder.group({
-      supplierID: ["", [Validators.required]],
-      supplierName: ["", [Validators.required]],
-      contactPerson: ["", [Validators.required]],
-      phone: ["", [Validators.required]],
-      email: ["", [Validators.required]],
-      address: ["", [Validators.required]],
+      supplierID: ["", [Validators.required],WhiteSpaceValidator],
+      supplierName: ["", [Validators.required],WhiteSpaceValidator],
+      contactPerson: ["", [Validators.required],WhiteSpaceValidator],
+      phone: ["", [Validators.required],WhiteSpaceValidator],
+      email: ["", [Validators.required],WhiteSpaceValidator],
+      address: ["", [Validators.required],WhiteSpaceValidator],
     });
 
     //Edit Clients Form

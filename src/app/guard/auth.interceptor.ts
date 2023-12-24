@@ -15,7 +15,7 @@ export class AuthInterceptor implements HttpInterceptor{
     private handleAuthError(err: HttpErrorResponse): Observable<any> {
         //handle your auth error or rethrow
         if(err.status === 0){
-          this.toastr.error('You are not authorized','error',{timeOut: 4000});
+          this.toastr.error('Your session has timed out','error',{timeOut: 4000});
           this.login.logout();
           this.router.navigate(['login']);
         }
@@ -43,8 +43,8 @@ export class AuthInterceptor implements HttpInterceptor{
             this.login.logout();
             this.router.navigate(['login']);
         } else if(err.status == 401){
-            this.login.logout();
-            this.toastr.info(err.error?.message);
+            this.login.logoutWithoutToastr();
+            // this.toastr.info(err.error?.message);
             this.router.navigate(['login']);
         }
         return throwError(err);
