@@ -27,6 +27,11 @@
                         <a routerLink="/suppliers/supplierslist" ><i
                                 class="la la-users"></i> <span>Suppliers</span></a>
                     </li>
+                    <li [ngClass]="{ 'active' : urlComplete.subUrl === 'clientspage' || urlComplete.subUrl === 'invoicelist' }">
+                      <a routerLink="/invoice/invoicelist">
+                        <i class="la la-files-o"></i> <span>Invoices</span></a>
+                    </li>
+
                     <!-- <li class="submenu" [ngClass]="{ 'active' : urlComplete.mainUrl === 'apps' }">
                         <a href="javascript:" [ngClass]="{ 'subdrop' : urlComplete.mainUrl === 'apps' }">
                             <i class="la la-cube"></i>

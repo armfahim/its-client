@@ -84,7 +84,6 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
 
     //Add clients form
     this.addSupplierForm = this.formBuilder.group({
-      // supplierID: ["", [Validators.required],WhiteSpaceValidator],
       supplierName: ["", [Validators.required]],
       contactPerson: ["", [Validators.required]],
       phone: ["", [Validators.required]],
@@ -94,7 +93,6 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
 
     //Edit Clients Form
     this.editSupplierForm = this.formBuilder.group({
-      // editSupplierID: ["", [Validators.required]],
       editSupplierName: ["", [Validators.required]],
       editContactPerson: ["", [Validators.required]],
       editPhone: ["", [Validators.required]],
@@ -138,8 +136,6 @@ onSearch(){
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.destroy();
     });
-    // this.suppliersData = [];
-    // this.getClients();
     setTimeout(() => {
       this.dtTrigger.next();
     }, 500);
@@ -164,7 +160,6 @@ onSearch(){
       editSupplierName: supplier[0]?.supplierName,
       editPhone: supplier[0]?.phone,
       editEmail: supplier[0]?.email,
-      // editSupplierID: supplier[0]?.supplierID,
       editContactPerson: supplier[0]?.contactPerson,
       editAddress: supplier[0]?.address,
       editId: supplier[0]?.id,
@@ -184,12 +179,10 @@ onSearch(){
     }
     this.editedSupplier = {
       supplierName: this.editSupplierForm.value.editSupplierName,
-      // supplierID: this.editSupplierForm.value.editSupplierID,
       email: this.editSupplierForm.value.editEmail,
       phone: this.editSupplierForm.value.editPhone,
       contactPerson: this.editSupplierForm.value.editContactPerson,
       address: this.editSupplierForm.value.editAddress,
-      // status: "Active",
       id: this.editSupplierForm.value.editId,
     };
     this.allModulesService
@@ -221,13 +214,11 @@ onSearch(){
       return;
     }
     let newSupplier = {
-      // supplierID: this.addSupplierForm.value.supplierID,
       supplierName: this.addSupplierForm.value.supplierName,
       contactPerson: this.addSupplierForm.value.contactPerson,
       phone: this.addSupplierForm.value.phone,
       email: this.addSupplierForm.value.email,
       address: this.addSupplierForm.value.address
-      // status: "Active",
     };
     this.allModulesService.add(newSupplier, "/v1/supplier-details/save").subscribe((data) => {
     if(data.status == "error") {

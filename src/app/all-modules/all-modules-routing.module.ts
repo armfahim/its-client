@@ -20,6 +20,10 @@ const routes: Routes = [
         path: 'suppliers',
         loadChildren: () => import('./suppliers/suppliers.module').then(m => m.SuppliersModule)
       },
+      {
+        path: 'invoice',
+        loadChildren: () => import('./invoice/invoice.module').then(m => m.InvoiceModule)
+      },
 
       /** Below are template's routing */
       {
