@@ -19,7 +19,16 @@ export class InvoiceService {
   getPaginatedData(endPoint: any,params: any): Observable<any> {
     // Include DataTables parameters in the API request
     // &sort=${params.orderColumnName}&dir=${params.order[0].dir}
-    const url = `${this.baseUrl}${endPoint}?page=${params.start / params.length + 1}&size=${params.length}&sortBy=${params.orderColumnName}&dir=${params.order[0].dir}&invoiceNumber=${params.supplierName}`;
+    // const url = `${this.baseUrl}${endPoint}?page=${params.start / params.length + 1}&size=${params.length}&sortBy=${params.orderColumnName}&dir=${params.order[0].dir}&invoiceNumber=${params.supplierName}`;
+    const url = `${this.baseUrl}${endPoint}?` +
+                `page=${params.start / params.length + 1}&` +
+                `size=${params.length}&` +
+                `sortBy=${params.orderColumnName}&` +
+                `dir=${params.order[0].dir}&` +
+                `supplier=${params.supplier}&` +
+                `fromInvoiceDate=${params.fromInvoiceDate}&` +
+                `toInvoiceDate=${params.toInvoiceDate}`;
+    console.log(url);
     return this.http.get(url);
   }
 

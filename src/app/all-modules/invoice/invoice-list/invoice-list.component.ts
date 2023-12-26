@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
 import { Invoice } from '../../model/invoice';
 import { WhiteSpaceValidator } from 'src/app/utils/white-space-validator';
+import { InvoiceService } from '../../services/invoice.service';
 
 declare const $: any;
 @Component({
@@ -54,7 +55,8 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
     private allModulesService: AllModulesService,
     private toastr: ToastrService,
     private formBuilder: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
+    private invoiceService: InvoiceService
   ) { }
 
   ngOnInit() {
@@ -71,9 +73,10 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
         ajax: (dataTablesParameters: any, callback) => {
           // dataTablesParameters.orderColumnIndex = this.orderColumnIndex;
           dataTablesParameters.orderColumnName = this.orderColumnName;
-          dataTablesParameters.supplierName = this.searchFormData?.supplierName ? this.searchFormData.supplierName : "";
           dataTablesParameters.supplier = this.searchSupplierId ? this.searchSupplierId : "";
-          this.allModulesService.getPaginatedData("/v1/supplier-details/list",dataTablesParameters).subscribe(resp => {
+          dataTablesParameters.fromInvoiceDate = this.searchFormData?.fromInvoiceDate ? this.searchFormData.fromInvoiceDate : "";
+          dataTablesParameters.toInvoiceDate = this.searchFormData?.toInvoiceDate ? this.searchFormData.toInvoiceDate : "";
+          this.invoiceService.getPaginatedData("/v1/invoice-details/list",dataTablesParameters).subscribe(resp => {
           this.suppliersData = resp?.data;
           this.rows = this.suppliersData;
           this.srch = [...this.rows];

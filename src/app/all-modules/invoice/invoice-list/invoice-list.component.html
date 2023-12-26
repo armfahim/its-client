@@ -32,15 +32,16 @@
                     <ng-select [items]="suppliers"
                         bindLabel="supplierName" placeholder="Search Company" bindValue="id" [searchable]="true"
                         [clearable]="false" [virtualScroll]="true" class="custom-ng-select"
-                        formControlName="supplierId" [(ngModel)]="searchSupplierId"  (focusout)="rerender()">
+                        formControlName="supplierId" [(ngModel)]="searchSupplierId">
+                        <!-- (focusout)="rerender()" -->
                     </ng-select>
                 </div>
             </div>
             <div class="col-sm-6 col-md-3">
                 <div class="form-group form-focus">
                     <div class="cal-icon">
-                        <input class="form-control floating datetimepicker" type="text" bsDatepicker type="text" 
-                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }" (bsValueChange)="searchFromDate($event)">
+                        <input class="form-control floating datetimepicker" type="text" bsDatepicker type="text" formControlName="fromInvoiceDate"
+                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }">
                     </div>
                     <label class="focus-label">From</label>
                 </div>
@@ -48,8 +49,8 @@
             <div class="col-sm-6 col-md-3">
                 <div class="form-group form-focus">
                     <div class="cal-icon">
-                        <input class="form-control floating datetimepicker" type="text" bsDatepicker type="text" 
-                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }" (bsValueChange)="searchToDate($event)">
+                        <input class="form-control floating datetimepicker" type="text" bsDatepicker type="text" formControlName="toInvoiceDate"
+                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }" (focusout)="rerender()">
                     </div>
                     <label class="focus-label">To</label>
                 </div>
