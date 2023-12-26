@@ -29,22 +29,31 @@
         <div class="row filter-row">
             <div class="col-sm-6 col-md-3">
                 <div class="form-group form-focus">
-                    <!-- (input)="searchName($event.target.value)" -->
-                    <input formControlName="supplierName" type="text" class="form-control floating"
-                        (focusout)="rerender()">
-                    <label class="focus-label">Suppliers Name</label>
+                    <ng-select [items]="suppliers"
+                        bindLabel="supplierName" placeholder="Search Company" bindValue="id" [searchable]="true"
+                        [clearable]="false" [virtualScroll]="true" class="custom-ng-select"
+                        formControlName="supplierId" [(ngModel)]="searchSupplierId"  (focusout)="rerender()">
+                    </ng-select>
                 </div>
             </div>
-            <!-- <div class="col-sm-6 col-md-3">
-                <div class="form-group form-focus select-focus">
-                    <select class="select floating form-control" (input)="searchCompany($event.target.value)">
-                        <option>Select Company</option>
-                        <option>Global Technologies</option>
-                        <option>Delta Infotech</option>
-                    </select>
-                    <label class="focus-label">Company</label>
+            <div class="col-sm-6 col-md-3">
+                <div class="form-group form-focus">
+                    <div class="cal-icon">
+                        <input class="form-control floating datetimepicker" type="text" bsDatepicker type="text" 
+                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }" (bsValueChange)="searchFromDate($event)">
+                    </div>
+                    <label class="focus-label">From</label>
                 </div>
-            </div> -->
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <div class="form-group form-focus">
+                    <div class="cal-icon">
+                        <input class="form-control floating datetimepicker" type="text" bsDatepicker type="text" 
+                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }" (bsValueChange)="searchToDate($event)">
+                    </div>
+                    <label class="focus-label">To</label>
+                </div>
+            </div>
             <div class="col-sm-6 col-md-3">
               <button class="btn btn-success btn-block" type="submit">Search</button>
                 <!-- <a class="btn btn-success btn-block" type="submit" (click)="onSearch()"> Search </a> -->
@@ -60,11 +69,15 @@
                   class="table table-striped custom-table datatable">
                   <thead>
                       <tr>
-                          <th (click)="onTableHeaderClick(0, 'supplierName')">Supplier Name</th>
-                          <th (click)="onTableHeaderClick(1, 'email')">Email</th>
-                          <th (click)="onTableHeaderClick(2, 'phone')">Phone</th>
-                          <th (click)="onTableHeaderClick(3, 'contactPerson')">Contact Person</th>
-                          <th (click)="onTableHeaderClick(4, 'address')">Address</th>
+                          <th (click)="onTableHeaderClick(0, 'invoiceNumber')">Invoice Number</th>
+                          <th (click)="onTableHeaderClick(1, 'invoiceDate')">Invoice Date</th>
+                          <th (click)="onTableHeaderClick(2, 'invoiceAmount')">Invoice Amount</th>
+                          <th (click)="onTableHeaderClick(3, 'term')">Term</th>
+                          <th (click)="onTableHeaderClick(4, 'netDue')">Net Due</th>
+                          <th (click)="onTableHeaderClick(4, 'paymentDueDate')">Payment Due Date</th>
+                          <th (click)="onTableHeaderClick(4, 'chequeNumber')">Cheque Number</th>
+                          <th (click)="onTableHeaderClick(4, 'creditAmount')">Credit Amount</th>
+                          <th (click)="onTableHeaderClick(4, 'paidDate')">Paid Date</th>
                           <!-- <th>Status</th> -->
                           <th class="text-right">Action</th>
                       </tr>
@@ -125,7 +138,7 @@
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
       <div class="modal-content">
           <div class="modal-header">
-              <h5 class="modal-title">Add Suppliers</h5>
+              <h5 class="modal-title">Add Invoice</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
               </button>
@@ -168,7 +181,7 @@
                               <label class="col-form-label">Invoice Date <span class="text-danger">*</span></label>
                               <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
                                 [class.invalid]="addInvoiceForm.get('invoiceDate').invalid && addInvoiceForm.get('invoiceDate').touched"
-                                formControlName="invoiceDate">
+                                formControlName="invoiceDate" [(ngModel)]="invoice.invoiceDate" (ngModelChange)="paymentDueDateCalculation($event)">
                             <div
                                 *ngIf="addInvoiceForm.get('invoiceDate').invalid && addInvoiceForm.get('invoiceDate').touched">
                                 <small
@@ -181,7 +194,7 @@
                       <div class="col-md-6">
                           <div class="form-group">
                               <label class="col-form-label">Invoice Amount <span class="text-danger">*</span></label>
-                              <input class="form-control" type="text" [(ngModel)]="invoice.invoiceAmount"
+                              <input class="form-control" type="number" [(ngModel)]="invoice.invoiceAmount"
                                 [class.invalid]="addInvoiceForm.get('invoiceAmount').invalid && addInvoiceForm.get('invoiceAmount').touched"
                                 formControlName="invoiceAmount" appTwoDigitDecimaNumber>
                             <div
@@ -198,7 +211,7 @@
                             <ng-select [items]="term"
                               bindLabel="value" placeholder="--Select--" bindValue="value" [searchable]="true"
                               [clearable]="false" [virtualScroll]="true" class="custom-ng-select"
-                              formControlName="term" [(ngModel)]="invoice.term">
+                              formControlName="term" [(ngModel)]="invoice.term" (ngModelChange)="paymentDueDateCalculation(event)">
                             </ng-select>
                           <div
                               *ngIf="addInvoiceForm.get('term').invalid && addInvoiceForm.get('term').touched">
@@ -211,21 +224,41 @@
                       <div class="col-md-6">
                         <div class="form-group">
                             <label class="col-form-label">Credit Amount <span class="text-danger">*</span></label>
-                            <input class="form-control" type="text" [(ngModel)]="invoice.creditAmount"
+                            <small class="text-info"> ( If there is no credit amount, Type ' 0 ')</small>
+                            <input class="form-control" type="number" [(ngModel)]="invoice.creditAmount"
                               [class.invalid]="addInvoiceForm.get('creditAmount').invalid && addInvoiceForm.get('creditAmount').touched"
-                              formControlName="creditAmount" appTwoDigitDecimaNumber>
+                              formControlName="creditAmount" appTwoDigitDecimaNumber (ngModelChange)="netDueCalculation($event)">
                           <div
                               *ngIf="addInvoiceForm.get('creditAmount').invalid && addInvoiceForm.get('creditAmount').touched">
                               <small
                                   *ngIf="addInvoiceForm.get('creditAmount').invalid && addInvoiceForm.get('creditAmount').touched"
                                   class="text-danger"> *Credit amount is required</small>
                           </div>
+                          <div *ngIf="invoice.creditAmount > invoice.invoiceAmount">
+                              <small *ngIf="invoice.creditAmount > invoice.invoiceAmount"
+                                  class="text-danger"> *Credit amount is greater than invoice amount</small>
+                          </div>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
+                            <label class="col-form-label">Payment Due Date <span class="text-danger">*</span></label>
+                            <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker type="text" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                              [class.invalid]="addInvoiceForm.get('paymentDueDate').invalid && addInvoiceForm.get('paymentDueDate').touched"
+                              formControlName="paymentDueDate" placeholder="( Invoice Date + Term )" [ngModel]="invoice.paymentDueDate">
+                          <div
+                              *ngIf="addInvoiceForm.get('paymentDueDate').invalid && addInvoiceForm.get('paymentDueDate').touched">
+                              <small
+                                  *ngIf="addInvoiceForm.get('paymentDueDate').invalid && addInvoiceForm.get('paymentDueDate').touched"
+                                  class="text-danger"> *Payment due date is required</small>
+                          </div>
+                        </div>
+                      </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
                             <label class="col-form-label">Net Due <span class="text-danger">*</span></label>
-                            <input class="form-control" type="text" appTwoDigitDecimaNumber [(ngModel)]="invoice.netDue"
+                            <input class="form-control" type="number" appTwoDigitDecimaNumber [(ngModel)]="invoice.netDue"
                               [class.invalid]="addInvoiceForm.get('netDue').invalid && addInvoiceForm.get('netDue').touched"
                               formControlName="netDue" placeholder="( Invoice Amount - Credit Amount )">
                           <div
@@ -235,21 +268,6 @@
                                   class="text-danger"> *Net is required</small>
                           </div>
                         </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="col-form-label">Payment Due Date <span class="text-danger">*</span></label>
-                            <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker type="text" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
-                              [class.invalid]="addInvoiceForm.get('paymentDueDate').invalid && addInvoiceForm.get('paymentDueDate').touched"
-                              formControlName="paymentDueDate" placeholder="( Invoice Date + Term )">
-                          <div
-                              *ngIf="addInvoiceForm.get('paymentDueDate').invalid && addInvoiceForm.get('paymentDueDate').touched">
-                              <small
-                                  *ngIf="addInvoiceForm.get('paymentDueDate').invalid && addInvoiceForm.get('paymentDueDate').touched"
-                                  class="text-danger"> *Payment due date is required</small>
-                          </div>
-                        </div>
-                      </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">

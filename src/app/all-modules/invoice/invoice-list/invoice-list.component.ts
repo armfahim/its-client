@@ -47,6 +47,7 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
   //Search Form
   searchForm: FormGroup;
   searchFormData : any;
+  searchSupplierId: any;
 
 
   constructor(
@@ -71,6 +72,7 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
           // dataTablesParameters.orderColumnIndex = this.orderColumnIndex;
           dataTablesParameters.orderColumnName = this.orderColumnName;
           dataTablesParameters.supplierName = this.searchFormData?.supplierName ? this.searchFormData.supplierName : "";
+          dataTablesParameters.supplier = this.searchSupplierId ? this.searchSupplierId : "";
           this.allModulesService.getPaginatedData("/v1/supplier-details/list",dataTablesParameters).subscribe(resp => {
           this.suppliersData = resp?.data;
           this.rows = this.suppliersData;
@@ -120,7 +122,10 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
 
     // Search Form
     this.searchForm = this.formBuilder.group({
-      supplierName:["",[]]
+      supplierName:["",[]],
+      supplierId:["",[]],
+      fromInvoiceDate:["",[]],
+      toInvoiceDate:["",[]]
     })
 
     this.loadAllSuppliers();
@@ -237,7 +242,7 @@ onSearch(){
 
   //Add new client
   public onAddInvoice() {
-    if (this.addInvoiceForm.invalid) {
+    if (this.addInvoiceForm.invalid || (this.invoice.creditAmount > this.invoice.invoiceAmount)) {
       this.toastr.info("Please insert valid data");
       return;
     }
@@ -246,15 +251,16 @@ onSearch(){
       invoiceDesc: this.addInvoiceForm.value.invoiceDesc,
       invoiceDate: this.addInvoiceForm.value.invoiceDate,
       term: this.addInvoiceForm.value.term,
-      paymentDueDate: this.addInvoiceForm.value.paymentDueDate,
       invoiceAmount: this.addInvoiceForm.value.invoiceAmount,
       creditAmount: this.addInvoiceForm.value.creditAmount,
-      netDue: this.addInvoiceForm.value.netDue,
       chequeNumber: this.addInvoiceForm.value.chequeNumber,
       paidDate: this.addInvoiceForm.value.paidDate,
       supplierDetails: this.addInvoiceForm.value.supplierDetails,
+
+      netDue: this.invoice.netDue,
+      paymentDueDate: this.invoice.paymentDueDate,
     };
-    this.allModulesService.add(newSupplier, "/v1/supplier-details/save").subscribe((data) => {
+    this.allModulesService.add(newSupplier, "/v1/invoice-details/save").subscribe((data) => {
     if(data.status == "error") {
         this.toastr.error(data.errors,"Failed");
         return;
@@ -277,6 +283,22 @@ onSearch(){
       return;
     });
     // this.getClients();
+  }
+
+  netDueCalculation(event){
+    if( this.invoice.invoiceAmount >= this.invoice.creditAmount){
+      this.invoice.netDue = this.invoice.invoiceAmount - this.invoice.creditAmount;
+      return;
+    }
+    this.invoice.netDue = null;
+  }
+  paymentDueDateCalculation(event){
+    if(this.invoice?.term){
+      const newDate = new Date(this.invoice.invoiceDate);
+      const termAsNumber = parseInt(this.invoice.term, 10);
+      newDate.setDate(newDate.getDate() + termAsNumber);
+      this.invoice.paymentDueDate = newDate;
+    }
   }
 
   //Delete Client

@@ -3,12 +3,12 @@ export class Invoice {
 
   supplierDetails!:number;
   invoiceNumber!:string;
-  invoiceDate!:string;
+  invoiceDate!:Date;
   invoiceAmount!:number;
   term!:string;
   creditAmount!:number;
   netDue!:number;
-  paymentDueDate!:string;
+  paymentDueDate!:Date;
   chequeNumber!:string;
   paidDate!:string;
   invoiceDesc!:string;
