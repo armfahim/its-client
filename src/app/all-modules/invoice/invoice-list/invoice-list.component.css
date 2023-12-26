@@ -7,3 +7,9 @@
   ::ng-deep table.dataTable td.dataTables_empty {
 	display: none;
 }
+/* .ng-select.custom-ng-select .ng-select-container {
+  border-color: #667eea;
+  border-left: 3px solid #667eea;
+  box-shadow: none;
+  height: 43px;
+} */

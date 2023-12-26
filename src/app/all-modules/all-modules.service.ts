@@ -48,9 +48,8 @@ export class AllModulesService {
   }
 
   // Get Method Api
-  get(type): Observable<any> {
-    // this.apiurl = `api/${type}`;
-    const url = type;
+  get(endPoint): Observable<any> {
+    const url = `${this.baseUrl}${endPoint}`;
     return this.http
       .get<any>(url)
       .pipe(tap(), catchError(this.handleError));

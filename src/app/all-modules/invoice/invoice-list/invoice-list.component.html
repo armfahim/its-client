@@ -136,15 +136,17 @@
                       <div class="col-md-6">
                           <div class="form-group">
                               <label class="col-form-label">Company Name <span class="text-danger">*</span></label>
-                              <!-- <input class="form-control" type="text"
-                                [class.invalid]="addInvoiceForm.get('supplierName').invalid && addInvoiceForm.get('supplierName').touched"
-                                  formControlName="supplierName">
+                              <ng-select [items]="suppliers"
+                                        bindLabel="supplierName" placeholder="--Select--" bindValue="id" [searchable]="true"
+                                        [clearable]="false" [virtualScroll]="true" class="custom-ng-select"
+                                        formControlName="supplierDetails" [(ngModel)]="invoice.supplierDetails">
+                              </ng-select>
                               <div
-                                  *ngIf="addInvoiceForm.get('supplierName').invalid && addInvoiceForm.get('supplierName').touched">
-                                  <small
-                                      *ngIf="addInvoiceForm.get('supplierName').invalid && addInvoiceForm.get('supplierName').touched"
-                                      class="text-danger"> *Company is required</small>
-                              </div> -->
+                                *ngIf="addInvoiceForm.get('supplierDetails').invalid && addInvoiceForm.get('supplierDetails').touched">
+                                <small
+                                    *ngIf="addInvoiceForm.get('supplierDetails').invalid && addInvoiceForm.get('supplierDetails').touched"
+                                    class="text-danger"> *Company is required</small>
+                              </div>
                           </div>
                       </div>
                       <div class="col-md-6">
@@ -152,7 +154,7 @@
                               <label class="col-form-label">Invoice Number <span class="text-danger">*</span></label>
                               <input class="form-control" type="text"
                                 [class.invalid]="addInvoiceForm.get('invoiceNumber').invalid && addInvoiceForm.get('invoiceNumber').touched"
-                                  formControlName="invoiceNumber">
+                                  formControlName="invoiceNumber" (keydown.space)="$event.preventDefault()">
                               <div
                                   *ngIf="addInvoiceForm.get('invoiceNumber').invalid && addInvoiceForm.get('invoiceNumber').touched">
                                   <small
@@ -164,14 +166,14 @@
                       <div class="col-md-6">
                           <div class="form-group">
                               <label class="col-form-label">Invoice Date <span class="text-danger">*</span></label>
-                              <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker type="text" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                              <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
                                 [class.invalid]="addInvoiceForm.get('invoiceDate').invalid && addInvoiceForm.get('invoiceDate').touched"
                                 formControlName="invoiceDate">
                             <div
                                 *ngIf="addInvoiceForm.get('invoiceDate').invalid && addInvoiceForm.get('invoiceDate').touched">
                                 <small
                                     *ngIf="addInvoiceForm.get('invoiceDate').invalid && addInvoiceForm.get('invoiceDate').touched"
-                                    class="text-danger"> *Purchase date is required</small>
+                                    class="text-danger"> *Invoice date is required</small>
                             </div>
                           </div>
                         </div>
@@ -179,9 +181,9 @@
                       <div class="col-md-6">
                           <div class="form-group">
                               <label class="col-form-label">Invoice Amount <span class="text-danger">*</span></label>
-                              <input class="form-control" type="text"
+                              <input class="form-control" type="text" [(ngModel)]="invoice.invoiceAmount"
                                 [class.invalid]="addInvoiceForm.get('invoiceAmount').invalid && addInvoiceForm.get('invoiceAmount').touched"
-                                formControlName="invoiceAmount">
+                                formControlName="invoiceAmount" appTwoDigitDecimaNumber>
                             <div
                                 *ngIf="addInvoiceForm.get('invoiceAmount').invalid && addInvoiceForm.get('invoiceAmount').touched">
                                 <small
@@ -193,23 +195,25 @@
                       <div class="col-md-6">
                         <div class="form-group">
                             <label class="col-form-label">Term <span class="text-danger">*</span></label>
-                            <input class="form-control" type="text"
-                              [class.invalid]="addInvoiceForm.get('invoiceAmount').invalid && addInvoiceForm.get('invoiceAmount').touched"
-                              formControlName="invoiceAmount">
+                            <ng-select [items]="term"
+                              bindLabel="value" placeholder="--Select--" bindValue="value" [searchable]="true"
+                              [clearable]="false" [virtualScroll]="true" class="custom-ng-select"
+                              formControlName="term" [(ngModel)]="invoice.term">
+                            </ng-select>
                           <div
-                              *ngIf="addInvoiceForm.get('invoiceAmount').invalid && addInvoiceForm.get('invoiceAmount').touched">
+                              *ngIf="addInvoiceForm.get('term').invalid && addInvoiceForm.get('term').touched">
                               <small
-                                  *ngIf="addInvoiceForm.get('invoiceAmount').invalid && addInvoiceForm.get('invoiceAmount').touched"
-                                  class="text-danger"> *Invoice amount is required</small>
+                                  *ngIf="addInvoiceForm.get('term').invalid && addInvoiceForm.get('term').touched"
+                                  class="text-danger"> *Term is required</small>
                           </div>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
                             <label class="col-form-label">Credit Amount <span class="text-danger">*</span></label>
-                            <input class="form-control" type="text"
+                            <input class="form-control" type="text" [(ngModel)]="invoice.creditAmount"
                               [class.invalid]="addInvoiceForm.get('creditAmount').invalid && addInvoiceForm.get('creditAmount').touched"
-                              formControlName="creditAmount">
+                              formControlName="creditAmount" appTwoDigitDecimaNumber>
                           <div
                               *ngIf="addInvoiceForm.get('creditAmount').invalid && addInvoiceForm.get('creditAmount').touched">
                               <small
@@ -221,9 +225,9 @@
                       <div class="col-md-6">
                         <div class="form-group">
                             <label class="col-form-label">Net Due <span class="text-danger">*</span></label>
-                            <input class="form-control" type="text"
+                            <input class="form-control" type="text" appTwoDigitDecimaNumber [(ngModel)]="invoice.netDue"
                               [class.invalid]="addInvoiceForm.get('netDue').invalid && addInvoiceForm.get('netDue').touched"
-                              formControlName="netDue">
+                              formControlName="netDue" placeholder="( Invoice Amount - Credit Amount )">
                           <div
                               *ngIf="addInvoiceForm.get('netDue').invalid && addInvoiceForm.get('netDue').touched">
                               <small
@@ -237,7 +241,7 @@
                             <label class="col-form-label">Payment Due Date <span class="text-danger">*</span></label>
                             <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker type="text" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
                               [class.invalid]="addInvoiceForm.get('paymentDueDate').invalid && addInvoiceForm.get('paymentDueDate').touched"
-                              formControlName="paymentDueDate">
+                              formControlName="paymentDueDate" placeholder="( Invoice Date + Term )">
                           <div
                               *ngIf="addInvoiceForm.get('paymentDueDate').invalid && addInvoiceForm.get('paymentDueDate').touched">
                               <small
@@ -252,7 +256,7 @@
                             <label class="col-form-label">Cheque Number <span class="text-danger">*</span></label>
                             <input class="form-control" type="text"
                               [class.invalid]="addInvoiceForm.get('chequeNumber').invalid && addInvoiceForm.get('chequeNumber').touched"
-                              formControlName="netDue">
+                              formControlName="chequeNumber">
                           <div
                               *ngIf="addInvoiceForm.get('chequeNumber').invalid && addInvoiceForm.get('chequeNumber').touched">
                               <small
@@ -278,7 +282,7 @@
                       </div>
                       <div class="col-md-6">
                           <div class="form-group">
-                              <label class="col-form-label">Invoice Description <span class="text-danger">*</span></label>
+                              <label class="col-form-label">Invoice Description</label>
                               <textarea rows="4" class="form-control"
                               [class.invalid]="addInvoiceForm.get('invoiceDesc').invalid && addInvoiceForm.get('invoiceDesc').touched"
                               formControlName="invoiceDesc"></textarea>
@@ -286,14 +290,14 @@
                                 *ngIf="addInvoiceForm.get('invoiceDesc').invalid && addInvoiceForm.get('invoiceDesc').touched">
                                 <small
                                     *ngIf="addInvoiceForm.get('invoiceDesc').invalid && addInvoiceForm.get('invoiceDesc').touched"
-                                    class="text-danger"> *Description is required</small>
+                                    class="text-danger"> *Provide valid data</small>
                             </div>
                           </div>
                       </div>
 
                   </div>
                   <div class="submit-section">
-                      <button class="btn btn-primary submit-btn" (click)="onAddSupplier()">Submit</button>
+                      <button class="btn btn-primary submit-btn" (click)="onAddInvoice()">Submit</button>
                   </div>
               </form>
           </div>

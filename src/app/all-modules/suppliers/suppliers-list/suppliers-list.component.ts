@@ -49,7 +49,7 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
     private allModulesService: AllModulesService,
     private toastr: ToastrService,
     private formBuilder: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
   ) { }
 
   ngOnInit() {

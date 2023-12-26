@@ -7,6 +7,7 @@ import { AllModulesService } from '../../all-modules.service';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
 import { Invoice } from '../../model/invoice';
+import { WhiteSpaceValidator } from 'src/app/utils/white-space-validator';
 
 declare const $: any;
 @Component({
@@ -35,6 +36,10 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
 
   //Model
   invoice: Invoice = new Invoice();
+  //obj declaration
+  suppliers: [] = [];
+  term: [] = [];
+
   // Properties for dynamic column sorting
   orderColumnIndex: number = 0;
   orderColumnName: string = "";
@@ -83,23 +88,25 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
 
     //Add clients form
     this.addInvoiceForm = this.formBuilder.group({
-      invoiceNumber: ["", [Validators.required]],
-      invoiceDesc: ["", [Validators.required]],
+      invoiceNumber: ["", [Validators.required,WhiteSpaceValidator]],
+      invoiceDesc: ["", [WhiteSpaceValidator]],
       invoiceDate: ["", [Validators.required]],
       term: ["", [Validators.required]],
       paymentDueDate: ["", [Validators.required]],
       invoiceAmount: ["", [Validators.required]],
       creditAmount: ["", [Validators.required]],
       netDue: ["", [Validators.required]],
-      chequeNumber: ["", [Validators.required]],
+      chequeNumber: ["", [Validators.required,WhiteSpaceValidator]],
       paidDate: ["", [Validators.required]],
       supplierDetails: ["", [Validators.required]],
     });
+    this.addInvoiceForm.get("paymentDueDate").disable();
+    this.addInvoiceForm.get("netDue").disable();
 
     //Edit Clients Form
     this.editInvoiceForm = this.formBuilder.group({
       editInvoiceNumber: ["", [Validators.required]],
-      editInvoiceDesc: ["", [Validators.required]],
+      editInvoiceDesc: ["", []],
       editInvoiceDate: ["", [Validators.required]],
       editTerm: ["", [Validators.required]],
       editPaymentDueDate: ["", [Validators.required]],
@@ -115,6 +122,25 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
     this.searchForm = this.formBuilder.group({
       supplierName:["",[]]
     })
+
+    this.loadAllSuppliers();
+    this.loadAllTerm();
+}
+
+loadAllTerm() {
+  this.allModulesService.get("/v1/invoice-details/get-term").subscribe((response: any) => {
+    this.term = response?.data;
+  }, (error) => {
+    this.toastr.error(error.error.message);
+  });
+}
+
+loadAllSuppliers() {
+  this.allModulesService.get("/v1/supplier-details/all").subscribe((response: any) => {
+    this.suppliers = response?.data;
+  }, (error) => {
+    this.toastr.error(error.error.message);
+  });
 }
 
 onSearch(){
@@ -153,15 +179,6 @@ onSearch(){
     //Init search form data, if any
     this.searchFormData = this.searchForm?.value;
   }
-  //Get all Clients data
-  public getClients() {
-    this.allModulesService.get("http://localhost:9000/its/api/v1/supplier-details/list").subscribe((response) => {
-    this.suppliersData = response?.data;
-      // this.clientsData.map((client) => this.companiesList.push(client.company));
-      this.rows = this.suppliersData;
-      this.srch = [...this.rows];
-    });
-  }
 
   // Edit Supplier
   // public onEditSupplier(supplierId: any) {
@@ -179,6 +196,7 @@ onSearch(){
   //Reset form
   public resetForm() {
     this.addInvoiceForm.reset();
+    // this.invoice.creditAmount = 0;
   }
 
   // Update Supplier
@@ -218,17 +236,23 @@ onSearch(){
   // }
 
   //Add new client
-  public onAddSupplier() {
+  public onAddInvoice() {
     if (this.addInvoiceForm.invalid) {
       this.toastr.info("Please insert valid data");
       return;
     }
     let newSupplier = {
-      supplierName: this.addInvoiceForm.value.supplierName,
-      contactPerson: this.addInvoiceForm.value.contactPerson,
-      phone: this.addInvoiceForm.value.phone,
-      email: this.addInvoiceForm.value.email,
-      address: this.addInvoiceForm.value.address
+      invoiceNumber: this.addInvoiceForm.value.invoiceNumber,
+      invoiceDesc: this.addInvoiceForm.value.invoiceDesc,
+      invoiceDate: this.addInvoiceForm.value.invoiceDate,
+      term: this.addInvoiceForm.value.term,
+      paymentDueDate: this.addInvoiceForm.value.paymentDueDate,
+      invoiceAmount: this.addInvoiceForm.value.invoiceAmount,
+      creditAmount: this.addInvoiceForm.value.creditAmount,
+      netDue: this.addInvoiceForm.value.netDue,
+      chequeNumber: this.addInvoiceForm.value.chequeNumber,
+      paidDate: this.addInvoiceForm.value.paidDate,
+      supplierDetails: this.addInvoiceForm.value.supplierDetails,
     };
     this.allModulesService.add(newSupplier, "/v1/supplier-details/save").subscribe((data) => {
     if(data.status == "error") {
