@@ -31,17 +31,17 @@
                 <div class="form-group form-focus">
                     <ng-select [items]="suppliers"
                         bindLabel="supplierName" placeholder="Search Company" bindValue="id" [searchable]="true"
-                        [clearable]="false" [virtualScroll]="true" class="custom-ng-select"
-                        formControlName="supplierId" [(ngModel)]="searchSupplierId">
-                        <!-- (focusout)="rerender()" -->
+                        [clearable]="true" [virtualScroll]="true" class="custom-ng-select"
+                        formControlName="supplierId" [(ngModel)]="searchSupplierId" (focusout)="rerender()">
                     </ng-select>
                 </div>
             </div>
             <div class="col-sm-6 col-md-3">
                 <div class="form-group form-focus">
                     <div class="cal-icon">
-                        <input class="form-control floating datetimepicker" type="text" bsDatepicker type="text" formControlName="fromInvoiceDate"
-                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }">
+                        <input class="form-control floating datetimepicker" bsDatepicker type="text" formControlName="fromInvoiceDate" (focusout)="rerender()" 
+                            [bsConfig]="{ adaptivePosition: true,containerClass: 'theme-red', dateInputFormat: 'YYYY-MM-DD', showClearButton: true, isAnimated: true}"
+                            (bsValueChange)="searchByDate()">
                     </div>
                     <label class="focus-label">From</label>
                 </div>
@@ -49,8 +49,9 @@
             <div class="col-sm-6 col-md-3">
                 <div class="form-group form-focus">
                     <div class="cal-icon">
-                        <input class="form-control floating datetimepicker" type="text" bsDatepicker type="text" formControlName="toInvoiceDate"
-                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }" (focusout)="rerender()">
+                        <input class="form-control floating datetimepicker" bsDatepicker formControlName="toInvoiceDate" (focusout)="rerender()"
+                            [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD', showClearButton: true, returnFocusToInput: true,isAnimated: true }"
+                            (bsValueChange)="searchByDate()">
                     </div>
                     <label class="focus-label">To</label>
                 </div>
@@ -70,6 +71,7 @@
                   class="table table-striped custom-table datatable">
                   <thead>
                       <tr>
+                          <th (click)="onTableHeaderClick(0, 'supplierDetails')">Company Name</th>
                           <th (click)="onTableHeaderClick(0, 'invoiceNumber')">Invoice Number</th>
                           <th (click)="onTableHeaderClick(1, 'invoiceDate')">Invoice Date</th>
                           <th (click)="onTableHeaderClick(2, 'invoiceAmount')">Invoice Amount</th>
@@ -83,8 +85,8 @@
                           <th class="text-right">Action</th>
                       </tr>
                   </thead>
-                  <tbody *ngIf="suppliersData">
-                      <tr *ngFor="let supplier of suppliersData; let i = index">
+                  <tbody *ngIf="invoicesData">
+                      <tr *ngFor="let invoice of invoicesData; let i = index">
                           <!-- <td>
                               <h2 class="table-avatar">
                                   <a class="avatar"><img
@@ -92,11 +94,16 @@
                                   <a>{{supplier.supplierID}}</a>
                               </h2>
                           </td> -->
-                          <td>{{supplier.supplierName}}</td>
-                          <td>{{supplier.email}}</td>
-                          <td>{{supplier.phone}}</td>
-                          <td>{{supplier.contactPerson}}</td>
-                          <td>{{supplier.address}}</td>
+                          <td>{{invoice.supplierName}}</td>
+                          <td>{{invoice.invoiceNumber}}</td>
+                          <td>{{invoice.invoiceDate}}</td>
+                          <td>{{invoice.invoiceAmount}}</td>
+                          <td>{{invoice.term}}</td>
+                          <td>{{invoice.netDue}}</td>
+                          <td>{{invoice.paymentDueDate}}</td>
+                          <td>{{invoice.chequeNumber}}</td>
+                          <td>{{invoice.creditAmount}}</td>
+                          <td>{{invoice.paidDate}}</td>
                           <!-- <td>
                               <div class="dropdown action-label">
                                   <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown"
@@ -152,7 +159,7 @@
                               <label class="col-form-label">Company Name <span class="text-danger">*</span></label>
                               <ng-select [items]="suppliers"
                                         bindLabel="supplierName" placeholder="--Select--" bindValue="id" [searchable]="true"
-                                        [clearable]="false" [virtualScroll]="true" class="custom-ng-select"
+                                        [clearable]="true" [virtualScroll]="true" class="custom-ng-select"
                                         formControlName="supplierDetails" [(ngModel)]="invoice.supplierDetails">
                               </ng-select>
                               <div
@@ -180,7 +187,8 @@
                       <div class="col-md-6">
                           <div class="form-group">
                               <label class="col-form-label">Invoice Date <span class="text-danger">*</span></label>
-                              <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                              <div class="cal-icon"><input class="form-control datetimepicker" placeholder="yyyy-mm-dd"
+                                bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true,isAnimated: true }"
                                 [class.invalid]="addInvoiceForm.get('invoiceDate').invalid && addInvoiceForm.get('invoiceDate').touched"
                                 formControlName="invoiceDate" [(ngModel)]="invoice.invoiceDate" (ngModelChange)="paymentDueDateCalculation($event)">
                             <div
@@ -244,7 +252,8 @@
                       <div class="col-md-6">
                         <div class="form-group">
                             <label class="col-form-label">Payment Due Date <span class="text-danger">*</span></label>
-                            <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker type="text" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                            <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker type="text" 
+                               [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true,isAnimated: true }"
                               [class.invalid]="addInvoiceForm.get('paymentDueDate').invalid && addInvoiceForm.get('paymentDueDate').touched"
                               formControlName="paymentDueDate" placeholder="( Invoice Date + Term )" [ngModel]="invoice.paymentDueDate">
                           <div
@@ -287,7 +296,8 @@
                       <div class="col-md-6">
                         <div class="form-group">
                             <label class="col-form-label">Paid Date <span class="text-danger">*</span></label>
-                            <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker type="text" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                            <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker type="text" placeholder="yyyy-mm-dd"
+                                [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true,isAnimated: true }"
                               [class.invalid]="addInvoiceForm.get('paidDate').invalid && addInvoiceForm.get('paidDate').touched"
                               formControlName="paidDate">
                           <div

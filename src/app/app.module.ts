@@ -10,7 +10,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { ToastrModule } from 'ngx-toastr';
 import { HttpClientModule } from '@angular/common/http';
 import { authInterceptorProviders } from './guard/auth.interceptor';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { DatePipe, HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -30,7 +30,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
       }
     ),
   ],
-  providers: [authInterceptorProviders,{ provide: LocationStrategy, useClass: HashLocationStrategy}],
+  providers: [authInterceptorProviders,{ provide: LocationStrategy, useClass: HashLocationStrategy},DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

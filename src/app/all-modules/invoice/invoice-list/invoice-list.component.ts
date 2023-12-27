@@ -21,7 +21,7 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
   @ViewChild(DataTableDirective, { static: false })
   public dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
-  public suppliersData: any;
+  public invoicesData: any;
 
   public editedInvoice;
   public addInvoiceForm: FormGroup;
@@ -56,7 +56,8 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
     private toastr: ToastrService,
     private formBuilder: FormBuilder,
     private http: HttpClient,
-    private invoiceService: InvoiceService
+    private invoiceService: InvoiceService,
+    private datePipe: DatePipe
   ) { }
 
   ngOnInit() {
@@ -76,20 +77,26 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
           dataTablesParameters.supplier = this.searchSupplierId ? this.searchSupplierId : "";
           dataTablesParameters.fromInvoiceDate = this.searchFormData?.fromInvoiceDate ? this.searchFormData.fromInvoiceDate : "";
           dataTablesParameters.toInvoiceDate = this.searchFormData?.toInvoiceDate ? this.searchFormData.toInvoiceDate : "";
+          
           this.invoiceService.getPaginatedData("/v1/invoice-details/list",dataTablesParameters).subscribe(resp => {
-          this.suppliersData = resp?.data;
-          this.rows = this.suppliersData;
+          this.invoicesData = resp?.data;
+          this.rows = this.invoicesData;
           this.srch = [...this.rows];
               callback({
                 recordsTotal: resp.meta.total,
                 recordsFiltered: resp.meta.total,
                 data: []  // set data
               });
+            },
+            (error) => {
+              console.error("API Error:", error);
+              // Extract error message from the API response
+              const customErrorMessage = error && error.error && error.error.errors ? error.error.errors.toString(): "Unknown error";
+              this.toastr.error(customErrorMessage, "Error",{ timeOut: 5000 });
+              return;
             });
         },
     };
-
-    // this.getClients();
 
     //Add clients form
     this.addInvoiceForm = this.formBuilder.group({
@@ -125,7 +132,6 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
 
     // Search Form
     this.searchForm = this.formBuilder.group({
-      supplierName:["",[]],
       supplierId:["",[]],
       fromInvoiceDate:["",[]],
       toInvoiceDate:["",[]]
@@ -153,7 +159,15 @@ loadAllSuppliers() {
 
 onSearch(){
   this.searchFormData = this.searchForm.value;
+  this.searchFormData.fromInvoiceDate = this.datePipe.transform(this.searchFormData.fromInvoiceDate, 'yyyy-MM-dd');
+  this.searchFormData.toInvoiceDate = this.datePipe.transform(this.searchFormData.toInvoiceDate, 'yyyy-MM-dd');
   this.rerender();
+}
+
+searchByDate() {
+  this.searchFormData = this.searchForm.value;
+  this.searchFormData.fromInvoiceDate = this.datePipe.transform(this.searchFormData.fromInvoiceDate, 'yyyy-MM-dd');
+  this.searchFormData.toInvoiceDate = this.datePipe.transform(this.searchFormData.toInvoiceDate, 'yyyy-MM-dd');
 }
 
   //Function to handle table header click
@@ -161,11 +175,6 @@ onSearch(){
     // Update dynamic column properties
     this.orderColumnIndex = columnIndex;
     this.orderColumnName = columnName;
-
-    // Reload the DataTable with the new sorting parameters
-    // this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-    //   dtInstance.ajax.reload();
-    // });
   }
 
   ngAfterViewInit(): void {
@@ -183,12 +192,15 @@ onSearch(){
     setTimeout(() => {
       this.dtTrigger.next();
     }, 500);
-
-    //Init search form data, if any
-    this.searchFormData = this.searchForm?.value;
   }
 
-  // Edit Supplier
+  //Reset form
+  public resetForm() {
+    this.addInvoiceForm.reset();
+    // this.invoice.creditAmount = 0;
+  }
+
+      // Edit Supplier
   // public onEditSupplier(supplierId: any) {
   //   let supplier = this.suppliersData.filter((client) => client.id === supplierId);
   //   this.editInvoiceForm.setValue({
@@ -201,11 +213,6 @@ onSearch(){
   //   });
   // }
 
-  //Reset form
-  public resetForm() {
-    this.addInvoiceForm.reset();
-    // this.invoice.creditAmount = 0;
-  }
 
   // Update Supplier
   // public onSave() {
