@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { Invoice } from '../../model/invoice';
 import { WhiteSpaceValidator } from 'src/app/utils/white-space-validator';
 import { InvoiceService } from '../../services/invoice.service';
+import { data } from 'jquery';
 
 declare const $: any;
 @Component({
@@ -49,6 +50,8 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
   searchForm: FormGroup;
   searchFormData : any;
   searchSupplierId: any;
+  fromInvoiceDate:any;
+  toInvoiceDate:any;
 
 
   constructor(
@@ -75,9 +78,8 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
           // dataTablesParameters.orderColumnIndex = this.orderColumnIndex;
           dataTablesParameters.orderColumnName = this.orderColumnName;
           dataTablesParameters.supplier = this.searchSupplierId ? this.searchSupplierId : "";
-          dataTablesParameters.fromInvoiceDate = this.searchFormData?.fromInvoiceDate ? this.searchFormData.fromInvoiceDate : "";
-          dataTablesParameters.toInvoiceDate = this.searchFormData?.toInvoiceDate ? this.searchFormData.toInvoiceDate : "";
-          
+          dataTablesParameters.fromInvoiceDate = this.datePipe.transform(this.fromInvoiceDate, 'yyyy-MM-dd') ? this.datePipe.transform(this.fromInvoiceDate, 'yyyy-MM-dd') : "";
+          dataTablesParameters.toInvoiceDate = this.datePipe.transform(this.toInvoiceDate, 'yyyy-MM-dd') ? this.datePipe.transform(this.toInvoiceDate, 'yyyy-MM-dd') : "";
           this.invoiceService.getPaginatedData("/v1/invoice-details/list",dataTablesParameters).subscribe(resp => {
           this.invoicesData = resp?.data;
           this.rows = this.invoicesData;
@@ -128,6 +130,7 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
       editChequeNumber: ["", [Validators.required]],
       editPaidDate: ["", [Validators.required]],
       editSupplierDetails: ["", [Validators.required]],
+      editId: ["", []],
     });
 
     // Search Form
@@ -180,7 +183,7 @@ searchByDate() {
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.dtTrigger.next();
-    }, 1000);
+    }, 10);
   }
 
   // manually rendering Data table
@@ -200,57 +203,73 @@ searchByDate() {
     // this.invoice.creditAmount = 0;
   }
 
-      // Edit Supplier
-  // public onEditSupplier(supplierId: any) {
-  //   let supplier = this.suppliersData.filter((client) => client.id === supplierId);
-  //   this.editInvoiceForm.setValue({
-  //     editSupplierName: supplier[0]?.supplierName,
-  //     editPhone: supplier[0]?.phone,
-  //     editEmail: supplier[0]?.email,
-  //     editContactPerson: supplier[0]?.contactPerson,
-  //     editAddress: supplier[0]?.address,
-  //     editId: supplier[0]?.id,
-  //   });
-  // }
+      // Edit invoice
+  public onInvoiceSupplier(invoiceId: any) {
+    let invoice = this.invoicesData.filter((invoice) => invoice.id === invoiceId);
+    this.editInvoiceForm.setValue({
+      editInvoiceNumber: invoice[0]?.invoiceNumber,
+      editInvoiceDesc: invoice[0]?.invoiceDesc,
+      editInvoiceDate: invoice[0]?.invoiceDate,
+      editTerm: invoice[0]?.term,
+      editInvoiceAmount: invoice[0]?.invoiceAmount,
+      editCreditAmount: invoice[0]?.creditAmount,
+      editChequeNumber: invoice[0]?.chequeNumber,
+      editPaidDate: invoice[0]?.paidDate,
+      editSupplierDetails: invoice[0]?.supplierDetails,
+      editId: invoice[0]?.id,
+
+      editNetDue: invoice[0]?.netDue,
+      editPaymentDueDate: invoice[0]?.paymentDueDate,
+    });
+    console.log(this.editInvoiceForm);
+  }
 
 
-  // Update Supplier
-  // public onSave() {
-  //   if (this.editSupplierForm.invalid) {
-  //     this.toastr.info("Please insert valid data");
-  //     return;
-  //   }
-  //   this.editedSupplier = {
-  //     supplierName: this.editSupplierForm.value.editSupplierName,
-  //     email: this.editSupplierForm.value.editEmail,
-  //     phone: this.editSupplierForm.value.editPhone,
-  //     contactPerson: this.editSupplierForm.value.editContactPerson,
-  //     address: this.editSupplierForm.value.editAddress,
-  //     id: this.editSupplierForm.value.editId,
-  //   };
-  //   this.allModulesService
-  //     .update(this.editedSupplier, "/v1/supplier-details/update")
-  //     .subscribe((data) => {
-  //       $("#edit_supplier").modal("hide");
-  //       this.editSupplierForm.reset();
-  //       this.toastr.success("Supplier updated sucessfully!", "Success");
+  // Update Invoice
+  public onEditInvoice() {
+    if (this.editInvoiceForm.invalid) {
+      this.toastr.info("Please insert valid data");
+      return;
+    }
+    this.editedInvoice = {
+      invoiceNumber: this.editInvoiceForm.value.editInvoiceNumber,
+      invoiceDesc: this.editInvoiceForm.value.editInvoiceDesc,
+      invoiceDate: this.editInvoiceForm.value.editInvoiceDate,
+      term: this.editInvoiceForm.value.editTerm,
+      invoiceAmount: this.editInvoiceForm.value.editInvoiceAmount,
+      creditAmount: this.editInvoiceForm.value.editCreditAmount,
+      chequeNumber: this.editInvoiceForm.value.editChequeNumber,
+      paidDate: this.editInvoiceForm.value.editPaidDate,
+      supplierDetails: this.editInvoiceForm.value.editSupplierDetails,
+      id: this.editInvoiceForm.value.editId,
 
-  //       $("#datatable").DataTable().clear();
-  //       this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-  //         dtInstance.destroy();
-  //       });
-  //       this.dtTrigger.next();
-  //     },
-  //     (error) => {
-  //       console.error("API Error:", error);
-  //       // Extract error message from the API response
-  //       const customErrorMessage = error && error.error && error.error.errors ? error.error.errors.toString(): "Unknown error";
-  //       this.toastr.error(customErrorMessage, "Error",{ timeOut: 5000 });
-  //       return;
-  //     });
-  // }
+      netDue: this.invoice.netDue,
+      paymentDueDate: this.invoice.paymentDueDate,
 
-  //Add new client
+    };
+    this.allModulesService
+      .update(this.editedInvoice, "/v1/invoice-details/update")
+      .subscribe((data) => {
+        $("#edit_invoice").modal("hide");
+        this.editInvoiceForm.reset();
+        this.toastr.success("Invoice updated sucessfully!", "Success");
+
+        $("#datatable").DataTable().clear();
+        this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+          dtInstance.destroy();
+        });
+        this.dtTrigger.next();
+      },
+      (error) => {
+        console.error("API Error:", error);
+        // Extract error message from the API response
+        const customErrorMessage = error && error.error && error.error.errors ? error.error.errors.toString(): "Unknown error";
+        this.toastr.error(customErrorMessage, "Error",{ timeOut: 5000 });
+        return;
+      });
+  }
+
+  //Add new Invoice
   public onAddInvoice() {
     if (this.addInvoiceForm.invalid || (this.invoice.creditAmount > this.invoice.invoiceAmount)) {
       this.toastr.info("Please insert valid data");
@@ -275,9 +294,9 @@ searchByDate() {
         this.toastr.error(data.errors,"Failed");
         return;
       }
-      $("#add_supplier").modal("hide");
+      $("#add_invoice").modal("hide");
       this.addInvoiceForm.reset();
-      this.toastr.success("Supplier added sucessfully!", "Success");
+      this.toastr.success("Invoice added sucessfully!", "Success");
 
       $("#datatable").DataTable().clear();
       this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
@@ -292,7 +311,6 @@ searchByDate() {
       this.toastr.error(customErrorMessage, "Error",{ timeOut: 5000 });
       return;
     });
-    // this.getClients();
   }
 
   netDueCalculation(event){
