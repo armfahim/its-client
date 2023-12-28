@@ -1,4 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+import { AllModulesService } from "../../all-modules.service";
+import { ToastrService } from "ngx-toastr";
 @Component({
   selector: "app-admin-dashboard",
   templateUrl: "./admin-dashboard.component.html",
@@ -18,7 +20,14 @@ export class AdminDashboardComponent implements OnInit {
     b: "#764ba2",
   };
 
-  constructor() { }
+  totalNoOfSuppliers:any;
+  totalNoOfinvoices:any;
+  highlights:any;
+
+  constructor(
+    private allModulesService: AllModulesService,
+    private toastr: ToastrService,
+  ) { }
 
   ngOnInit() {
     this.chartOptions = {
@@ -55,5 +64,33 @@ export class AdminDashboardComponent implements OnInit {
       { y: '2011', a: 75,  b: 65 },
       { y: '2012', a: 100, b: 50 }
     ];
+    this.loadAllSuppliers();
+    this.loadAllInvoices();
+    this.dashboardHighlights();
   }
+
+  dashboardHighlights() {
+    this.allModulesService.get("/v1/dashboard/highlights").subscribe((response: any) => {
+      this.highlights = response?.data;
+    }, (error) => {
+      this.toastr.error(error.error.message);
+    });
+  }
+
+  loadAllInvoices() {
+    this.allModulesService.get("/v1/invoice-details/all").subscribe((response: any) => {
+      this.totalNoOfinvoices = response?.data.length;
+    }, (error) => {
+      this.toastr.error(error.error.message);
+    });
+  }
+
+  loadAllSuppliers() {
+    this.allModulesService.get("/v1/supplier-details/all").subscribe((response: any) => {
+      this.totalNoOfSuppliers = response?.data.length;
+    }, (error) => {
+      this.toastr.error(error.error.message);
+    });
+  }
+
 }

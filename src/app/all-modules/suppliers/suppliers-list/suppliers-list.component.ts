@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Suppliers } from '../../model/suppliers';
 import { HttpClient } from '@angular/common/http';
 import { WhiteSpaceValidator } from 'src/app/utils/white-space-validator';
+import { RecordStatus } from 'src/app/utils/enums.enum';
 
 declare const $: any;
 @Component({
@@ -247,12 +248,12 @@ onSearch(){
 
   //Delete Client
   onDelete() {
-    // let updateStatusDto = {
-    //   status: RecordStatus.Deleted,
-    //   id: this.editSupplierForm.value.editId,
-    // };
+    let updateStatusDto = {
+      status: RecordStatus.Deleted,
+      id: this.tempId,
+    };
 
-    this.allModulesService.delete(this.tempId, "/v1/supplier-details/delete").subscribe((data) => {
+    this.allModulesService.update(updateStatusDto, "/v1/supplier-details/update-status").subscribe((data) => {
       $("#delete_supplier").modal("hide");
       this.toastr.success("Supplier deleted sucessfully...!", "Success");
 

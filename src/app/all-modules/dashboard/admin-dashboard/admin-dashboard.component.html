@@ -14,52 +14,75 @@
     </div>
     <!-- /Page Header -->
 
-    <!-- <div class="row">
+    <div class="row">
         <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+            <a routerLink="/invoice/invoicelist">
             <div class="card dash-widget">
                 <div class="card-body">
-                    <span class="dash-widget-icon"><i class="fa fa-cubes"></i></span>
+                    <span class="dash-widget-icon"><i class="fa fa-files-o"></i></span>
                     <div class="dash-widget-info">
-                        <h3>112</h3>
-                        <span>Projects</span>
+                        <h3>{{totalNoOfinvoices}}</h3>
+                        <span>Invoices</span>
                     </div>
                 </div>
             </div>
+        </a>
         </div>
         <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+          <a routerLink="/suppliers/supplierslist" >
             <div class="card dash-widget">
                 <div class="card-body">
-                    <span class="dash-widget-icon"><i class="fa fa-usd"></i></span>
+                    <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
                     <div class="dash-widget-info">
-                        <h3>44</h3>
-                        <span>Clients</span>
+                        <h3>{{totalNoOfSuppliers}}</h3>
+                        <span>Companies</span>
                     </div>
                 </div>
             </div>
+          </a>
         </div>
-        <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-            <div class="card dash-widget">
+        <div class="col-md-6 d-flex">
+            <div class="card card-table flex-fill">
+                <div class="card-header badge p-3 mb-2 bg-danger text-white">
+                    <!-- <h3 class="card-title mb-0"><span class="badge bg-inverse-danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></span> <span class="text-danger"> Due Invoices</span></h3> -->
+                    <h3><span><i class="fa fa-exclamation-circle" aria-hidden="true"></i></span><span> Due Invoices</span></h3>
+                </div>
                 <div class="card-body">
-                    <span class="dash-widget-icon"><i class="fa fa-diamond"></i></span>
-                    <div class="dash-widget-info">
-                        <h3>37</h3>
-                        <span>Tasks</span>
+                    <div class="table-responsive">
+                        <table class="table table-nowrap custom-table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Invoice Number</th>
+                                    <th>Company</th>
+                                    <th>Due Date</th>
+                                    <th>Net Due</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of highlights; let i = index">
+                                    <td class="text-info">#{{data.invoiceNumber}}</td>
+                                    <td>{{data.supplierName}}</td>
+                                    <td>{{data.paymentDueDate}}</td>
+                                    <td>{{data.netDue}}</td>
+                                    <td><span class="badge bg-inverse-danger">Unpaid</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
+                </div>
+                <div class="card-footer">
+                    <a routerLink="/invoice/invoicelist">View all invoices</a>
                 </div>
             </div>
         </div>
-        <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-            <div class="card dash-widget">
-                <div class="card-body">
-                    <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
-                    <div class="dash-widget-info">
-                        <h3>218</h3>
-                        <span>Employees</span>
-                    </div>
-                </div>
+    </div>
+
+    <div class="row"  style="display: flex;justify-content: center;">
+            <div class="account-logo">
+                <a href="javascript:"><img src="assets/img/logo2.png" alt="Invoice Tracker logo"></a>
             </div>
-        </div>
-    </div> -->
+    </div>
 
 
     <!-- <div class="row">

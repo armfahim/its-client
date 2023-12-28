@@ -1,146 +1,340 @@
 <!-- Page Content -->
 <div class="content container-fluid">
 
-  <!-- Page Header -->
-  <div class="page-header">
-      <div class="row align-items-center">
-          <div class="col">
-              <h3 class="page-title">Invoice</h3>
-              <ul class="breadcrumb">
-                  <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
-                  <li class="breadcrumb-item active">Invoice</li>
-              </ul>
-          </div>
-          <div class="col-auto float-right ml-auto">
-              <a class="btn add-btn" data-toggle="modal" data-target="#add_supplier" (click)="resetForm()"><i
-                      class="fa fa-plus"></i>
-                  Add Invoice</a>
-              <div class="view-icons">
-                  <a routerLink="/invoice/invoicelist" class="list-view btn btn-link active"><i
-                          class="fa fa-bars"></i></a>
-              </div>
-          </div>
-      </div>
-  </div>
-  <!-- /Page Header -->
-
-  <!-- Search Filter -->
-    <form (ngSubmit)="onSearch()" [formGroup]="searchForm">
-        <div class="row filter-row">
-            <div class="col-sm-6 col-md-3">
-                <div class="form-group form-focus">
-                    <ng-select [items]="suppliers"
-                        bindLabel="supplierName" placeholder="Search Company" bindValue="id" [searchable]="true"
-                        [clearable]="true" [virtualScroll]="true" class="custom-ng-select"
-                        formControlName="supplierId" [(ngModel)]="searchSupplierId"
-                        (change)="rerender()">
-                    </ng-select>
-                </div>
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Invoice</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Invoice</li>
+                </ul>
             </div>
-            <div class="col-sm-6 col-md-3">
-                <div class="form-group form-focus">
-                    <div class="cal-icon">
-                        <input class="form-control floating datetimepicker" bsDatepicker type="text" formControlName="fromInvoiceDate"
-                            [bsConfig]="{ adaptivePosition: true,containerClass: 'theme-red',
-                            dateInputFormat: 'YYYY-MM-DD', isAnimated: true}"
-                            [(ngModel)]="fromInvoiceDate" (focusout)="rerender()">
-                    </div>
-                    <label class="focus-label">From</label>
+            <div class="col-auto float-right ml-auto">
+                <a class="btn add-btn" data-toggle="modal" data-target="#add_invoice" (click)="resetForm()"><i
+                        class="fa fa-plus"></i>
+                    Add Invoice</a>
+                <div class="view-icons">
+                    <a routerLink="/invoice/invoicelist" class="list-view btn btn-link active"><i
+                            class="fa fa-bars"></i></a>
                 </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-                <div class="form-group form-focus">
-                    <div class="cal-icon">
-                        <input class="form-control floating datetimepicker" bsDatepicker formControlName="toInvoiceDate"
-                            [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'YYYY-MM-DD', todayHighlight:true, returnFocusToInput: true,isAnimated: true }"
-                            [(ngModel)]="toInvoiceDate" [(bsValue)]="myDateValue" (focusout)="rerender()">
-                    </div>
-                    <label class="focus-label">To</label>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-              <button class="btn btn-success btn-block" type="submit">Search</button>
-                <!-- <a class="btn btn-success btn-block" type="submit" (click)="onSearch()"> Search </a> -->
             </div>
         </div>
-    </form>
-  <!-- Search Filter -->
-
-  <div class="row">
-      <div class="col-md-12">
-          <div class="table-responsive">
-              <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="datatable"
-                  class="table table-striped custom-table datatable">
-                  <thead>
-                      <tr>
-                          <th (click)="onTableHeaderClick(0, 'supplierDetails')">Company Name</th>
-                          <th (click)="onTableHeaderClick(0, 'invoiceNumber')">Invoice Number</th>
-                          <th (click)="onTableHeaderClick(1, 'invoiceDate')">Invoice Date</th>
-                          <th (click)="onTableHeaderClick(2, 'invoiceAmount')">Invoice Amount</th>
-                          <th (click)="onTableHeaderClick(3, 'term')">Term</th>
-                          <th (click)="onTableHeaderClick(4, 'netDue')">Net Due</th>
-                          <th (click)="onTableHeaderClick(4, 'paymentDueDate')">Payment Due Date</th>
-                          <th (click)="onTableHeaderClick(4, 'chequeNumber')">Cheque Number</th>
-                          <th (click)="onTableHeaderClick(4, 'creditAmount')">Credit Amount</th>
-                          <th (click)="onTableHeaderClick(4, 'paidDate')">Paid Date</th>
-                          <!-- <th>Status</th> -->
-                          <th class="text-right">Action</th>
-                      </tr>
-                  </thead>
-                  <tbody *ngIf="invoicesData">
-                      <tr *ngFor="let invoice of invoicesData; let i = index">
-                          <!-- <td>
-                              <h2 class="table-avatar">
-                                  <a class="avatar"><img
-                                          src="assets/img/profiles/avatar-{{ i + 1 }}.jpg" alt=""></a>
-                                  <a>{{supplier.supplierID}}</a>
-                              </h2>
-                          </td> -->
-                          <td>{{invoice.supplierName}}</td>
-                          <td>{{invoice.invoiceNumber}}</td>
-                          <td>{{invoice.invoiceDate}}</td>
-                          <td>{{invoice.invoiceAmount}}</td>
-                          <td>{{invoice.term}}</td>
-                          <td>{{invoice.netDue}}</td>
-                          <td>{{invoice.paymentDueDate}}</td>
-                          <td>{{invoice.chequeNumber}}</td>
-                          <td>{{invoice.creditAmount}}</td>
-                          <td>{{invoice.paidDate}}</td>
-                          <td class="text-right">
-                              <div class="dropdown dropdown-action">
-                                  <a class="action-icon dropdown-toggle" data-toggle="dropdown"
-                                      aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                  <div class="dropdown-menu dropdown-menu-right">
-                                      <a class="dropdown-item" data-toggle="modal" data-target="#edit_invoice"
-                                          (click)="onInvoiceSupplier(invoice.id)"><i class="fa fa-pencil m-r-5"></i>
-                                          Edit</a>
-                                      <a class="dropdown-item" data-toggle="modal" data-target="#delete_supplier"
-                                          (click)="tempId = invoice.id"><i class="fa fa-trash-o m-r-5"></i>
-                                          Delete</a>
-                                  </div>
-                              </div>
-                          </td>
-                      </tr>
-                  </tbody>
-              </table>
+    </div>
+    <!-- /Page Header -->
+  
+    <!-- Search Filter -->
+      <form (ngSubmit)="onSearch()" [formGroup]="searchForm">
+          <div class="row filter-row">
+              <div class="col-sm-6 col-md-3">
+                  <div class="form-group form-focus">
+                      <ng-select [items]="suppliers"
+                          bindLabel="supplierName" placeholder="Search Company" bindValue="id" [searchable]="true"
+                          [clearable]="true" [virtualScroll]="true" class="custom-ng-select"
+                          formControlName="supplierId" [(ngModel)]="searchSupplierId"
+                          (change)="rerender()">
+                      </ng-select>
+                  </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                  <div class="form-group form-focus">
+                      <div class="cal-icon">
+                          <input class="form-control floating datetimepicker" bsDatepicker type="text" formControlName="fromInvoiceDate"
+                              [bsConfig]="{ adaptivePosition: true,containerClass: 'theme-red',
+                              dateInputFormat: 'YYYY-MM-DD', isAnimated: true}"
+                              [(ngModel)]="fromInvoiceDate" (focusout)="rerender()">
+                      </div>
+                      <label class="focus-label">From</label>
+                  </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                  <div class="form-group form-focus">
+                      <div class="cal-icon">
+                          <input class="form-control floating datetimepicker" bsDatepicker formControlName="toInvoiceDate"
+                              [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'YYYY-MM-DD', todayHighlight:true, returnFocusToInput: true,isAnimated: true }"
+                              [(ngModel)]="toInvoiceDate" (focusout)="rerender()">
+                      </div>
+                      <label class="focus-label">To</label>
+                  </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <button class="btn btn-success btn-block" type="submit">Search</button>
+                  <!-- <a class="btn btn-success btn-block" type="submit" (click)="onSearch()"> Search </a> -->
+              </div>
           </div>
-      </div>
+      </form>
+    <!-- Search Filter -->
+  
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="datatable"
+                    class="table table-striped custom-table datatable">
+                    <thead>
+                        <tr>
+                            <th (click)="onTableHeaderClick(0, 'invoiceNumber')">Invoice Number</th>
+                            <th (click)="onTableHeaderClick(0, 'supplierDetails')">Company Name</th>
+                            <th (click)="onTableHeaderClick(1, 'invoiceDate')">Invoice Date</th>
+                            <th (click)="onTableHeaderClick(3, 'term')">Term</th>
+                            <th (click)="onTableHeaderClick(4, 'paymentDueDate')">Payment Due Date</th>
+                            <th (click)="onTableHeaderClick(2, 'invoiceAmount')">Invoice Amount</th>
+                            <th (click)="onTableHeaderClick(4, 'creditAmount')">Credit Amount</th>
+                            <th (click)="onTableHeaderClick(4, 'netDue')">Net Due</th>
+                            <th (click)="onTableHeaderClick(4, 'chequeNumber')">Cheque Number</th>
+                            <th (click)="onTableHeaderClick(4, 'paidDate')">Paid Date</th>
+                            <!-- <th>Status</th> -->
+                            <th class="text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="invoicesData">
+                        <tr *ngFor="let invoice of invoicesData; let i = index">
+                            <!-- <td>
+                                <h2 class="table-avatar">
+                                    <a class="avatar"><img
+                                            src="assets/img/profiles/avatar-{{ i + 1 }}.jpg" alt=""></a>
+                                    <a>{{supplier.supplierID}}</a>
+                                </h2>
+                            </td> -->
+                            <td class="text-info">{{invoice.invoiceNumber}}</td>
+                            <td>{{invoice.supplierName}}</td>
+                            <td>{{invoice.invoiceDate}}</td>
+                            <td>{{invoice.term}}</td>
+                            <td>{{invoice.paymentDueDate}}</td>
+                            <td>{{invoice.invoiceAmount}}</td>
+                            <td>{{invoice.creditAmount}}</td>
+                            <td>{{invoice.netDue}}</td>
+                            <td>{{invoice.chequeNumber}}</td>
+                            <td>{{invoice.paidDate}}</td>
+                            <td class="text-right">
+                                <div class="dropdown dropdown-action">
+                                    <a class="action-icon dropdown-toggle" data-toggle="dropdown"
+                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#edit_invoice"
+                                            (click)="onInvoiceSupplier(invoice.id)"><i class="fa fa-pencil m-r-5"></i>
+                                            Edit</a>
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#delete_invoice"
+                                            (click)="tempId = invoice.id"><i class="fa fa-trash-o m-r-5"></i>
+                                            Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
   </div>
-</div>
-<!-- /Page Content -->
-
-<!-- Add Supplier Modal -->
-<div id="add_invoice" class="modal custom-modal fade" role="dialog">
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title">Add Invoice</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-              </button>
-          </div>
-          <div class="modal-body">
-              <form [formGroup]="addInvoiceForm">
+  <!-- /Page Content -->
+  
+  <!-- Add Invoice Modal -->
+  <div id="add_invoice" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Invoice</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="addInvoiceForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Company Name <span class="text-danger">*</span></label>
+                                <ng-select [items]="suppliers"
+                                          bindLabel="supplierName" placeholder="--Select--" bindValue="id" [searchable]="true"
+                                          [clearable]="true" [virtualScroll]="true" class="custom-ng-select"
+                                          formControlName="supplierDetails" [(ngModel)]="invoice.supplierDetails">
+                                </ng-select>
+                                <div
+                                  *ngIf="addInvoiceForm.get('supplierDetails').invalid && addInvoiceForm.get('supplierDetails').touched">
+                                  <small
+                                      *ngIf="addInvoiceForm.get('supplierDetails').invalid && addInvoiceForm.get('supplierDetails').touched"
+                                      class="text-danger"> *Company is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Invoice Number <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                  [class.invalid]="addInvoiceForm.get('invoiceNumber').invalid && addInvoiceForm.get('invoiceNumber').touched"
+                                    formControlName="invoiceNumber" (keydown.space)="$event.preventDefault()">
+                                <div
+                                    *ngIf="addInvoiceForm.get('invoiceNumber').invalid && addInvoiceForm.get('invoiceNumber').touched">
+                                    <small
+                                        *ngIf="addInvoiceForm.get('invoiceNumber').invalid && addInvoiceForm.get('invoiceNumber').touched"
+                                        class="text-danger"> *Invoice number is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Invoice Date <span class="text-danger">*</span></label>
+                                <div class="cal-icon"><input class="form-control datetimepicker" placeholder="yyyy-mm-dd"
+                                  bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true,isAnimated: true }"
+                                  [class.invalid]="addInvoiceForm.get('invoiceDate').invalid && addInvoiceForm.get('invoiceDate').touched"
+                                  formControlName="invoiceDate" [(ngModel)]="invoice.invoiceDate" (ngModelChange)="paymentDueDateCalculation($event)">
+                              <div
+                                  *ngIf="addInvoiceForm.get('invoiceDate').invalid && addInvoiceForm.get('invoiceDate').touched">
+                                  <small
+                                      *ngIf="addInvoiceForm.get('invoiceDate').invalid && addInvoiceForm.get('invoiceDate').touched"
+                                      class="text-danger"> *Invoice date is required</small>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Invoice Amount <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" [(ngModel)]="invoice.invoiceAmount"
+                                  [class.invalid]="addInvoiceForm.get('invoiceAmount').invalid && addInvoiceForm.get('invoiceAmount').touched"
+                                  formControlName="invoiceAmount" appTwoDigitDecimaNumber>
+                              <div
+                                  *ngIf="addInvoiceForm.get('invoiceAmount').invalid && addInvoiceForm.get('invoiceAmount').touched">
+                                  <small
+                                      *ngIf="addInvoiceForm.get('invoiceAmount').invalid && addInvoiceForm.get('invoiceAmount').touched"
+                                      class="text-danger"> *Invoice amount is required</small>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                              <label class="col-form-label">Term <span class="text-danger">*</span></label>
+                              <ng-select [items]="term"
+                                bindLabel="value" placeholder="--Select--" bindValue="value" [searchable]="true"
+                                [clearable]="false" [virtualScroll]="true" class="custom-ng-select"
+                                formControlName="term" [(ngModel)]="invoice.term" (ngModelChange)="paymentDueDateCalculation($event)">
+                              </ng-select>
+                            <div
+                                *ngIf="addInvoiceForm.get('term').invalid && addInvoiceForm.get('term').touched">
+                                <small
+                                    *ngIf="addInvoiceForm.get('term').invalid && addInvoiceForm.get('term').touched"
+                                    class="text-danger"> *Term is required</small>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                              <label class="col-form-label">Credit Amount <span class="text-danger">*</span></label>
+                              <small class="text-info"> ( If there is no credit amount, Enter 0 )</small>
+                              <input class="form-control" type="text" [(ngModel)]="invoice.creditAmount"
+                                [class.invalid]="addInvoiceForm.get('creditAmount').invalid && addInvoiceForm.get('creditAmount').touched"
+                                formControlName="creditAmount" appTwoDigitDecimaNumber (ngModelChange)="netDueCalculation($event)">
+                            <div
+                                *ngIf="addInvoiceForm.get('creditAmount').invalid && addInvoiceForm.get('creditAmount').touched">
+                                <small
+                                    *ngIf="addInvoiceForm.get('creditAmount').invalid && addInvoiceForm.get('creditAmount').touched"
+                                    class="text-danger"> *Credit amount is required</small>
+                            </div>
+                            <div *ngIf="invoice.creditAmount > invoice.invoiceAmount">
+                                <small *ngIf="invoice.creditAmount > invoice.invoiceAmount"
+                                    class="text-danger"> *Credit amount is greater than invoice amount</small>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                              <label class="col-form-label">Payment Due Date <span class="text-danger">*</span></label>
+                              <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker type="text"
+                                 [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true,isAnimated: true }"
+                                [class.invalid]="addInvoiceForm.get('paymentDueDate').invalid && addInvoiceForm.get('paymentDueDate').touched"
+                                formControlName="paymentDueDate" placeholder="( Invoice Date + Term )" [ngModel]="invoice.paymentDueDate">
+                            <div
+                                *ngIf="addInvoiceForm.get('paymentDueDate').invalid && addInvoiceForm.get('paymentDueDate').touched">
+                                <small
+                                    *ngIf="addInvoiceForm.get('paymentDueDate').invalid && addInvoiceForm.get('paymentDueDate').touched"
+                                    class="text-danger"> *Payment due date is required</small>
+                            </div>
+                          </div>
+                        </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                              <label class="col-form-label">Net Due <span class="text-danger">*</span></label>
+                              <input class="form-control" type="text" appTwoDigitDecimaNumber [(ngModel)]="invoice.netDue"
+                                [class.invalid]="addInvoiceForm.get('netDue').invalid && addInvoiceForm.get('netDue').touched"
+                                formControlName="netDue" placeholder="( Invoice Amount - Credit Amount )">
+                            <div
+                                *ngIf="addInvoiceForm.get('netDue').invalid && addInvoiceForm.get('netDue').touched">
+                                <small
+                                    *ngIf="addInvoiceForm.get('netDue').invalid && addInvoiceForm.get('netDue').touched"
+                                    class="text-danger"> *Net is required</small>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                              <label class="col-form-label">Cheque Number <span class="text-danger">*</span></label>
+                              <input class="form-control" type="text"
+                                [class.invalid]="addInvoiceForm.get('chequeNumber').invalid && addInvoiceForm.get('chequeNumber').touched"
+                                formControlName="chequeNumber">
+                            <div
+                                *ngIf="addInvoiceForm.get('chequeNumber').invalid && addInvoiceForm.get('chequeNumber').touched">
+                                <small
+                                    *ngIf="addInvoiceForm.get('chequeNumber').invalid && addInvoiceForm.get('chequeNumber').touched"
+                                    class="text-danger"> *Cheque Number is required</small>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                              <label class="col-form-label">Paid Date <span class="text-danger">*</span></label>
+                              <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker type="text" placeholder="yyyy-mm-dd"
+                                  [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true,isAnimated: true }"
+                                [class.invalid]="addInvoiceForm.get('paidDate').invalid && addInvoiceForm.get('paidDate').touched"
+                                formControlName="paidDate">
+                            <div
+                                *ngIf="addInvoiceForm.get('paidDate').invalid && addInvoiceForm.get('paidDate').touched">
+                                <small
+                                    *ngIf="addInvoiceForm.get('paidDate').invalid && addInvoiceForm.get('paidDate').touched"
+                                    class="text-danger"> *Paid date is required</small>
+                            </div>
+                          </div>
+                        </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Invoice Description</label>
+                                <textarea rows="4" class="form-control"
+                                [class.invalid]="addInvoiceForm.get('invoiceDesc').invalid && addInvoiceForm.get('invoiceDesc').touched"
+                                formControlName="invoiceDesc"></textarea>
+                              <div
+                                  *ngIf="addInvoiceForm.get('invoiceDesc').invalid && addInvoiceForm.get('invoiceDesc').touched">
+                                  <small
+                                      *ngIf="addInvoiceForm.get('invoiceDesc').invalid && addInvoiceForm.get('invoiceDesc').touched"
+                                      class="text-danger"> *Provide valid data</small>
+                              </div>
+                            </div>
+                        </div>
+  
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" (click)="onAddInvoice()">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- /Add Supplier Modal -->
+  
+  <!-- Edit Supplier Modal -->
+  <div id="edit_invoice" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Invoice</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+              <form [formGroup]="editInvoiceForm">
                   <div class="row">
                       <div class="col-md-6">
                           <div class="form-group">
@@ -148,12 +342,12 @@
                               <ng-select [items]="suppliers"
                                         bindLabel="supplierName" placeholder="--Select--" bindValue="id" [searchable]="true"
                                         [clearable]="true" [virtualScroll]="true" class="custom-ng-select"
-                                        formControlName="supplierDetails" [(ngModel)]="invoice.supplierDetails">
+                                        formControlName="editSupplierDetails" [(ngModel)]="invoice.supplierDetails">
                               </ng-select>
                               <div
-                                *ngIf="addInvoiceForm.get('supplierDetails').invalid && addInvoiceForm.get('supplierDetails').touched">
+                                *ngIf="editInvoiceForm.get('editSupplierDetails').invalid && editInvoiceForm.get('editSupplierDetails').touched">
                                 <small
-                                    *ngIf="addInvoiceForm.get('supplierDetails').invalid && addInvoiceForm.get('supplierDetails').touched"
+                                    *ngIf="editInvoiceForm.get('editSupplierDetails').invalid && editInvoiceForm.get('editSupplierDetails').touched"
                                     class="text-danger"> *Company is required</small>
                               </div>
                           </div>
@@ -162,12 +356,12 @@
                           <div class="form-group">
                               <label class="col-form-label">Invoice Number <span class="text-danger">*</span></label>
                               <input class="form-control" type="text"
-                                [class.invalid]="addInvoiceForm.get('invoiceNumber').invalid && addInvoiceForm.get('invoiceNumber').touched"
-                                  formControlName="invoiceNumber" (keydown.space)="$event.preventDefault()">
+                                [class.invalid]="editInvoiceForm.get('editInvoiceNumber').invalid && editInvoiceForm.get('editInvoiceNumber').touched"
+                                  formControlName="editInvoiceNumber" (keydown.space)="$event.preventDefault()">
                               <div
-                                  *ngIf="addInvoiceForm.get('invoiceNumber').invalid && addInvoiceForm.get('invoiceNumber').touched">
+                                  *ngIf="editInvoiceForm.get('editInvoiceNumber').invalid && editInvoiceForm.get('editInvoiceNumber').touched">
                                   <small
-                                      *ngIf="addInvoiceForm.get('invoiceNumber').invalid && addInvoiceForm.get('invoiceNumber').touched"
+                                      *ngIf="editInvoiceForm.get('editInvoiceNumber').invalid && editInvoiceForm.get('editInvoiceNumber').touched"
                                       class="text-danger"> *Invoice number is required</small>
                               </div>
                           </div>
@@ -177,12 +371,12 @@
                               <label class="col-form-label">Invoice Date <span class="text-danger">*</span></label>
                               <div class="cal-icon"><input class="form-control datetimepicker" placeholder="yyyy-mm-dd"
                                 bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true,isAnimated: true }"
-                                [class.invalid]="addInvoiceForm.get('invoiceDate').invalid && addInvoiceForm.get('invoiceDate').touched"
-                                formControlName="invoiceDate" [(ngModel)]="invoice.invoiceDate" (ngModelChange)="paymentDueDateCalculation($event)">
+                                [class.invalid]="editInvoiceForm.get('editInvoiceDate').invalid && editInvoiceForm.get('editInvoiceDate').touched"
+                                formControlName="editInvoiceDate" [(ngModel)]="invoice.invoiceDate" (ngModelChange)="paymentDueDateCalculation($event)">
                             <div
-                                *ngIf="addInvoiceForm.get('invoiceDate').invalid && addInvoiceForm.get('invoiceDate').touched">
+                                *ngIf="editInvoiceForm.get('editInvoiceDate').invalid && editInvoiceForm.get('editInvoiceDate').touched">
                                 <small
-                                    *ngIf="addInvoiceForm.get('invoiceDate').invalid && addInvoiceForm.get('invoiceDate').touched"
+                                    *ngIf="editInvoiceForm.get('editInvoiceDate').invalid && editInvoiceForm.get('editInvoiceDate').touched"
                                     class="text-danger"> *Invoice date is required</small>
                             </div>
                           </div>
@@ -192,12 +386,12 @@
                           <div class="form-group">
                               <label class="col-form-label">Invoice Amount <span class="text-danger">*</span></label>
                               <input class="form-control" type="number" [(ngModel)]="invoice.invoiceAmount"
-                                [class.invalid]="addInvoiceForm.get('invoiceAmount').invalid && addInvoiceForm.get('invoiceAmount').touched"
-                                formControlName="invoiceAmount" appTwoDigitDecimaNumber>
+                                [class.invalid]="editInvoiceForm.get('editInvoiceAmount').invalid && editInvoiceForm.get('editInvoiceAmount').touched"
+                                formControlName="editInvoiceAmount" appTwoDigitDecimaNumber>
                             <div
-                                *ngIf="addInvoiceForm.get('invoiceAmount').invalid && addInvoiceForm.get('invoiceAmount').touched">
+                                *ngIf="editInvoiceForm.get('editInvoiceAmount').invalid && editInvoiceForm.get('editInvoiceAmount').touched">
                                 <small
-                                    *ngIf="addInvoiceForm.get('invoiceAmount').invalid && addInvoiceForm.get('invoiceAmount').touched"
+                                    *ngIf="editInvoiceForm.get('editInvoiceAmount').invalid && editInvoiceForm.get('editInvoiceAmount').touched"
                                     class="text-danger"> *Invoice amount is required</small>
                             </div>
                           </div>
@@ -208,12 +402,12 @@
                             <ng-select [items]="term"
                               bindLabel="value" placeholder="--Select--" bindValue="value" [searchable]="true"
                               [clearable]="false" [virtualScroll]="true" class="custom-ng-select"
-                              formControlName="term" [(ngModel)]="invoice.term" (ngModelChange)="paymentDueDateCalculation(event)">
+                              formControlName="editTerm" [(ngModel)]="invoice.term" (ngModelChange)="paymentDueDateCalculation(event)">
                             </ng-select>
                           <div
-                              *ngIf="addInvoiceForm.get('term').invalid && addInvoiceForm.get('term').touched">
+                              *ngIf="editInvoiceForm.get('editTerm').invalid && editInvoiceForm.get('editTerm').touched">
                               <small
-                                  *ngIf="addInvoiceForm.get('term').invalid && addInvoiceForm.get('term').touched"
+                                  *ngIf="editInvoiceForm.get('editTerm').invalid && editInvoiceForm.get('editTerm').touched"
                                   class="text-danger"> *Term is required</small>
                           </div>
                         </div>
@@ -223,12 +417,12 @@
                             <label class="col-form-label">Credit Amount <span class="text-danger">*</span></label>
                             <small class="text-info"> ( If there is no credit amount, Type ' 0 ')</small>
                             <input class="form-control" type="number" [(ngModel)]="invoice.creditAmount"
-                              [class.invalid]="addInvoiceForm.get('creditAmount').invalid && addInvoiceForm.get('creditAmount').touched"
-                              formControlName="creditAmount" appTwoDigitDecimaNumber (ngModelChange)="netDueCalculation($event)">
+                              [class.invalid]="editInvoiceForm.get('editCreditAmount').invalid && editInvoiceForm.get('editCreditAmount').touched"
+                              formControlName="editCreditAmount" appTwoDigitDecimaNumber (ngModelChange)="netDueCalculation($event)">
                           <div
-                              *ngIf="addInvoiceForm.get('creditAmount').invalid && addInvoiceForm.get('creditAmount').touched">
+                              *ngIf="editInvoiceForm.get('editCreditAmount').invalid && editInvoiceForm.get('editCreditAmount').touched">
                               <small
-                                  *ngIf="addInvoiceForm.get('creditAmount').invalid && addInvoiceForm.get('creditAmount').touched"
+                                  *ngIf="editInvoiceForm.get('editCreditAmount').invalid && editInvoiceForm.get('editCreditAmount').touched"
                                   class="text-danger"> *Credit amount is required</small>
                           </div>
                           <div *ngIf="invoice.creditAmount > invoice.invoiceAmount">
@@ -241,13 +435,13 @@
                         <div class="form-group">
                             <label class="col-form-label">Payment Due Date <span class="text-danger">*</span></label>
                             <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker type="text"
-                               [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true,isAnimated: true }"
-                              [class.invalid]="addInvoiceForm.get('paymentDueDate').invalid && addInvoiceForm.get('paymentDueDate').touched"
-                              formControlName="paymentDueDate" placeholder="( Invoice Date + Term )" [ngModel]="invoice.paymentDueDate">
+                               [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true,isAnimated: true }"
+                              [class.invalid]="editInvoiceForm.get('editPaymentDueDate').invalid && editInvoiceForm.get('editPaymentDueDate').touched"
+                              formControlName="editPaymentDueDate" placeholder="( Invoice Date + Term )" [ngModel]="invoice.paymentDueDate">
                           <div
-                              *ngIf="addInvoiceForm.get('paymentDueDate').invalid && addInvoiceForm.get('paymentDueDate').touched">
+                              *ngIf="editInvoiceForm.get('editPaymentDueDate').invalid && editInvoiceForm.get('editPaymentDueDate').touched">
                               <small
-                                  *ngIf="addInvoiceForm.get('paymentDueDate').invalid && addInvoiceForm.get('paymentDueDate').touched"
+                                  *ngIf="editInvoiceForm.get('editPaymentDueDate').invalid && editInvoiceForm.get('editPaymentDueDate').touched"
                                   class="text-danger"> *Payment due date is required</small>
                           </div>
                         </div>
@@ -257,12 +451,12 @@
                         <div class="form-group">
                             <label class="col-form-label">Net Due <span class="text-danger">*</span></label>
                             <input class="form-control" type="number" appTwoDigitDecimaNumber [(ngModel)]="invoice.netDue"
-                              [class.invalid]="addInvoiceForm.get('netDue').invalid && addInvoiceForm.get('netDue').touched"
-                              formControlName="netDue" placeholder="( Invoice Amount - Credit Amount )">
+                              [class.invalid]="editInvoiceForm.get('editNetDue').invalid && editInvoiceForm.get('editNetDue').touched"
+                              formControlName="editNetDue" placeholder="( Invoice Amount - Credit Amount )">
                           <div
-                              *ngIf="addInvoiceForm.get('netDue').invalid && addInvoiceForm.get('netDue').touched">
+                              *ngIf="editInvoiceForm.get('editNetDue').invalid && editInvoiceForm.get('editNetDue').touched">
                               <small
-                                  *ngIf="addInvoiceForm.get('netDue').invalid && addInvoiceForm.get('netDue').touched"
+                                  *ngIf="editInvoiceForm.get('editNetDue').invalid && editInvoiceForm.get('editNetDue').touched"
                                   class="text-danger"> *Net is required</small>
                           </div>
                         </div>
@@ -271,12 +465,12 @@
                         <div class="form-group">
                             <label class="col-form-label">Cheque Number <span class="text-danger">*</span></label>
                             <input class="form-control" type="text"
-                              [class.invalid]="addInvoiceForm.get('chequeNumber').invalid && addInvoiceForm.get('chequeNumber').touched"
-                              formControlName="chequeNumber">
+                              [class.invalid]="editInvoiceForm.get('editChequeNumber').invalid && editInvoiceForm.get('editChequeNumber').touched"
+                              formControlName="editChequeNumber">
                           <div
-                              *ngIf="addInvoiceForm.get('chequeNumber').invalid && addInvoiceForm.get('chequeNumber').touched">
+                              *ngIf="editInvoiceForm.get('editChequeNumber').invalid && editInvoiceForm.get('editChequeNumber').touched">
                               <small
-                                  *ngIf="addInvoiceForm.get('chequeNumber').invalid && addInvoiceForm.get('chequeNumber').touched"
+                                  *ngIf="editInvoiceForm.get('editChequeNumber').invalid && editInvoiceForm.get('editChequeNumber').touched"
                                   class="text-danger"> *Cheque Number is required</small>
                           </div>
                         </div>
@@ -286,12 +480,12 @@
                             <label class="col-form-label">Paid Date <span class="text-danger">*</span></label>
                             <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker type="text" placeholder="yyyy-mm-dd"
                                 [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true,isAnimated: true }"
-                              [class.invalid]="addInvoiceForm.get('paidDate').invalid && addInvoiceForm.get('paidDate').touched"
-                              formControlName="paidDate">
+                              [class.invalid]="editInvoiceForm.get('editPaidDate').invalid && editInvoiceForm.get('editPaidDate').touched"
+                              formControlName="editPaidDate">
                           <div
-                              *ngIf="addInvoiceForm.get('paidDate').invalid && addInvoiceForm.get('paidDate').touched">
+                              *ngIf="editInvoiceForm.get('editPaidDate').invalid && editInvoiceForm.get('editPaidDate').touched">
                               <small
-                                  *ngIf="addInvoiceForm.get('paidDate').invalid && addInvoiceForm.get('paidDate').touched"
+                                  *ngIf="editInvoiceForm.get('editPaidDate').invalid && editInvoiceForm.get('editPaidDate').touched"
                                   class="text-danger"> *Paid date is required</small>
                           </div>
                         </div>
@@ -301,245 +495,52 @@
                           <div class="form-group">
                               <label class="col-form-label">Invoice Description</label>
                               <textarea rows="4" class="form-control"
-                              [class.invalid]="addInvoiceForm.get('invoiceDesc').invalid && addInvoiceForm.get('invoiceDesc').touched"
-                              formControlName="invoiceDesc"></textarea>
+                              [class.invalid]="editInvoiceForm.get('editInvoiceDesc').invalid && editInvoiceForm.get('editInvoiceDesc').touched"
+                              formControlName="editInvoiceDesc"></textarea>
                             <div
-                                *ngIf="addInvoiceForm.get('invoiceDesc').invalid && addInvoiceForm.get('invoiceDesc').touched">
+                                *ngIf="editInvoiceForm.get('editInvoiceDesc').invalid && editInvoiceForm.get('editInvoiceDesc').touched">
                                 <small
-                                    *ngIf="addInvoiceForm.get('invoiceDesc').invalid && addInvoiceForm.get('invoiceDesc').touched"
+                                    *ngIf="editInvoiceForm.get('editInvoiceDesc').invalid && editInvoiceForm.get('editInvoiceDesc').touched"
                                     class="text-danger"> *Provide valid data</small>
                             </div>
                           </div>
                       </div>
-
+  
                   </div>
                   <div class="submit-section">
-                      <button class="btn btn-primary submit-btn" (click)="onAddInvoice()">Submit</button>
+                      <button class="btn btn-primary submit-btn" (click)="onEditInvoice()">Submit</button>
                   </div>
               </form>
           </div>
-      </div>
-  </div>
-</div>
-<!-- /Add Supplier Modal -->
-
-<!-- Edit Supplier Modal -->
-<div id="edit_invoice" class="modal custom-modal fade" role="dialog">
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title">Edit Invoice</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-              </button>
-          </div>
-          <div class="modal-body">
-            <form [formGroup]="editInvoiceForm">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="col-form-label">Company Name <span class="text-danger">*</span></label>
-                            <ng-select [items]="suppliers"
-                                      bindLabel="supplierName" placeholder="--Select--" bindValue="id" [searchable]="true"
-                                      [clearable]="true" [virtualScroll]="true" class="custom-ng-select"
-                                      formControlName="editSupplierDetails" [(ngModel)]="invoice.supplierDetails">
-                            </ng-select>
-                            <div
-                              *ngIf="editInvoiceForm.get('editSupplierDetails').invalid && editInvoiceForm.get('editSupplierDetails').touched">
-                              <small
-                                  *ngIf="editInvoiceForm.get('editSupplierDetails').invalid && editInvoiceForm.get('editSupplierDetails').touched"
-                                  class="text-danger"> *Company is required</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="col-form-label">Invoice Number <span class="text-danger">*</span></label>
-                            <input class="form-control" type="text"
-                              [class.invalid]="editInvoiceForm.get('editInvoiceNumber').invalid && editInvoiceForm.get('editInvoiceNumber').touched"
-                                formControlName="editInvoiceNumber" (keydown.space)="$event.preventDefault()">
-                            <div
-                                *ngIf="editInvoiceForm.get('editInvoiceNumber').invalid && editInvoiceForm.get('editInvoiceNumber').touched">
-                                <small
-                                    *ngIf="editInvoiceForm.get('editInvoiceNumber').invalid && editInvoiceForm.get('editInvoiceNumber').touched"
-                                    class="text-danger"> *Invoice number is required</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="col-form-label">Invoice Date <span class="text-danger">*</span></label>
-                            <div class="cal-icon"><input class="form-control datetimepicker" placeholder="yyyy-mm-dd"
-                              bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true,isAnimated: true }"
-                              [class.invalid]="editInvoiceForm.get('editInvoiceDate').invalid && editInvoiceForm.get('editInvoiceDate').touched"
-                              formControlName="editInvoiceDate" [(ngModel)]="invoice.invoiceDate" (ngModelChange)="paymentDueDateCalculation($event)">
-                          <div
-                              *ngIf="editInvoiceForm.get('editInvoiceDate').invalid && editInvoiceForm.get('editInvoiceDate').touched">
-                              <small
-                                  *ngIf="editInvoiceForm.get('editInvoiceDate').invalid && editInvoiceForm.get('editInvoiceDate').touched"
-                                  class="text-danger"> *Invoice date is required</small>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="col-form-label">Invoice Amount <span class="text-danger">*</span></label>
-                            <input class="form-control" type="number" [(ngModel)]="invoice.invoiceAmount"
-                              [class.invalid]="editInvoiceForm.get('editInvoiceAmount').invalid && editInvoiceForm.get('editInvoiceAmount').touched"
-                              formControlName="editInvoiceAmount" appTwoDigitDecimaNumber>
-                          <div
-                              *ngIf="editInvoiceForm.get('editInvoiceAmount').invalid && editInvoiceForm.get('editInvoiceAmount').touched">
-                              <small
-                                  *ngIf="editInvoiceForm.get('editInvoiceAmount').invalid && editInvoiceForm.get('editInvoiceAmount').touched"
-                                  class="text-danger"> *Invoice amount is required</small>
-                          </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                          <label class="col-form-label">Term <span class="text-danger">*</span></label>
-                          <ng-select [items]="term"
-                            bindLabel="value" placeholder="--Select--" bindValue="value" [searchable]="true"
-                            [clearable]="false" [virtualScroll]="true" class="custom-ng-select"
-                            formControlName="editTerm" [(ngModel)]="invoice.term" (ngModelChange)="paymentDueDateCalculation(event)">
-                          </ng-select>
-                        <div
-                            *ngIf="editInvoiceForm.get('editTerm').invalid && editInvoiceForm.get('editTerm').touched">
-                            <small
-                                *ngIf="editInvoiceForm.get('editTerm').invalid && editInvoiceForm.get('editTerm').touched"
-                                class="text-danger"> *Term is required</small>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                          <label class="col-form-label">Credit Amount <span class="text-danger">*</span></label>
-                          <small class="text-info"> ( If there is no credit amount, Type ' 0 ')</small>
-                          <input class="form-control" type="number" [(ngModel)]="invoice.creditAmount"
-                            [class.invalid]="editInvoiceForm.get('editCreditAmount').invalid && editInvoiceForm.get('editCreditAmount').touched"
-                            formControlName="editCreditAmount" appTwoDigitDecimaNumber (ngModelChange)="netDueCalculation($event)">
-                        <div
-                            *ngIf="editInvoiceForm.get('editCreditAmount').invalid && editInvoiceForm.get('editCreditAmount').touched">
-                            <small
-                                *ngIf="editInvoiceForm.get('editCreditAmount').invalid && editInvoiceForm.get('editCreditAmount').touched"
-                                class="text-danger"> *Credit amount is required</small>
-                        </div>
-                        <div *ngIf="invoice.creditAmount > invoice.invoiceAmount">
-                            <small *ngIf="invoice.creditAmount > invoice.invoiceAmount"
-                                class="text-danger"> *Credit amount is greater than invoice amount</small>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                          <label class="col-form-label">Payment Due Date <span class="text-danger">*</span></label>
-                          <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker type="text"
-                             [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true,isAnimated: true }"
-                            [class.invalid]="editInvoiceForm.get('editPaymentDueDate').invalid && editInvoiceForm.get('editPaymentDueDate').touched"
-                            formControlName="editPaymentDueDate" placeholder="( Invoice Date + Term )" [ngModel]="invoice.paymentDueDate">
-                        <div
-                            *ngIf="editInvoiceForm.get('editPaymentDueDate').invalid && editInvoiceForm.get('editPaymentDueDate').touched">
-                            <small
-                                *ngIf="editInvoiceForm.get('editPaymentDueDate').invalid && editInvoiceForm.get('editPaymentDueDate').touched"
-                                class="text-danger"> *Payment due date is required</small>
-                        </div>
-                      </div>
-                    </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                          <label class="col-form-label">Net Due <span class="text-danger">*</span></label>
-                          <input class="form-control" type="number" appTwoDigitDecimaNumber [(ngModel)]="invoice.netDue"
-                            [class.invalid]="editInvoiceForm.get('editNetDue').invalid && editInvoiceForm.get('editNetDue').touched"
-                            formControlName="editNetDue" placeholder="( Invoice Amount - Credit Amount )">
-                        <div
-                            *ngIf="editInvoiceForm.get('editNetDue').invalid && editInvoiceForm.get('editNetDue').touched">
-                            <small
-                                *ngIf="editInvoiceForm.get('editNetDue').invalid && editInvoiceForm.get('editNetDue').touched"
-                                class="text-danger"> *Net is required</small>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                          <label class="col-form-label">Cheque Number <span class="text-danger">*</span></label>
-                          <input class="form-control" type="text"
-                            [class.invalid]="editInvoiceForm.get('editChequeNumber').invalid && editInvoiceForm.get('editChequeNumber').touched"
-                            formControlName="editChequeNumber">
-                        <div
-                            *ngIf="editInvoiceForm.get('editChequeNumber').invalid && editInvoiceForm.get('editChequeNumber').touched">
-                            <small
-                                *ngIf="editInvoiceForm.get('editChequeNumber').invalid && editInvoiceForm.get('editChequeNumber').touched"
-                                class="text-danger"> *Cheque Number is required</small>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                          <label class="col-form-label">Paid Date <span class="text-danger">*</span></label>
-                          <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker type="text" placeholder="yyyy-mm-dd"
-                              [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true,isAnimated: true }"
-                            [class.invalid]="editInvoiceForm.get('editPaidDate').invalid && editInvoiceForm.get('editPaidDate').touched"
-                            formControlName="editPaidDate">
-                        <div
-                            *ngIf="editInvoiceForm.get('editPaidDate').invalid && editInvoiceForm.get('editPaidDate').touched">
-                            <small
-                                *ngIf="editInvoiceForm.get('editPaidDate').invalid && editInvoiceForm.get('editPaidDate').touched"
-                                class="text-danger"> *Paid date is required</small>
-                        </div>
-                      </div>
-                    </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="col-form-label">Invoice Description</label>
-                            <textarea rows="4" class="form-control"
-                            [class.invalid]="editInvoiceForm.get('editInvoiceDesc').invalid && editInvoiceForm.get('editInvoiceDesc').touched"
-                            formControlName="editInvoiceDesc"></textarea>
-                          <div
-                              *ngIf="editInvoiceForm.get('editInvoiceDesc').invalid && editInvoiceForm.get('editInvoiceDesc').touched">
-                              <small
-                                  *ngIf="editInvoiceForm.get('editInvoiceDesc').invalid && editInvoiceForm.get('editInvoiceDesc').touched"
-                                  class="text-danger"> *Provide valid data</small>
-                          </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="submit-section">
-                    <button class="btn btn-primary submit-btn" (click)="onEditInvoice()">Submit</button>
-                </div>
-            </form>
         </div>
-      </div>
+    </div>
   </div>
-</div>
-<!-- /Edit Supplier Modal -->
-
-<!-- Delete Supplier Modal -->
-<!-- <div class="modal custom-modal fade" id="delete_supplier" role="dialog">
-  <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-          <div class="modal-body">
-              <div class="form-header">
-                  <h3>Delete Supplier</h3>
-                  <p>Are you sure want to delete?</p>
-              </div>
-              <div class="modal-btn delete-action">
-                  <div class="row">
-                      <div class="col-6">
-                          <a  class="btn btn-primary continue-btn"
-                              (click)="onDelete()">Delete</a>
-                      </div>
-                      <div class="col-6">
-                          <a  data-dismiss="modal"
-                              class="btn btn-primary cancel-btn">Cancel</a>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
+  <!-- /Edit Supplier Modal -->
+  
+  <!-- Delete Supplier Modal -->
+  <div class="modal custom-modal fade" id="delete_invoice" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete Supplier</h3>
+                    <p>Are you sure want to delete?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a  class="btn btn-primary continue-btn"
+                                (click)="onDelete()">Delete</a>
+                        </div>
+                        <div class="col-6">
+                            <a  data-dismiss="modal"
+                                class="btn btn-primary cancel-btn">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
   </div>
-</div> -->
-<!-- /Delete Supplier Modal -->
+  <!-- /Delete Supplier Modal -->
+  

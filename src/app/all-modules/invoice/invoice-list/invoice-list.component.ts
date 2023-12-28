@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { Invoice } from '../../model/invoice';
 import { WhiteSpaceValidator } from 'src/app/utils/white-space-validator';
 import { InvoiceService } from '../../services/invoice.service';
-import { data } from 'jquery';
+import { RecordStatus } from 'src/app/utils/enums.enum';
 
 declare const $: any;
 @Component({
@@ -100,7 +100,7 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
         },
     };
 
-    //Add clients form
+    //Add invoice form
     this.addInvoiceForm = this.formBuilder.group({
       invoiceNumber: ["", [Validators.required,WhiteSpaceValidator]],
       invoiceDesc: ["", [WhiteSpaceValidator]],
@@ -117,10 +117,10 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
     this.addInvoiceForm.get("paymentDueDate").disable();
     this.addInvoiceForm.get("netDue").disable();
 
-    //Edit Clients Form
+    //Edit voice Form
     this.editInvoiceForm = this.formBuilder.group({
       editInvoiceNumber: ["", [Validators.required]],
-      editInvoiceDesc: ["", []],
+      editInvoiceDesc: ["", [WhiteSpaceValidator]],
       editInvoiceDate: ["", [Validators.required]],
       editTerm: ["", [Validators.required]],
       editPaymentDueDate: ["", [Validators.required]],
@@ -183,7 +183,7 @@ searchByDate() {
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.dtTrigger.next();
-    }, 10);
+    }, 1000);
   }
 
   // manually rendering Data table
@@ -200,10 +200,11 @@ searchByDate() {
   //Reset form
   public resetForm() {
     this.addInvoiceForm.reset();
+    this.invoice.netDue = null;
     // this.invoice.creditAmount = 0;
   }
 
-      // Edit invoice
+  // Edit invoice
   public onInvoiceSupplier(invoiceId: any) {
     let invoice = this.invoicesData.filter((invoice) => invoice.id === invoiceId);
     this.editInvoiceForm.setValue({
@@ -316,10 +317,13 @@ searchByDate() {
   netDueCalculation(event){
     if( this.invoice.invoiceAmount >= this.invoice.creditAmount){
       this.invoice.netDue = this.invoice.invoiceAmount - this.invoice.creditAmount;
+      let val = (Math.round( this.invoice.netDue * 100) / 100).toFixed(2);
+      this.invoice.netDue = +val;
       return;
     }
     this.invoice.netDue = null;
   }
+
   paymentDueDateCalculation(event){
     if(this.invoice?.term){
       const newDate = new Date(this.invoice.invoiceDate);
@@ -329,65 +333,32 @@ searchByDate() {
     }
   }
 
-  //Delete Client
-  // onDelete() {
-  //   // let updateStatusDto = {
-  //   //   status: RecordStatus.Deleted,
-  //   //   id: this.editSupplierForm.value.editId,
-  //   // };
+  //Delete Invoice
+  onDelete() {
+    let updateStatusDto = {
+      status: RecordStatus.Deleted,
+      id: this.tempId,
+    };
 
-  //   this.allModulesService.delete(this.tempId, "/v1/supplier-details/delete").subscribe((data) => {
-  //     $("#delete_supplier").modal("hide");
-  //     this.toastr.success("Supplier deleted sucessfully...!", "Success");
+    this.allModulesService.update(updateStatusDto, "/v1/invoice-details/update-status").subscribe((data) => {
+      $("#delete_invoice").modal("hide");
+      this.toastr.success("Invoice deleted sucessfully...!", "Success");
 
-  //     $("#datatable").DataTable().clear();
-  //     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-  //       dtInstance.destroy();
-  //     });
-  //     this.dtTrigger.next();
-  //   },
-  //     (error) => {
-  //       console.error("API Error:", error);
-  //       // Extract error message from the API response
-  //       const customErrorMessage = error && error.error && error.error.errors ? error.error.errors.toString(): "Unknown error";
-  //       this.toastr.error(customErrorMessage, "Error",{ timeOut: 5000 });
-  //       return;
-  //     });
-  // }
+      $("#datatable").DataTable().clear();
+      this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+        dtInstance.destroy();
+      });
+      this.dtTrigger.next();
+    },
+      (error) => {
+        console.error("API Error:", error);
+        // Extract error message from the API response
+        const customErrorMessage = error && error.error && error.error.errors ? error.error.errors.toString(): "Unknown error";
+        this.toastr.error(customErrorMessage, "Error",{ timeOut: 5000 });
+        return;
+      });
+  }
 
-  //search by name
-  // searchID(val) {
-  //   this.rows.splice(0, this.rows.length);
-  //   let temp = this.srch.filter(function (d) {
-  //     val = val.toLowerCase();
-  //     return d.supplierID.toLowerCase().indexOf(val) !== -1 || !val;
-  //   });
-  //   this.rows.push(...temp);
-  // }
-
-  //search by name
-  // searchName(val) {
-  //   this.rows.splice(0, this.rows.length);
-  //   let temp = this.srch.filter(function (d) {
-  //     val = val.toLowerCase();
-  //     return d.supplierName.toLowerCase().indexOf(val) !== -1 || !val;
-  //   });
-  //   this.rows.push(...temp);
-  // }
-
-  //search by company
-  // searchCompany(val) {
-  //   this.rows.splice(0, this.rows.length);
-  //   let temp = this.srch.filter(function (d) {
-  //     val = val.toLowerCase();
-  //     return d.company.toLowerCase().indexOf(val) !== -1 || !val;
-  //   });
-  //   this.rows.push(...temp);
-  // }
-  //getting the status value
-  // getStatus(data) {
-  //   this.statusValue = data;
-  // }
   ngOnDestroy(): void {
     // Do not forget to unsubscribe the event
     this.dtTrigger.unsubscribe();
