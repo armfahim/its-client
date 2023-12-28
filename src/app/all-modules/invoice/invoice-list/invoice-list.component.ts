@@ -65,7 +65,6 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
 
   ngOnInit() {
     var that = this;
-
     this.dtOptions = {
       // ... skipped ...
         pageLength: 10,
@@ -111,7 +110,8 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
       creditAmount: ["", [Validators.required]],
       netDue: ["", [Validators.required]],
       chequeNumber: ["", [Validators.required,WhiteSpaceValidator]],
-      paidDate: ["", [Validators.required]],
+      isPaid: ["", []],
+      paidDate: ["", []],
       supplierDetails: ["", [Validators.required]],
     });
     this.addInvoiceForm.get("paymentDueDate").disable();
@@ -128,7 +128,8 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
       editCreditAmount: ["", [Validators.required]],
       editNetDue: ["", [Validators.required]],
       editChequeNumber: ["", [Validators.required]],
-      editPaidDate: ["", [Validators.required]],
+      editIsPaid: ["", []],
+      editPaidDate: ["", []],
       editSupplierDetails: ["", [Validators.required]],
       editId: ["", []],
     });
@@ -215,6 +216,7 @@ searchByDate() {
       editInvoiceAmount: invoice[0]?.invoiceAmount,
       editCreditAmount: invoice[0]?.creditAmount,
       editChequeNumber: invoice[0]?.chequeNumber,
+      editIsPaid: invoice[0]?.isPaid,
       editPaidDate: invoice[0]?.paidDate,
       editSupplierDetails: invoice[0]?.supplierDetails,
       editId: invoice[0]?.id,
@@ -228,6 +230,12 @@ searchByDate() {
 
   // Update Invoice
   public onEditInvoice() {
+    if (this.invoice.isPaid && !this.editInvoiceForm.value.editPaidDate) {
+      this.toastr.info("Please insert paid date");
+      return;
+    }
+    this.invoice.isPaid = this.invoice.isPaid ? this.invoice.isPaid : false;
+
     if (this.editInvoiceForm.invalid) {
       this.toastr.info("Please insert valid data");
       return;
@@ -244,6 +252,7 @@ searchByDate() {
       supplierDetails: this.editInvoiceForm.value.editSupplierDetails,
       id: this.editInvoiceForm.value.editId,
 
+      isPaid: this.invoice.isPaid,
       netDue: this.invoice.netDue,
       paymentDueDate: this.invoice.paymentDueDate,
 
@@ -272,6 +281,12 @@ searchByDate() {
 
   //Add new Invoice
   public onAddInvoice() {
+    if (this.invoice.isPaid && !this.addInvoiceForm.value.paidDate) {
+      this.toastr.info("Please insert paid date");
+      return;
+    }
+    this.invoice.isPaid = this.invoice.isPaid ? this.invoice.isPaid : false;
+
     if (this.addInvoiceForm.invalid || (this.invoice.creditAmount > this.invoice.invoiceAmount)) {
       this.toastr.info("Please insert valid data");
       return;
@@ -284,6 +299,7 @@ searchByDate() {
       invoiceAmount: this.addInvoiceForm.value.invoiceAmount,
       creditAmount: this.addInvoiceForm.value.creditAmount,
       chequeNumber: this.addInvoiceForm.value.chequeNumber,
+      isPaid: this.addInvoiceForm.value.isPaid,
       paidDate: this.addInvoiceForm.value.paidDate,
       supplierDetails: this.addInvoiceForm.value.supplierDetails,
 

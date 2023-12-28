@@ -64,14 +64,16 @@ export class AdminDashboardComponent implements OnInit {
       { y: '2011', a: 75,  b: 65 },
       { y: '2012', a: 100, b: 50 }
     ];
-    this.loadAllSuppliers();
-    this.loadAllInvoices();
+    // this.loadAllSuppliers();
+    // this.loadAllInvoices();
     this.dashboardHighlights();
   }
 
   dashboardHighlights() {
     this.allModulesService.get("/v1/dashboard/highlights").subscribe((response: any) => {
-      this.highlights = response?.data;
+      this.highlights = response?.data.invoiceDetails;
+      this.totalNoOfinvoices = response?.data.totalInvoices;
+      this.totalNoOfSuppliers = response?.data.totalSuppliers;
     }, (error) => {
       this.toastr.error(error.error.message);
     });

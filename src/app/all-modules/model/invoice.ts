@@ -12,5 +12,6 @@ export class Invoice {
   chequeNumber!:string;
   paidDate!:string;
   invoiceDesc!:string;
+  isPaid:boolean;
 
 }

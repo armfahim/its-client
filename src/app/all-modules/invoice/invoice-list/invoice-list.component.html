@@ -23,7 +23,7 @@
         </div>
     </div>
     <!-- /Page Header -->
-  
+
     <!-- Search Filter -->
       <form (ngSubmit)="onSearch()" [formGroup]="searchForm">
           <div class="row filter-row">
@@ -65,7 +65,7 @@
           </div>
       </form>
     <!-- Search Filter -->
-  
+
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
@@ -96,7 +96,12 @@
                                     <a>{{supplier.supplierID}}</a>
                                 </h2>
                             </td> -->
-                            <td class="text-info">{{invoice.invoiceNumber}}</td>
+                            <td class="text-info">{{invoice.invoiceNumber}}
+                              <small class="block text-ellipsis">
+                                <span class="badge bg-inverse-danger"> {{invoice.isPaid == true ? 'Paid' :'Unpaid'}}
+                                </span>
+                              </small>
+                            </td>
                             <td>{{invoice.supplierName}}</td>
                             <td>{{invoice.invoiceDate}}</td>
                             <td>{{invoice.term}}</td>
@@ -105,7 +110,7 @@
                             <td>{{invoice.creditAmount}}</td>
                             <td>{{invoice.netDue}}</td>
                             <td>{{invoice.chequeNumber}}</td>
-                            <td>{{invoice.paidDate}}</td>
+                            <td>{{invoice.paidDate ? invoice.paidDate : 'N/A'}}</td>
                             <td class="text-right">
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-toggle="dropdown"
@@ -128,7 +133,7 @@
     </div>
   </div>
   <!-- /Page Content -->
-  
+
   <!-- Add Invoice Modal -->
   <div id="add_invoice" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -283,6 +288,16 @@
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
+                            <label class="col-form-label">Paid </label>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" formControlName="isPaid" [(ngModel)]="invoice.isPaid"
+                                class="custom-control-input" id="customSwitch2" checked="">
+                                <label class="custom-control-label" for="customSwitch2"></label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6" *ngIf="invoice.isPaid">
+                          <div class="form-group">
                               <label class="col-form-label">Paid Date <span class="text-danger">*</span></label>
                               <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker type="text" placeholder="yyyy-mm-dd"
                                   [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true,isAnimated: true }"
@@ -311,7 +326,7 @@
                               </div>
                             </div>
                         </div>
-  
+
                     </div>
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" (click)="onAddInvoice()">Submit</button>
@@ -322,7 +337,7 @@
     </div>
   </div>
   <!-- /Add Supplier Modal -->
-  
+
   <!-- Edit Supplier Modal -->
   <div id="edit_invoice" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -477,6 +492,16 @@
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
+                          <label class="col-form-label">Paid </label>
+                          <div class="custom-control custom-switch">
+                              <input type="checkbox" formControlName="editIsPaid" [(ngModel)]="invoice.isPaid"
+                              class="custom-control-input" id="customSwitch2" checked="">
+                              <label class="custom-control-label" for="customSwitch2"></label>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6" *ngIf="invoice.isPaid">
+                        <div class="form-group">
                             <label class="col-form-label">Paid Date <span class="text-danger">*</span></label>
                             <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker type="text" placeholder="yyyy-mm-dd"
                                 [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true,isAnimated: true }"
@@ -505,7 +530,7 @@
                             </div>
                           </div>
                       </div>
-  
+
                   </div>
                   <div class="submit-section">
                       <button class="btn btn-primary submit-btn" (click)="onEditInvoice()">Submit</button>
@@ -516,7 +541,7 @@
     </div>
   </div>
   <!-- /Edit Supplier Modal -->
-  
+
   <!-- Delete Supplier Modal -->
   <div class="modal custom-modal fade" id="delete_invoice" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
@@ -543,4 +568,3 @@
     </div>
   </div>
   <!-- /Delete Supplier Modal -->
-  
