@@ -1,3 +1,5 @@
 {
-    "angular.enable-strict-mode-prompt": false
+    "angular.enable-strict-mode-prompt": false,
+    "appService.defaultWebAppToDeploy": "/subscriptions/c85545ae-455d-499c-b938-ac3b89064b4f/resourceGroups/rg-invoice-tracker/providers/Microsoft.Web/sites/trackinvoice",
+    "appService.deploySubpath": "dist\\its"
 }

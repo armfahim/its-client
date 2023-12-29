@@ -8,7 +8,7 @@ export class Invoice {
   term!:string;
   creditAmount!:number;
   netDue!:number;
-  paymentDueDate!:Date;
+  paymentDueDate!:string;
   chequeNumber!:string;
   paidDate!:string;
   invoiceDesc!:string;

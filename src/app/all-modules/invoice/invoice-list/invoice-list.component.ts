@@ -52,6 +52,9 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
   searchSupplierId: any;
   fromInvoiceDate:any;
   toInvoiceDate:any;
+  isGreaterThan: boolean = false;
+  invoiceAmount: any;
+  creditAmount: any ;
 
 
   constructor(
@@ -134,6 +137,9 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
       editId: ["", []],
     });
 
+    this.editInvoiceForm.get("editPaymentDueDate").disable();
+    this.editInvoiceForm.get("editNetDue").disable();
+
     // Search Form
     this.searchForm = this.formBuilder.group({
       supplierId:["",[]],
@@ -205,8 +211,8 @@ searchByDate() {
     // this.invoice.creditAmount = 0;
   }
 
-  // Edit invoice
-  public onInvoiceSupplier(invoiceId: any) {
+  // On Set Edit invoice
+  public onInvoice(invoiceId: any) {
     let invoice = this.invoicesData.filter((invoice) => invoice.id === invoiceId);
     this.editInvoiceForm.setValue({
       editInvoiceNumber: invoice[0]?.invoiceNumber,
@@ -220,7 +226,6 @@ searchByDate() {
       editPaidDate: invoice[0]?.paidDate,
       editSupplierDetails: invoice[0]?.supplierDetails,
       editId: invoice[0]?.id,
-
       editNetDue: invoice[0]?.netDue,
       editPaymentDueDate: invoice[0]?.paymentDueDate,
     });
@@ -257,6 +262,12 @@ searchByDate() {
       paymentDueDate: this.invoice.paymentDueDate,
 
     };
+
+    var datePipe = new DatePipe('en-US');
+    this.editedInvoice.invoiceDate = datePipe.transform( this.editedInvoice.invoiceDate, 'yyyy-MM-dd');
+    this.editedInvoice.paymentDueDate = datePipe.transform( this.editedInvoice.paymentDueDate, 'yyyy-MM-dd');
+    this.editedInvoice.paidDate = datePipe.transform( this.editedInvoice.paidDate, 'yyyy-MM-dd');
+
     this.allModulesService
       .update(this.editedInvoice, "/v1/invoice-details/update")
       .subscribe((data) => {
@@ -287,7 +298,7 @@ searchByDate() {
     }
     this.invoice.isPaid = this.invoice.isPaid ? this.invoice.isPaid : false;
 
-    if (this.addInvoiceForm.invalid || (this.invoice.creditAmount > this.invoice.invoiceAmount)) {
+    if (this.addInvoiceForm.invalid) {
       this.toastr.info("Please insert valid data");
       return;
     }
@@ -306,6 +317,12 @@ searchByDate() {
       netDue: this.invoice.netDue,
       paymentDueDate: this.invoice.paymentDueDate,
     };
+
+    var datePipe = new DatePipe('en-US');
+    newSupplier.invoiceDate = datePipe.transform( newSupplier.invoiceDate, 'yyyy-MM-dd');
+    newSupplier.paymentDueDate = datePipe.transform( newSupplier.paymentDueDate, 'yyyy-MM-dd');
+    newSupplier.paidDate = datePipe.transform( newSupplier.paidDate, 'yyyy-MM-dd');
+
     this.allModulesService.add(newSupplier, "/v1/invoice-details/save").subscribe((data) => {
     if(data.status == "error") {
         this.toastr.error(data.errors,"Failed");
@@ -331,13 +348,19 @@ searchByDate() {
   }
 
   netDueCalculation(event){
-    if( this.invoice.invoiceAmount >= this.invoice.creditAmount){
+     this.invoiceAmount = Number(this.invoice.invoiceAmount);
+     this.creditAmount = Number(this.invoice.creditAmount);
+
+    if (!isNaN(this.invoiceAmount) && !isNaN(this.creditAmount)) {
+      if (this.invoiceAmount >= this.creditAmount) {
       this.invoice.netDue = this.invoice.invoiceAmount - this.invoice.creditAmount;
       let val = (Math.round( this.invoice.netDue * 100) / 100).toFixed(2);
       this.invoice.netDue = +val;
       return;
+      }
     }
     this.invoice.netDue = null;
+    this.isGreaterThan = true;
   }
 
   paymentDueDateCalculation(event){
@@ -345,7 +368,8 @@ searchByDate() {
       const newDate = new Date(this.invoice.invoiceDate);
       const termAsNumber = parseInt(this.invoice.term, 10);
       newDate.setDate(newDate.getDate() + termAsNumber);
-      this.invoice.paymentDueDate = newDate;
+      let formatDate = this.datePipe.transform(newDate, 'yyyy-MM-dd');
+      this.invoice.paymentDueDate = formatDate.toLocaleString();
     }
   }
 

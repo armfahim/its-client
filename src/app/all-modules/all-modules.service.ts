@@ -99,4 +99,9 @@ export class AllModulesService {
       catchError(this.handleError)
     );
   }
+
+  getHighlights(endPoint: any,params: any): Observable<any> {
+    const url = `${this.baseUrl}${endPoint}?dayToSelectDueInvoice=${params.days}`;
+    return this.http.get(url);
+  }
 }
