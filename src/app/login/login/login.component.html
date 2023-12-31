@@ -1,77 +1,69 @@
 <div class="account-content">
   <!-- <a routerLink = "/login" class="btn btn-primary apply-btn">Login</a> -->
-  <div class="center-screen">
-    <div class="container">
+  <div class="container">
 
-        <!-- Account Logo -->
-        <div class="col-12">
-          <div style="height:0px;">
-            <div class="account-logo">
-                <a href="javascript:"><img src="assets/img/apnaagora.jpg" alt="Invoice Tracker logo"></a>
+      <!-- Account Logo -->
+      <div class="account-logo">
+          <a href="javascript:"><img src="assets/img/apnaagora.jpg" alt="Invoice Tracker logo"></a>
+      </div>
+      <!-- /Account Logo -->
+
+        <div class="account-box">
+            <div class="account-wrapper">
+                <h3 class="account-title text-danger"><i class="text-danger">Welcome to Apna Agora</i>
+                </h3>
+                <p class="account-subtitle"><b>Login</b></p>
+
+                <!-- Account Form -->
+                <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input class="form-control" type="text"
+                                  [class.invalid]="loginForm.get('username').invalid && loginForm.get('username').touched"
+                                  formControlName="username">
+                              <div
+                                  *ngIf="loginForm.get('username').invalid && loginForm.get('username').touched">
+                                  <small
+                                      *ngIf="loginForm.get('username').invalid && loginForm.get('username').touched"
+                                      class="text-danger"> *Username is required</small>
+                              </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <label>Password</label>
+                            </div>
+                            <div class="col-auto">
+                                <a class="text-muted" routerLink = "/login/forgot">
+                                    Forgot password?
+                                </a>
+                            </div>
+                        </div>
+                        <input class="form-control" type="password"
+                          [class.invalid]="loginForm.get('password').invalid && loginForm.get('password').touched"
+                                  formControlName="password">
+                        <div
+                            *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched">
+                            <small
+                                *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched"
+                                class="text-danger"> *Password is required</small>
+                        </div>
+                    </div>
+                    <div class="form-group text-center">
+                      <button class="btn btn-primary account-btn" type="submit">
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                        Login
+                      </button>
+                      <!-- [routerLink]="['/dashboard/admin']" -->
+                    </div>
+                    <div class="account-footer">
+                      <p><i class="fa fa-copyright text-danger"> Apna Agora, Tallahassee, FL, 2024</i></p>
+                        <!-- <p>Don't have an account yet? <a routerLink = "/login/register">Register</a></p> -->
+                    </div>
+                </form>
+                <!-- /Account Form -->
+
             </div>
-          </div>
         </div>
-        <!-- /Account Logo -->
-          <div class="account-box">
-              <div class="account-wrapper">
-                <br>
-                <br>
-                <br>
-                  <h3 class="account-title text-danger"><i class="text-danger">Welcome to Apna Agora</i>
-                  </h3>
-                  <p class="account-subtitle"><b>Login</b></p>
-
-                  <!-- Account Form -->
-                  <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
-                      <div class="form-group">
-                          <label>Username</label>
-                          <input class="form-control" type="text"
-                                    [class.invalid]="loginForm.get('username').invalid && loginForm.get('username').touched"
-                                    formControlName="username">
-                                <div
-                                    *ngIf="loginForm.get('username').invalid && loginForm.get('username').touched">
-                                    <small
-                                        *ngIf="loginForm.get('username').invalid && loginForm.get('username').touched"
-                                        class="text-danger"> *Username is required</small>
-                                </div>
-                      </div>
-                      <div class="form-group">
-                          <div class="row">
-                              <div class="col">
-                                  <label>Password</label>
-                              </div>
-                              <div class="col-auto">
-                                  <a class="text-muted" routerLink = "/login/forgot">
-                                      Forgot password?
-                                  </a>
-                              </div>
-                          </div>
-                          <input class="form-control" type="password"
-                            [class.invalid]="loginForm.get('password').invalid && loginForm.get('password').touched"
-                                    formControlName="password">
-                          <div
-                              *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched">
-                              <small
-                                  *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched"
-                                  class="text-danger"> *Password is required</small>
-                          </div>
-                      </div>
-                      <div class="form-group text-center">
-                        <button class="btn btn-primary account-btn" type="submit">
-                          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                          Login
-                        </button>
-                        <!-- [routerLink]="['/dashboard/admin']" -->
-                      </div>
-                      <div class="account-footer">
-                        <p><i class="fa fa-copyright text-danger"> Apna Agora, Tallahassee, FL, 2024</i></p>
-                          <!-- <p>Don't have an account yet? <a routerLink = "/login/register">Register</a></p> -->
-                      </div>
-                  </form>
-                  <!-- /Account Form -->
-
-              </div>
-          </div>
-    </div>
   </div>
 </div>
