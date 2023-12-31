@@ -1,0 +1,104 @@
+.center-screen {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  min-height: 100vh;
+}
+
+body {
+background-image: linear-gradient(to bottom right, rgb(255,255,255, 0.3) 30% , rgb(102, 126, 234, 0.5) 50%, rgb(118, 75, 162, 0.3)), url(/src/assets/img/apnaagora.jpg);
+}
+div.main-wrapper {
+background-image: linear-gradient(to bottom right, rgb(255,255,255, 0.3) 30% , rgb(102, 126, 234, 0.5) 50%, rgb(118, 75, 162, 0.3)), url(src/assets/img/apnaagora.jpg);
+}
+div.account-content {
+background-image: linear-gradient(to bottom right, rgb(255,255,255, 0.3) 30% , #b0bcf04a 50%, #2b004966), url(src/assets/img/apnaagora.jpg);
+}
+
+.account-logo {
+	margin-bottom: 30px;
+	text-align: center;
+}
+
+.account-logo img {
+	width: 80px;
+}
+
+.account-wrapper {
+	padding: 30px;
+}
+
+.account-box {
+background-color: #fff;
+border: 2px solid #ededed;
+border-radius: 4px;
+/* box-shadow: 0 1px 1px 0 rgb(0 0 0 / 20%); */
+/* margin: 0 auto; */
+/* overflow: hidden; */
+width: 350px;
+height: 100%;
+}
+
+company-title {
+font-size: 26px;
+font-weight: 500;
+margin-bottom: 5px;
+text-align: center;
+}
+
+.company-title-majesto {
+font-size: 26px;
+font-weight: 500;
+margin-bottom: 5px;
+}
+
+.account-title {
+font-size: 20px;
+}
+
+.login-box-ct .login-box-title {
+padding-right: 0;
+}
+
+.login-box-ct .login-box-form {
+padding-left: 0;
+}
+
+.login-box-ct .login-box-title .account-box {
+margin-right: 0;
+}
+
+.login-box-ct .login-box-form .account-box {
+margin-left: 0;
+}
+
+
+.login-box-title .account-box {
+background-image: linear-gradient(to bottom, rgb(91, 97, 111) , rgba(0, 0, 0, 0.5) 50%), url(src/assets/img/apnaagora.jpg);
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
+}
+
+
+/* ---------------------- Ripple Effect Button // Start --------------------- */
+.btn-ripple {
+position: relative;
+overflow: hidden;
+}
+
+@keyframes animate {
+0%
+{
+  width: 0px;
+  height: 0px;
+  opacity: 0.5;
+}
+100%
+{
+  width: 700px;
+  height: 700px;
+  opacity: 0;
+}
+}
+/* ---------------------- Ripple Effect Button // End ------------------------- */
