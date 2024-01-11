@@ -112,7 +112,7 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
       invoiceAmount: ["", [Validators.required]],
       creditAmount: ["", [Validators.required]],
       netDue: ["", [Validators.required]],
-      chequeNumber: ["", [Validators.required,WhiteSpaceValidator]],
+      chequeNumber: ["", []],
       isPaid: ["", []],
       paidDate: ["", []],
       supplierDetails: ["", [Validators.required]],
@@ -130,7 +130,7 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
       editInvoiceAmount: ["", [Validators.required]],
       editCreditAmount: ["", [Validators.required]],
       editNetDue: ["", [Validators.required]],
-      editChequeNumber: ["", [Validators.required]],
+      editChequeNumber: ["", []],
       editIsPaid: ["", []],
       editPaidDate: ["", []],
       editSupplierDetails: ["", [Validators.required]],
@@ -264,9 +264,9 @@ searchByDate() {
     };
 
     var datePipe = new DatePipe('en-US');
-    this.editedInvoice.invoiceDate = datePipe.transform( this.editedInvoice.invoiceDate, 'yyyy-MM-dd');
-    this.editedInvoice.paymentDueDate = datePipe.transform( this.editedInvoice.paymentDueDate, 'yyyy-MM-dd');
-    this.editedInvoice.paidDate = datePipe.transform( this.editedInvoice.paidDate, 'yyyy-MM-dd');
+    this.editedInvoice.invoiceDate = datePipe.transform( this.editedInvoice.invoiceDate, 'MM-dd-yyyy');
+    this.editedInvoice.paymentDueDate = datePipe.transform( this.editedInvoice.paymentDueDate, 'MM-dd-yyyy');
+    this.editedInvoice.paidDate = datePipe.transform( this.editedInvoice.paidDate, 'MM-dd-yyyy');
 
     this.allModulesService
       .update(this.editedInvoice, "/v1/invoice-details/update")
@@ -319,9 +319,9 @@ searchByDate() {
     };
 
     var datePipe = new DatePipe('en-US');
-    newSupplier.invoiceDate = datePipe.transform( newSupplier.invoiceDate, 'yyyy-MM-dd');
-    newSupplier.paymentDueDate = datePipe.transform( newSupplier.paymentDueDate, 'yyyy-MM-dd');
-    newSupplier.paidDate = datePipe.transform( newSupplier.paidDate, 'yyyy-MM-dd');
+    newSupplier.invoiceDate = datePipe.transform( newSupplier.invoiceDate, 'MM-dd-yyyy');
+    newSupplier.paymentDueDate = datePipe.transform( newSupplier.paymentDueDate, 'MM-dd-yyyy');
+    newSupplier.paidDate = datePipe.transform( newSupplier.paidDate, 'MM-dd-yyyy');
 
     this.allModulesService.add(newSupplier, "/v1/invoice-details/save").subscribe((data) => {
     if(data.status == "error") {
@@ -368,7 +368,7 @@ searchByDate() {
       const newDate = new Date(this.invoice.invoiceDate);
       const termAsNumber = parseInt(this.invoice.term, 10);
       newDate.setDate(newDate.getDate() + termAsNumber);
-      let formatDate = this.datePipe.transform(newDate, 'yyyy-MM-dd');
+      let formatDate = this.datePipe.transform(newDate, 'MM-dd-yyyy');
       this.invoice.paymentDueDate = formatDate.toLocaleString();
     }
   }

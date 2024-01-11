@@ -78,9 +78,9 @@
                             <th (click)="onTableHeaderClick(1, 'invoiceDate')">Invoice Date</th>
                             <th (click)="onTableHeaderClick(3, 'term')">Term</th>
                             <th (click)="onTableHeaderClick(4, 'paymentDueDate')">Payment Due Date</th>
-                            <th (click)="onTableHeaderClick(2, 'invoiceAmount')">Invoice Amount</th>
-                            <th (click)="onTableHeaderClick(4, 'creditAmount')">Credit Amount</th>
-                            <th (click)="onTableHeaderClick(4, 'netDue')">Net Due</th>
+                            <th (click)="onTableHeaderClick(2, 'invoiceAmount')">Invoice Amount ($)</th>
+                            <th (click)="onTableHeaderClick(4, 'creditAmount')">Credit Amount ($)</th>
+                            <th (click)="onTableHeaderClick(4, 'netDue')">Net Due ($)</th>
                             <th (click)="onTableHeaderClick(4, 'chequeNumber')">Cheque Number</th>
                             <th (click)="onTableHeaderClick(4, 'paidDate')">Paid Date</th>
                             <!-- <th>Status</th> -->
@@ -106,10 +106,10 @@
                             <td>{{invoice.invoiceDate}}</td>
                             <td>{{invoice.term}}</td>
                             <td>{{invoice.paymentDueDate}}</td>
-                            <td>{{invoice.invoiceAmount}}</td>
-                            <td>{{invoice.creditAmount}}</td>
-                            <td>{{invoice.netDue}}</td>
-                            <td>{{invoice.chequeNumber}}</td>
+                            <td>${{invoice.invoiceAmount}}</td>
+                            <td>${{invoice.creditAmount}}</td>
+                            <td>${{invoice.netDue}}</td>
+                            <td>{{invoice.chequeNumber ? invoice.chequeNumber : 'N/A'}}</td>
                             <td>{{invoice.paidDate ? invoice.paidDate : 'N/A'}}</td>
                             <td class="text-right">
                                 <div class="dropdown dropdown-action">
@@ -180,8 +180,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="col-form-label">Invoice Date <span class="text-danger">*</span></label>
-                                <div class="cal-icon"><input class="form-control datetimepicker" placeholder="yyyy-mm-dd"
-                                  bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true,isAnimated: true }"
+                                <div class="cal-icon"><input class="form-control datetimepicker" placeholder="mm-dd-yyyy"
+                                  bsDatepicker [bsConfig]="{ dateInputFormat: 'MM-DD-YYYY',  returnFocusToInput: true,isAnimated: true }"
                                   [class.invalid]="addInvoiceForm.get('invoiceDate').invalid && addInvoiceForm.get('invoiceDate').touched"
                                   formControlName="invoiceDate" [(ngModel)]="invoice.invoiceDate" (ngModelChange)="paymentDueDateCalculation($event)">
                               <div
@@ -195,7 +195,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="col-form-label">Invoice Amount <span class="text-danger">*</span></label>
+                                <label class="col-form-label">Invoice Amount <span class="text-info">($) </span><span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" [(ngModel)]="invoice.invoiceAmount"
                                   [class.invalid]="addInvoiceForm.get('invoiceAmount').invalid && addInvoiceForm.get('invoiceAmount').touched"
                                   formControlName="invoiceAmount" appTwoDigitDecimaNumber (ngModelChange)="netDueCalculation($event)">
@@ -209,7 +209,7 @@
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
-                              <label class="col-form-label">Term <span class="text-danger">*</span></label>
+                              <label class="col-form-label">Term (in days) <span class="text-danger">*</span></label>
                               <ng-select [items]="term"
                                 bindLabel="value" placeholder="--Select--" bindValue="value" [searchable]="true"
                                 [clearable]="false" [virtualScroll]="true" class="custom-ng-select"
@@ -225,7 +225,7 @@
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
-                              <label class="col-form-label">Credit Amount <span class="text-danger">*</span></label>
+                              <label class="col-form-label">Credit Amount <span class="text-info">($) </span><span class="text-danger">*</span></label>
                               <small class="text-info"> ( If there is no credit amount, Enter 0 )</small>
                               <input class="form-control" type="text" [(ngModel)]="invoice.creditAmount"
                                 [class.invalid]="addInvoiceForm.get('creditAmount').invalid && addInvoiceForm.get('creditAmount').touched"
@@ -247,7 +247,7 @@
                               <label class="col-form-label">Payment Due Date <span class="text-danger">*</span></label>
                               <div class="cal-icon">
                                 <input class="form-control datetimepicker" bsDatepicker type="text"
-                                 [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true,isAnimated: true }"
+                                 [bsConfig]="{ dateInputFormat: 'MM-DD-YYYY',  returnFocusToInput: true,isAnimated: true }"
                                 [class.invalid]="addInvoiceForm.get('paymentDueDate').invalid && addInvoiceForm.get('paymentDueDate').touched"
                                 formControlName="paymentDueDate" placeholder="( Invoice Date + Term )" [ngModel]="invoice.paymentDueDate">
                             <div
@@ -261,7 +261,7 @@
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
-                              <label class="col-form-label">Net Due <span class="text-danger">*</span></label>
+                              <label class="col-form-label">Net Due <span class="text-info">($) </span><span class="text-danger">*</span></label>
                               <input class="form-control" type="text" appTwoDigitDecimaNumber [(ngModel)]="invoice.netDue"
                                 [class.invalid]="addInvoiceForm.get('netDue').invalid && addInvoiceForm.get('netDue').touched"
                                 formControlName="netDue" placeholder="( Invoice Amount - Credit Amount )">
@@ -275,16 +275,14 @@
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
-                              <label class="col-form-label">Cheque Number <span class="text-danger">*</span></label>
-                              <input class="form-control" type="text"
-                                [class.invalid]="addInvoiceForm.get('chequeNumber').invalid && addInvoiceForm.get('chequeNumber').touched"
-                                formControlName="chequeNumber">
-                            <div
+                              <label class="col-form-label">Cheque Number</label>
+                              <input class="form-control" type="text" formControlName="chequeNumber">
+                            <!-- <div
                                 *ngIf="addInvoiceForm.get('chequeNumber').invalid && addInvoiceForm.get('chequeNumber').touched">
                                 <small
                                     *ngIf="addInvoiceForm.get('chequeNumber').invalid && addInvoiceForm.get('chequeNumber').touched"
                                     class="text-danger"> *Cheque Number is required</small>
-                            </div>
+                            </div> -->
                           </div>
                         </div>
                         <div class="col-md-6">
@@ -385,8 +383,8 @@
                       <div class="col-md-6">
                           <div class="form-group">
                               <label class="col-form-label">Invoice Date <span class="text-danger">*</span></label>
-                              <div class="cal-icon"><input class="form-control datetimepicker" placeholder="yyyy-mm-dd"
-                                bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true,isAnimated: true }"
+                              <div class="cal-icon"><input class="form-control datetimepicker" placeholder="mm-dd-yyyy"
+                                bsDatepicker [bsConfig]="{ dateInputFormat: 'MM-DD-YYYY',  returnFocusToInput: true,isAnimated: true }"
                                 [class.invalid]="editInvoiceForm.get('editInvoiceDate').invalid && editInvoiceForm.get('editInvoiceDate').touched"
                                 formControlName="editInvoiceDate" [(ngModel)]="invoice.invoiceDate" (ngModelChange)="paymentDueDateCalculation($event)">
                             <div
@@ -400,7 +398,7 @@
                       </div>
                       <div class="col-md-6">
                           <div class="form-group">
-                              <label class="col-form-label">Invoice Amount <span class="text-danger">*</span></label>
+                              <label class="col-form-label">Invoice Amount <span class="text-info">($)</span> <span class="text-danger">*</span></label>
                               <input class="form-control" type="text" [(ngModel)]="invoice.invoiceAmount"
                                 [class.invalid]="editInvoiceForm.get('editInvoiceAmount').invalid && editInvoiceForm.get('editInvoiceAmount').touched"
                                 formControlName="editInvoiceAmount" appTwoDigitDecimaNumber (ngModelChange)="netDueCalculation($event)">
@@ -414,7 +412,7 @@
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                            <label class="col-form-label">Term <span class="text-danger">*</span></label>
+                            <label class="col-form-label">Term (in days) <span class="text-danger">*</span></label>
                             <ng-select [items]="term"
                               bindLabel="value" placeholder="--Select--" bindValue="value" [searchable]="true"
                               [clearable]="false" [virtualScroll]="true" class="custom-ng-select"
@@ -430,7 +428,7 @@
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                            <label class="col-form-label">Credit Amount <span class="text-danger">*</span></label>
+                            <label class="col-form-label">Credit Amount <span class="text-info">($)</span><span class="text-danger">*</span></label>
                             <small class="text-info"> ( If there is no credit amount, Type ' 0 ')</small>
                             <input class="form-control" type="text" [(ngModel)]="invoice.creditAmount"
                               [class.invalid]="editInvoiceForm.get('editCreditAmount').invalid && editInvoiceForm.get('editCreditAmount').touched"
@@ -452,7 +450,7 @@
                             <label class="col-form-label">Payment Due Date <span class="text-danger">*</span></label>
                             <div class="cal-icon">
                               <input class="form-control datetimepicker" bsDatepicker type="text"
-                               [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true,isAnimated: true }"
+                               [bsConfig]="{ dateInputFormat: 'MM-DD-YYYY',  returnFocusToInput: true,isAnimated: true }"
                               [class.invalid]="editInvoiceForm.get('editPaymentDueDate').invalid && editInvoiceForm.get('editPaymentDueDate').touched"
                               formControlName="editPaymentDueDate" placeholder="( Invoice Date + Term )"
                               [ngModel]="invoice.paymentDueDate">
@@ -467,7 +465,7 @@
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                            <label class="col-form-label">Net Due <span class="text-danger">*</span></label>
+                            <label class="col-form-label">Net Due <span class="text-info">($)</span><span class="text-danger">*</span></label>
                             <input class="form-control" type="text" appTwoDigitDecimaNumber [(ngModel)]="invoice.netDue"
                               [class.invalid]="editInvoiceForm.get('editNetDue').invalid && editInvoiceForm.get('editNetDue').touched"
                               formControlName="editNetDue" placeholder="( Invoice Amount - Credit Amount )">
@@ -481,16 +479,14 @@
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                            <label class="col-form-label">Cheque Number <span class="text-danger">*</span></label>
-                            <input class="form-control" type="text"
-                              [class.invalid]="editInvoiceForm.get('editChequeNumber').invalid && editInvoiceForm.get('editChequeNumber').touched"
-                              formControlName="editChequeNumber">
-                          <div
+                            <label class="col-form-label">Cheque Number </label>
+                            <input class="form-control" type="text" formControlName="editChequeNumber">
+                          <!-- <div
                               *ngIf="editInvoiceForm.get('editChequeNumber').invalid && editInvoiceForm.get('editChequeNumber').touched">
                               <small
                                   *ngIf="editInvoiceForm.get('editChequeNumber').invalid && editInvoiceForm.get('editChequeNumber').touched"
                                   class="text-danger"> *Cheque Number is required</small>
-                          </div>
+                          </div> -->
                         </div>
                       </div>
                       <div class="col-md-6">
@@ -506,8 +502,8 @@
                       <div class="col-md-6" *ngIf="invoice.isPaid">
                         <div class="form-group">
                             <label class="col-form-label">Paid Date <span class="text-danger">*</span></label>
-                            <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker type="text" placeholder="yyyy-mm-dd"
-                                [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true,isAnimated: true }"
+                            <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker type="text" placeholder="mm-dd-yyyy"
+                                [bsConfig]="{ dateInputFormat: 'MM-DD-YYYY',  returnFocusToInput: true,isAnimated: true }"
                               [class.invalid]="editInvoiceForm.get('editPaidDate').invalid && editInvoiceForm.get('editPaidDate').touched"
                               formControlName="editPaidDate">
                           <div
