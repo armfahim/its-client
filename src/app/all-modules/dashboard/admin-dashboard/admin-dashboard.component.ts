@@ -23,7 +23,8 @@ export class AdminDashboardComponent implements OnInit {
 
   totalNoOfSuppliers:any;
   totalNoOfinvoices:any;
-  highlights:any;
+  pendingInvoices:any;
+  dueInvoices:any;
   days:any;
 
   constructor(
@@ -46,7 +47,8 @@ export class AdminDashboardComponent implements OnInit {
       days : this.days
     };
     this.allModulesService.getHighlights("/v1/dashboard/highlights",params).subscribe((response: any) => {
-      this.highlights = response?.data.invoiceDetails;
+      this.pendingInvoices = response?.data.pendingInvoices;
+      this.dueInvoices = response?.data.dueInvoices;
       this.totalNoOfinvoices = response?.data.totalInvoices;
       this.totalNoOfSuppliers = response?.data.totalSuppliers;
     }, (error) => {

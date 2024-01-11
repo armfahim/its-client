@@ -15,7 +15,7 @@
     <!-- /Page Header -->
 
     <div class="row">
-        <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+        <div class="col-md-6 col-sm-6 col-lg-6 ">
             <a routerLink="/invoice/invoicelist">
             <div class="card dash-widget">
                 <div class="card-body">
@@ -28,7 +28,8 @@
             </div>
         </a>
         </div>
-        <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+
+        <div class="col-md-6 col-sm-6 col-lg-6 ">
           <a routerLink="/suppliers/supplierslist" >
             <div class="card dash-widget">
                 <div class="card-body">
@@ -41,17 +42,67 @@
             </div>
           </a>
         </div>
+
+        <div class="col-md-6 d-flex">
+          <div class="card card-table flex-fill">
+              <div class="card-header badge p-3 mb-2 bg-info">
+                  <!-- <h3 class="card-title mb-0"><span class="badge bg-inverse-danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></span> <span class="text-danger"> Due Invoices</span></h3> -->
+                  <h3 class="card-title mb-0 text-white ">
+                    <span><i class="spinner-grow text-danger" aria-hidden="true"></i></span>
+                      Due Invoices Summary
+                  </h3>
+              </div>
+              <div class="card-body">
+                  <div class="table-responsive">
+                      <table class="table custom-table mb-0">
+                          <thead>
+                              <tr>
+                                  <th>Invoice Number</th>
+                                  <th>Company</th>
+                                  <th>Due Date</th>
+                                  <th>Net Due</th>
+                                  <th>Invoice Date</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let data of dueInvoices; let i = index">
+                                  <td class="text-info">#{{data.invoiceNumber}}
+                                    <small class="block text-ellipsis">
+                                      <span class="badge bg-inverse-danger">Unpaid</span>
+                                      <span>
+                                        {{data.paymentDueInDays}} days
+                                        {{data.paymentDueInMonth}} months
+                                        {{data.paymentDueInYears}} years
+                                      </span>
+                                      <span class="text-muted"> past</span>
+                                    </small>
+                                  </td>
+                                  <td>{{data.supplierName}}</td>
+                                  <td>{{data.paymentDueDate}}</td>
+                                  <td>${{data.netDue}}</td>
+                                  <td>{{data.invoiceDate}}</td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+              <div class="card-footer">
+                  <a routerLink="/invoice/invoicelist">View all invoices</a>
+              </div>
+          </div>
+        </div>
+
         <div class="col-md-6 d-flex">
             <div class="card card-table flex-fill">
                 <div class="card-header badge p-3 mb-2 bg-info">
                     <!-- <h3 class="card-title mb-0"><span class="badge bg-inverse-danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></span> <span class="text-danger"> Due Invoices</span></h3> -->
                     <h3 class="card-title mb-0 text-white ">
-                      <span><i class="spinner-grow text-danger" aria-hidden="true"></i></span>
-                        Due Invoices
+                      <span><i class="spinner-grow text-success" aria-hidden="true"></i></span>
+                        Pending Invoices Reminders
                         <div class="dropdown action-label">
                           <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown"
                               aria-expanded="false">
-                              <i class="fa fa-dot-circle-o text-danger"></i> Pick Days
+                              <i class="fa fa-dot-circle-o text-danger"></i> {{days}} Days
                           </a>
                           <div class="dropdown-menu dropdown-menu-right">
                               <a class="dropdown-item" (click)="setDays('3')"><i
@@ -77,7 +128,7 @@
                     </h3>
                     <br>
                     <i class="text-white"><i class="fa fa-info-circle" aria-hidden="true"></i>
-                      Showing  {{days}}  days due invoices
+                      Showing  {{days}}  days pending invoices
                     </i>
                 </div>
                 <div class="card-body">
@@ -93,7 +144,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let data of highlights; let i = index">
+                                <tr *ngFor="let data of pendingInvoices; let i = index">
                                     <td class="text-info">#{{data.invoiceNumber}}
                                       <small class="block text-ellipsis">
                                         <span class="badge bg-inverse-danger">Unpaid</span>
@@ -107,7 +158,7 @@
                                     </td>
                                     <td>{{data.supplierName}}</td>
                                     <td>{{data.paymentDueDate}}</td>
-                                    <td>{{data.netDue}}</td>
+                                    <td>${{data.netDue}}</td>
                                     <td>{{data.invoiceDate}}</td>
                                 </tr>
                             </tbody>
@@ -119,6 +170,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 
     <div class="row"  style="display: flex;justify-content: center;">
