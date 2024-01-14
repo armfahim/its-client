@@ -33,7 +33,7 @@ export class AdminDashboardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.days = 7
+    this.days = 1
     this.dashboardHighlights();
   }
 
