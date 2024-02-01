@@ -7,17 +7,21 @@
             <div class="col">
                 <h3 class="page-title">Invoice</h3>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Invoice</li>
+                    <li class="breadcrumb-item"><a routerLink="/invoice/invoicelist">Invoice</a></li>
+                    <li class="breadcrumb-item active">View</li>
                 </ul>
             </div>
             <div class="col-auto float-right ml-auto">
+              <a class="btn add-btn" routerLink="/invoice/invoicelist">
+                  <i class="fa fa-share"></i> Back To List
+              </a>
+          </div>
+            <!-- <div class="col-auto float-right ml-auto">
                 <div class="btn-group btn-group-sm">
-                    <button class="btn btn-white">CSV</button>
                     <button class="btn btn-white">PDF</button>
                     <button class="btn btn-white"><i class="fa fa-print fa-lg"></i> Print</button>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
     <!-- /Page Header -->
@@ -37,41 +41,39 @@
                         </div>
                         <div class="col-sm-6 m-b-20">
                             <div class="invoice-details">
-                                <h3 class="text-uppercase">Invoice #INV-0001</h3>
+                                <h3 class="text-uppercase text-info">#{{invoice.invoiceNumber}}</h3>
                                 <ul class="list-unstyled">
-                                    <li>Date: <span>March 12, 2019</span></li>
-                                    <li>Due date: <span>April 25, 2019</span></li>
+                                    <li>Invoice Date: <span>{{invoice.invoiceDate}}</span></li>
+                                    <li>Due date: <span>{{invoice.paymentDueDate}}</span></li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6 col-lg-7 col-xl-8 m-b-20">
-                            <h5>Invoice to:</h5>
+                            <h5>Invoice from:</h5>
                             <ul class="list-unstyled">
                                 <li>
-                                    <h5><strong>Barry Cuda</strong></h5>
+                                    <h5><strong>{{invoice.supplierDetailsDto.supplierName}}</strong></h5>
                                 </li>
-                                <li><span>Global Technologies</span></li>
-                                <li>5754 Airport Rd</li>
-                                <li>Coosada, AL, 36020</li>
-                                <li>United States</li>
-                                <li>888-777-6655</li>
-                                <li><a>barrycuda@example.com</a></li>
+                                <li><span>{{invoice.supplierDetailsDto.contactPerson}}</span></li>
+                                <li>{{invoice.supplierDetailsDto.address}}</li>
+                                <li>{{invoice.supplierDetailsDto.phone}}</li>
+                                <li><a>{{invoice.supplierDetailsDto.email}}</a></li>
                             </ul>
                         </div>
                         <div class="col-sm-6 col-lg-5 col-xl-4 m-b-20">
                             <span class="text-muted">Payment Details:</span>
                             <ul class="list-unstyled invoice-payment-details">
                                 <li>
-                                    <h5>Total Due: <span class="text-right">$8,750</span></h5>
+                                    <h5>Total Due: <span class="text-right text-primary">${{invoice.netDue}}</span></h5>
                                 </li>
-                                <li>Bank name: <span>Profit Bank Europe</span></li>
-                                <li>Country: <span>United Kingdom</span></li>
-                                <li>City: <span>London E1 8BF</span></li>
-                                <li>Address: <span>3 Goodman Street</span></li>
-                                <li>IBAN: <span>KFH37784028476740</span></li>
-                                <li>SWIFT code: <span>BPT4E</span></li>
+                                <li>Cheque Number: <span>{{invoice.chequeNumber ? invoice.chequeNumber : 'N/A' }}</span></li>
+                                <li>Payment Status: <span> <small class="block text-ellipsis">
+                                  <span class="badge bg-inverse-danger"> {{invoice.isPaid == true ? 'PAID' :'UNPAID'}}
+                                  </span>
+                                </small></span></li>
+                                <li *ngIf="invoice.isPaid == true">Paid Date: <span>{{invoice.paidDate}}</span></li>
                             </ul>
                         </div>
                     </div>
@@ -79,59 +81,32 @@
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>ITEM</th>
-                                    <th class="d-none d-sm-table-cell">DESCRIPTION</th>
-                                    <th>UNIT COST</th>
-                                    <th>QUANTITY</th>
-                                    <th class="text-right">TOTAL</th>
+                                    <th>Invoice Number</th>
+                                    <th class="d-none d-sm-table-cell">Invoice Date</th>
+                                    <th>Term</th>
+                                    <th>Due Date</th>
+                                    <!-- <th>Net Due ($)</th> -->
+                                    <th *ngIf="invoice.isPaid == true">Paid Date</th>
+                                    <th>Invoice Amount ($)</th>
+                                    <th>Credit Amount ($)</th>
+                                    <!-- <th class="text-right">TOTAL</th> -->
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>1</td>
-                                    <td>Android Application</td>
-                                    <td class="d-none d-sm-table-cell">Lorem ipsum dolor sit amet, consectetur
-                                        adipiscing elit</td>
-                                    <td>$1000</td>
-                                    <td>2</td>
-                                    <td class="text-right">$2000</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Ios Application</td>
-                                    <td class="d-none d-sm-table-cell">Lorem ipsum dolor sit amet, consectetur
-                                        adipiscing elit</td>
-                                    <td>$1750</td>
-                                    <td>1</td>
-                                    <td class="text-right">$1750</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Codeigniter Project</td>
-                                    <td class="d-none d-sm-table-cell">Lorem ipsum dolor sit amet, consectetur
-                                        adipiscing elit</td>
-                                    <td>$90</td>
-                                    <td>3</td>
-                                    <td class="text-right">$270</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>Phonegap Project</td>
-                                    <td class="d-none d-sm-table-cell">Lorem ipsum dolor sit amet, consectetur
-                                        adipiscing elit</td>
-                                    <td>$1200</td>
-                                    <td>2</td>
-                                    <td class="text-right">$2400</td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>Website Optimization</td>
-                                    <td class="d-none d-sm-table-cell">Lorem ipsum dolor sit amet, consectetur
-                                        adipiscing elit</td>
-                                    <td>$200</td>
-                                    <td>2</td>
-                                    <td class="text-right">$400</td>
+                                    <td class="text-info">#{{invoice.invoiceNumber}}
+                                      <small class="block text-ellipsis">
+                                        <span class="badge bg-inverse-danger"> {{invoice.isPaid == true ? 'Paid' :'Unpaid'}}
+                                        </span>
+                                      </small>
+                                    </td>
+                                    <td>{{invoice.invoiceDate}}</td>
+                                    <td>{{invoice.term}}</td>
+                                    <td>{{invoice.paymentDueDate}}</td>
+                                    <!-- <td>${{invoice.netDue}}</td> -->
+                                    <td *ngIf="invoice.isPaid == true">{{invoice.paidDate ? invoice.paidDate : 'N/A'}}</td>
+                                    <td>${{invoice.invoiceAmount}}</td>
+                                    <td>${{invoice.creditAmount}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -145,18 +120,18 @@
                                     <div class="table-responsive no-border">
                                         <table class="table mb-0">
                                             <tbody>
-                                                <tr>
+                                                <!-- <tr>
                                                     <th>Subtotal:</th>
                                                     <td class="text-right">$7,000</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Tax: <span class="text-regular">(25%)</span></th>
                                                     <td class="text-right">$1,750</td>
-                                                </tr>
+                                                </tr> -->
                                                 <tr>
-                                                    <th>Total:</th>
-                                                    <td class="text-right text-primary">
-                                                        <h5>$8,750</h5>
+                                                    <th>Net Due:</th>
+                                                    <td class="text-primary">
+                                                        <h5>${{invoice.netDue}}</h5>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -166,12 +141,8 @@
                             </div>
                         </div>
                         <div class="invoice-info">
-                            <h5>Other information</h5>
-                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed
-                                dictum ligula, cursus blandit risus. Maecenas eget metus non tellus dignissim aliquam ut
-                                a ex. Maecenas sed vehicula dui, ac suscipit lacus. Sed finibus leo vitae lorem
-                                interdum, eu scelerisque tellus fermentum. Curabitur sit amet lacinia lorem. Nullam
-                                finibus pellentesque libero, eu finibus sapien interdum vel</p>
+                            <h5>Description</h5>
+                            <p class="text-muted">{{invoice.invoiceDesc}}</p>
                         </div>
                     </div>
                 </div>

@@ -24,9 +24,10 @@ export class InvoiceViewComponent implements OnInit {
     this.viewById();
   }
   viewById() {
-    this.allModulesService.findById(this.id,"/v1/invoice-details/find-view/").subscribe((data: any) => {
+    this.allModulesService.findById(this.id,"v1/invoice-details/find-view").subscribe((data: any) => {
       console.log(data);
-      this.invoice = data;
+      this.invoice = data?.data;
+      console.log(this.invoice);
     }, (error) => {
       this.toastr.error(error.error.message);
     });
