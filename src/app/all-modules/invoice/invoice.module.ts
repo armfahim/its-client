@@ -9,10 +9,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TwoDigitDecimaNumberDirective } from 'src/app/utils/two-digit-decima-number.directive';
+import { InvoiceViewComponent } from './invoice-view/invoice-view.component';
 
 
 @NgModule({
-  declarations: [InvoiceComponent, InvoiceListComponent,TwoDigitDecimaNumberDirective],
+  declarations: [InvoiceComponent, InvoiceListComponent,TwoDigitDecimaNumberDirective, InvoiceViewComponent],
   imports: [
     CommonModule,
     InvoiceRoutingModule,

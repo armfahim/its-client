@@ -104,4 +104,8 @@ export class AllModulesService {
     const url = `${this.baseUrl}${endPoint}?dayToSelectDueInvoice=${params.days}`;
     return this.http.get(url);
   }
+
+  public findById(id, endPoint) {
+    return this.http.get(`${this.baseUrl}/${endPoint}/${id}`);
+  }
 }
