@@ -233,7 +233,7 @@ searchByDate() {
   }
 
 
-  // Update Invoice
+  // Update Invoice - api calling
   public onEditInvoice() {
     if (this.invoice.isPaid && !this.editInvoiceForm.value.editPaidDate) {
       this.toastr.info("Please insert paid date");
