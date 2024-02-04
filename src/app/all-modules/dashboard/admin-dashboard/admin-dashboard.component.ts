@@ -26,6 +26,10 @@ export class AdminDashboardComponent implements OnInit {
   pendingInvoices:any;
   dueInvoices:any;
   days:any;
+  netDueOfDueInvoices:any;
+  netDueOfPendingInvoices:any;
+  totalDueAmount: any;
+  dashboardResponse:any;
 
   constructor(
     private allModulesService: AllModulesService,
@@ -35,22 +39,34 @@ export class AdminDashboardComponent implements OnInit {
   ngOnInit() {
     this.days = 1
     this.dashboardHighlights();
+    this.getPendingInvoices();
   }
 
   setDays(val: string) {
     this.days = val;
-    this.dashboardHighlights();
+    this.getPendingInvoices();
   }
 
   dashboardHighlights() {
     let params = {
       days : this.days
     };
-    this.allModulesService.getHighlights("/v1/dashboard/highlights",params).subscribe((response: any) => {
-      this.pendingInvoices = response?.data.pendingInvoices;
+    this.allModulesService.get("/v1/dashboard/highlights").subscribe((response: any) => {
       this.dueInvoices = response?.data.dueInvoices;
       this.totalNoOfinvoices = response?.data.totalInvoices;
       this.totalNoOfSuppliers = response?.data.totalSuppliers;
+      this.dashboardResponse = response?.data;
+    }, (error) => {
+      this.toastr.error(error.error.message);
+    });
+  }
+
+  getPendingInvoices() {
+    let params = {
+      days : this.days
+    };
+    this.allModulesService.getPendingInvoices("/v1/dashboard/pending-invoices",params).subscribe((response: any) => {
+      this.pendingInvoices = response?.data;
     }, (error) => {
       this.toastr.error(error.error.message);
     });

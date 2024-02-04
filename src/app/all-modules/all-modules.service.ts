@@ -105,6 +105,11 @@ export class AllModulesService {
     return this.http.get(url);
   }
 
+  getPendingInvoices(endPoint: any,params: any): Observable<any> {
+    const url = `${this.baseUrl}${endPoint}?dayToSelectDueInvoice=${params.days}`;
+    return this.http.get(url);
+  }
+
   public findById(id, endPoint) {
     return this.http.get(`${this.baseUrl}/${endPoint}/${id}`);
   }

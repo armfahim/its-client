@@ -22,7 +22,7 @@
                     <span class="dash-widget-icon"><i class="fa fa-files-o"></i></span>
                     <div class="dash-widget-info">
                         <h3>{{totalNoOfinvoices}}</h3>
-                        <span>Invoices</span>
+                        <span style="color: black;">Invoices</span>
                     </div>
                 </div>
             </div>
@@ -36,12 +36,48 @@
                     <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
                     <div class="dash-widget-info">
                         <h3>{{totalNoOfSuppliers}}</h3>
-                        <span>Companies</span>
+                        <span style="color: black;">Companies</span>
                     </div>
                 </div>
             </div>
           </a>
         </div>
+
+        <div class="col-md-4">
+              <div class="card dash-widget">
+                  <div class="card-body">
+                      <span class="dash-widget-icon"><i class="fa fa-usd"></i></span>
+                      <div class="dash-widget-info">
+                          <h3 class="text-primary">${{dashboardResponse?.netDueOfDueInvoices}}</h3>
+                          <span>Total Due Amount</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="col-md-4">
+              <div class="card dash-widget">
+                  <div class="card-body">
+                      <span class="dash-widget-icon"><i class="fa fa-usd"></i></span>
+                      <div class="dash-widget-info">
+                          <h3 class="text-primary">${{dashboardResponse?.netDueOfPendingInvoices}}</h3>
+                          <span>Total Pending Amount</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="col-md-4">
+              <div class="card dash-widget">
+                  <div class="card-body">
+                      <span class="dash-widget-icon"><i class="fa fa-usd"></i></span>
+                      <div class="dash-widget-info">
+                          <h3 class="text-primary">${{dashboardResponse?.totalDueAmount}}</h3>
+                          <span>Grand Total</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
 
         <div class="col-md-6 d-flex">
           <div class="card card-table flex-fill">
@@ -128,7 +164,7 @@
                     </h3>
                     <br>
                     <i class="text-white"><i class="fa fa-info-circle" aria-hidden="true"></i>
-                        Showing pending invoices set to become due in more than {{days}} days
+                        Showing pending invoices set to become due in {{days}} or more days
                     </i>
                 </div>
                 <div class="card-body">
