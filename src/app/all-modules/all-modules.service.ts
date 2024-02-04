@@ -100,13 +100,8 @@ export class AllModulesService {
     );
   }
 
-  getHighlights(endPoint: any,params: any): Observable<any> {
-    const url = `${this.baseUrl}${endPoint}?dayToSelectDueInvoice=${params.days}`;
-    return this.http.get(url);
-  }
-
   getPendingInvoices(endPoint: any,params: any): Observable<any> {
-    const url = `${this.baseUrl}${endPoint}?dayToSelectDueInvoice=${params.days}`;
+    const url = `${this.baseUrl}${endPoint}?dayToSelectPendingInvoice=${params.days}`;
     return this.http.get(url);
   }
 
