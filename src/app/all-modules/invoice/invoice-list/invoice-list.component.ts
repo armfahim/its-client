@@ -239,12 +239,14 @@ searchByDate() {
     this.loading = true;
     if (this.invoice.isPaid && !this.editInvoiceForm.value.editPaidDate) {
       this.toastr.info("Please insert paid date");
+      this.loading = false;
       return;
     }
     this.invoice.isPaid = this.invoice.isPaid ? this.invoice.isPaid : false;
 
     if (this.editInvoiceForm.invalid) {
       this.toastr.info("Please insert valid data");
+      this.loading = false;
       return;
     }
     this.editedInvoice = {
@@ -298,12 +300,14 @@ searchByDate() {
     this.loading = true;
     if (this.invoice.isPaid && !this.addInvoiceForm.value.paidDate) {
       this.toastr.info("Please insert paid date");
+      this.loading = false;
       return;
     }
     this.invoice.isPaid = this.invoice.isPaid ? this.invoice.isPaid : false;
 
     if (this.addInvoiceForm.invalid) {
       this.toastr.info("Please insert valid data");
+      this.loading = false;
       return;
     }
     let newSupplier = {
