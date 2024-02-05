@@ -11,6 +11,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { HttpClientModule } from '@angular/common/http';
 import { authInterceptorProviders } from './guard/auth.interceptor';
 import { DatePipe, HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { NgHttpLoaderModule } from 'ng-http-loader';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { DatePipe, HashLocationStrategy, LocationStrategy } from '@angular/commo
     AppRoutingModule,
     DataTablesModule,
     HttpClientModule,
+    NgHttpLoaderModule.forRoot(), 
     ToastrModule.forRoot(
       {
         timeOut: 2000,

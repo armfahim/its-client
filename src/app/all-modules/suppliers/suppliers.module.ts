@@ -6,7 +6,7 @@ import { SuppliersComponent } from './suppliers.component';
 import { SuppliersListComponent } from './suppliers-list/suppliers-list.component';
 import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { NgHttpLoaderModule } from 'ng-http-loader';
 
 @NgModule({
   declarations: [SuppliersComponent, SuppliersListComponent],
@@ -15,7 +15,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SuppliersRoutingModule,
     DataTablesModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgHttpLoaderModule.forRoot(), 
   ]
 })
 export class SuppliersModule { }

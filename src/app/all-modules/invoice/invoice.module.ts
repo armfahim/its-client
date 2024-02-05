@@ -10,6 +10,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TwoDigitDecimaNumberDirective } from 'src/app/utils/two-digit-decima-number.directive';
 import { InvoiceViewComponent } from './invoice-view/invoice-view.component';
+import { NgHttpLoaderModule } from 'ng-http-loader';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { InvoiceViewComponent } from './invoice-view/invoice-view.component';
     ReactiveFormsModule,
     NgSelectModule,
     BsDatepickerModule.forRoot(),
+    NgHttpLoaderModule.forRoot(), 
   ]
 })
 export class InvoiceModule { }

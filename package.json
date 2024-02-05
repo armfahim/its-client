@@ -45,6 +45,7 @@
     "line-awesome": "^1.0.2",
     "morris.js": "^0.5.0",
     "ng-drag-drop": "^5.0.0",
+    "ng-http-loader": "^9.1.0",
     "ng-select2": "^1.2.2",
     "ng2-search-filter": "^0.5.1",
     "ngx-bootstrap": "^5.2.0",

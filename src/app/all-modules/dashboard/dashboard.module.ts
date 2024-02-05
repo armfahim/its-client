@@ -7,7 +7,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { EmployeeDashboardComponent } from './employee-dashboard/employee-dashboard.component';
 import { MorrisJsModule } from 'angular-morris-js';
 import { NgSelectModule } from '@ng-select/ng-select';
-
+import { NgHttpLoaderModule } from 'ng-http-loader';
 
 @NgModule({
   declarations: [DashboardComponent, AdminDashboardComponent, EmployeeDashboardComponent],
@@ -15,7 +15,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     CommonModule,
     DashboardRoutingModule,
     MorrisJsModule,
-    NgSelectModule
+    NgSelectModule,
+    NgHttpLoaderModule.forRoot(), 
 
   ]
 })
