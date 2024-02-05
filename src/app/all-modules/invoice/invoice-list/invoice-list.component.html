@@ -331,7 +331,9 @@
 
                     </div>
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" (click)="onAddInvoice()">Submit</button>
+                        <button class="btn btn-primary submit-btn" (click)="onAddInvoice()">
+                            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                            Submit</button>
                     </div>
                 </form>
             </div>
@@ -535,7 +537,9 @@
 
                   </div>
                   <div class="submit-section">
-                      <button class="btn btn-primary submit-btn" (click)="onEditInvoice()">Submit</button>
+                      <button class="btn btn-primary submit-btn" (click)="onEditInvoice()">
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                        Submit</button>
                   </div>
               </form>
           </div>

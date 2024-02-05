@@ -55,6 +55,7 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
   isGreaterThan: boolean = false;
   invoiceAmount: any;
   creditAmount: any ;
+  loading = false;
 
 
   constructor(
@@ -235,6 +236,7 @@ searchByDate() {
 
   // Update Invoice - api calling
   public onEditInvoice() {
+    this.loading = true;
     if (this.invoice.isPaid && !this.editInvoiceForm.value.editPaidDate) {
       this.toastr.info("Please insert paid date");
       return;
@@ -271,6 +273,7 @@ searchByDate() {
     this.allModulesService
       .update(this.editedInvoice, "/v1/invoice-details/update")
       .subscribe((data) => {
+        this.loading = false;
         $("#edit_invoice").modal("hide");
         this.editInvoiceForm.reset();
         this.toastr.success("Invoice updated sucessfully!", "Success");
@@ -292,6 +295,7 @@ searchByDate() {
 
   //Add new Invoice
   public onAddInvoice() {
+    this.loading = true;
     if (this.invoice.isPaid && !this.addInvoiceForm.value.paidDate) {
       this.toastr.info("Please insert paid date");
       return;
@@ -328,6 +332,7 @@ searchByDate() {
         this.toastr.error(data.errors,"Failed");
         return;
       }
+      this.loading = false;
       $("#add_invoice").modal("hide");
       this.addInvoiceForm.reset();
       this.toastr.success("Invoice added sucessfully!", "Success");
