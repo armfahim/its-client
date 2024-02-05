@@ -219,14 +219,14 @@ searchByDate() {
       editInvoiceDesc: invoice[0]?.invoiceDesc,
       editInvoiceDate: invoice[0]?.invoiceDate,
       editTerm: invoice[0]?.term,
-      editInvoiceAmount: invoice[0]?.invoiceAmount,
-      editCreditAmount: invoice[0]?.creditAmount,
+      editInvoiceAmount: invoice[0]?.invoiceAmount.replace(/,/g,''),
+      editCreditAmount: invoice[0]?.creditAmount.replace(/,/g,''),
       editChequeNumber: invoice[0]?.chequeNumber,
       editIsPaid: invoice[0]?.isPaid,
       editPaidDate: invoice[0]?.paidDate,
       editSupplierDetails: invoice[0]?.supplierDetails,
       editId: invoice[0]?.id,
-      editNetDue: invoice[0]?.netDue,
+      editNetDue: invoice[0]?.netDue.replace(/,/g,''),
       editPaymentDueDate: invoice[0]?.paymentDueDate,
     });
     console.log(this.editInvoiceForm);
