@@ -57,6 +57,11 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
   creditAmount: any ;
   loading = false;
 
+  // Display value with a dollar sign
+  formattedInvoiceAmount: string = '$';
+  formattedCreditAmount: string = '$';
+  formattedNeDue: string = '$';
+
 
   constructor(
     private allModulesService: AllModulesService,
@@ -152,66 +157,6 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
     this.loadAllTerm();
 }
 
-loadAllTerm() {
-  this.allModulesService.get("/v1/invoice-details/get-term").subscribe((response: any) => {
-    this.term = response?.data;
-  }, (error) => {
-    this.toastr.error(error.error.message);
-  });
-}
-
-loadAllSuppliers() {
-  this.allModulesService.get("/v1/supplier-details/all").subscribe((response: any) => {
-    this.suppliers = response?.data;
-  }, (error) => {
-    this.toastr.error(error.error.message);
-  });
-}
-
-onSearch(){
-  this.searchFormData = this.searchForm.value;
-  this.searchFormData.fromInvoiceDate = this.datePipe.transform(this.searchFormData.fromInvoiceDate, 'yyyy-MM-dd');
-  this.searchFormData.toInvoiceDate = this.datePipe.transform(this.searchFormData.toInvoiceDate, 'yyyy-MM-dd');
-  this.rerender();
-}
-
-searchByDate() {
-  this.searchFormData = this.searchForm.value;
-  this.searchFormData.fromInvoiceDate = this.datePipe.transform(this.searchFormData.fromInvoiceDate, 'yyyy-MM-dd');
-  this.searchFormData.toInvoiceDate = this.datePipe.transform(this.searchFormData.toInvoiceDate, 'yyyy-MM-dd');
-}
-
-  //Function to handle table header click
-  onTableHeaderClick(columnIndex: number, columnName: string) {
-    // Update dynamic column properties
-    this.orderColumnIndex = columnIndex;
-    this.orderColumnName = columnName;
-  }
-
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.dtTrigger.next();
-    }, 1000);
-  }
-
-  // manually rendering Data table
-  rerender(): void {
-    $("#datatable").DataTable().clear();
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      dtInstance.destroy();
-    });
-    setTimeout(() => {
-      this.dtTrigger.next();
-    }, 500);
-  }
-
-  //Reset form
-  public resetForm() {
-    this.addInvoiceForm.reset();
-    this.invoice.netDue = null;
-    // this.invoice.creditAmount = 0;
-  }
-
   // On Set Edit invoice
   public onInvoice(invoiceId: any) {
     let invoice = this.invoicesData.filter((invoice) => invoice.id === invoiceId);
@@ -230,6 +175,11 @@ searchByDate() {
       editNetDue: invoice[0]?.netDue.replace(/,/g,''),
       editPaymentDueDate: invoice[0]?.paymentDueDate,
     });
+    this.formattedInvoiceAmount = '$' + invoice[0]?.invoiceAmount;
+    this.formattedCreditAmount = '$' + invoice[0]?.creditAmount;
+    this.formattedNeDue = '$' + invoice[0]?.netDue;
+    this.invoice.creditAmount = invoice[0]?.creditAmount;
+    this.invoice.netDue = invoice[0]?.netDue;
     console.log(this.editInvoiceForm);
   }
 
@@ -254,15 +204,18 @@ searchByDate() {
       invoiceDesc: this.editInvoiceForm.value.editInvoiceDesc,
       invoiceDate: this.editInvoiceForm.value.editInvoiceDate,
       term: this.editInvoiceForm.value.editTerm,
-      invoiceAmount: this.editInvoiceForm.value.editInvoiceAmount,
-      creditAmount: this.editInvoiceForm.value.editCreditAmount,
+      // invoiceAmount: this.editInvoiceForm.value.editInvoiceAmount,
+      // creditAmount: this.editInvoiceForm.value.editCreditAmount,
       chequeNumber: this.editInvoiceForm.value.editChequeNumber,
       paidDate: this.editInvoiceForm.value.editPaidDate,
       supplierDetails: this.editInvoiceForm.value.editSupplierDetails,
       id: this.editInvoiceForm.value.editId,
 
-      isPaid: this.invoice.isPaid,
+      invoiceAmount:this.invoice.invoiceAmount,
+      creditAmount: this.invoice.creditAmount,
       netDue: this.invoice.netDue,
+
+      isPaid: this.invoice.isPaid,
       paymentDueDate: this.invoice.paymentDueDate,
 
     };
@@ -315,13 +268,15 @@ searchByDate() {
       invoiceDesc: this.addInvoiceForm.value.invoiceDesc,
       invoiceDate: this.addInvoiceForm.value.invoiceDate,
       term: this.addInvoiceForm.value.term,
-      invoiceAmount: this.addInvoiceForm.value.invoiceAmount,
-      creditAmount: this.addInvoiceForm.value.creditAmount,
+      // invoiceAmount: this.addInvoiceForm.value.invoiceAmount,
+      // creditAmount: this.addInvoiceForm.value.creditAmount,
       chequeNumber: this.addInvoiceForm.value.chequeNumber,
       isPaid: this.addInvoiceForm.value.isPaid,
       paidDate: this.addInvoiceForm.value.paidDate,
       supplierDetails: this.addInvoiceForm.value.supplierDetails,
 
+      invoiceAmount:this.invoice.invoiceAmount,
+      creditAmount: this.invoice.creditAmount,
       netDue: this.invoice.netDue,
       paymentDueDate: this.invoice.paymentDueDate,
     };
@@ -356,6 +311,46 @@ searchByDate() {
     });
   }
 
+  /**
+   * Fomat number fields to prefix '$' in the input fields and calculate net due
+   */
+
+  // Method to format the input as currency
+  formatInvoiceAmountCurrency() {
+    // Remove non-numeric characters from the input
+    const numericValue = Number(this.formattedInvoiceAmount.replace(/[^0-9.]/g, ''));
+
+    // Update numeric value for calculations
+    if(!isNaN(numericValue)){
+      this.invoice.invoiceAmount = numericValue;
+    }
+
+    // Format the numeric value as currency with a dollar sign
+    this.formattedInvoiceAmount = '$' + this.invoice.invoiceAmount;
+    this.netDueCalculation(null);
+  }
+
+  formatCreditAmountCurrency() {
+    const numericValue = Number(this.formattedCreditAmount.replace(/[^0-9.]/g, ''));
+    if(!isNaN(numericValue)){
+      this.invoice.creditAmount = numericValue;
+    }
+    this.formattedCreditAmount = '$' + this.invoice.creditAmount;
+    this.netDueCalculation(null);
+  }
+
+  formatNetDueCurrency() {
+    const numericValue = Number(this.formattedNeDue.replace(/[^0-9.]/g, ''));
+
+    if(!isNaN(numericValue)){
+      this.invoice.netDue = numericValue;
+    }
+    this.formattedNeDue = '$' + this.invoice.netDue;
+  }
+
+  /** End of formatting fields with '$' */
+
+
   netDueCalculation(event){
      this.invoiceAmount = Number(this.invoice.invoiceAmount);
      this.creditAmount = Number(this.invoice.creditAmount);
@@ -365,6 +360,7 @@ searchByDate() {
       this.invoice.netDue = this.invoice.invoiceAmount - this.invoice.creditAmount;
       let val = (Math.round( this.invoice.netDue * 100) / 100).toFixed(2);
       this.invoice.netDue = +val;
+      this.formattedNeDue = '$' + this.invoice.netDue;
       return;
       }
     }
@@ -407,6 +403,67 @@ searchByDate() {
         return;
       });
   }
+
+  loadAllTerm() {
+    this.allModulesService.get("/v1/invoice-details/get-term").subscribe((response: any) => {
+      this.term = response?.data;
+    }, (error) => {
+      this.toastr.error(error.error.message);
+    });
+  }
+
+  loadAllSuppliers() {
+    this.allModulesService.get("/v1/supplier-details/all").subscribe((response: any) => {
+      this.suppliers = response?.data;
+    }, (error) => {
+      this.toastr.error(error.error.message);
+    });
+  }
+
+  onSearch(){
+    this.searchFormData = this.searchForm.value;
+    this.searchFormData.fromInvoiceDate = this.datePipe.transform(this.searchFormData.fromInvoiceDate, 'yyyy-MM-dd');
+    this.searchFormData.toInvoiceDate = this.datePipe.transform(this.searchFormData.toInvoiceDate, 'yyyy-MM-dd');
+    this.rerender();
+  }
+
+  searchByDate() {
+    this.searchFormData = this.searchForm.value;
+    this.searchFormData.fromInvoiceDate = this.datePipe.transform(this.searchFormData.fromInvoiceDate, 'yyyy-MM-dd');
+    this.searchFormData.toInvoiceDate = this.datePipe.transform(this.searchFormData.toInvoiceDate, 'yyyy-MM-dd');
+  }
+
+    //Function to handle table header click
+    onTableHeaderClick(columnIndex: number, columnName: string) {
+      // Update dynamic column properties
+      this.orderColumnIndex = columnIndex;
+      this.orderColumnName = columnName;
+    }
+
+    ngAfterViewInit(): void {
+      setTimeout(() => {
+        this.dtTrigger.next();
+      }, 1000);
+    }
+
+    // manually rendering Data table
+    rerender(): void {
+      $("#datatable").DataTable().clear();
+      this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+        dtInstance.destroy();
+      });
+      setTimeout(() => {
+        this.dtTrigger.next();
+      }, 500);
+    }
+
+    //Reset form
+    public resetForm() {
+      this.addInvoiceForm.reset();
+      this.invoice.netDue = null;
+      this.formattedNeDue = null;
+    }
+
 
   ngOnDestroy(): void {
     // Do not forget to unsubscribe the event
