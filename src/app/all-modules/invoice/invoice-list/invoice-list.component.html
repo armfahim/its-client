@@ -198,7 +198,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="col-form-label">Invoice Amount <span class="text-info">($) </span><span class="text-danger">*</span></label>
+                                <label class="col-form-label">Invoice Amount <span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" [(ngModel)]="formattedInvoiceAmount" placeholder="$" (input)="formatInvoiceAmountCurrency()"
                                   [class.invalid]="addInvoiceForm.get('invoiceAmount').invalid && addInvoiceForm.get('invoiceAmount').touched"
                                   formControlName="invoiceAmount" appTwoDigitDecimaNumber>
@@ -231,7 +231,7 @@
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
-                              <label class="col-form-label">Credit Amount <span class="text-info">($) </span><span class="text-danger">*</span></label>
+                              <label class="col-form-label">Credit Amount <span class="text-danger">*</span></label>
                               <small class="text-info"> ( If there is no credit amount, Enter 0 )</small>
                               <input class="form-control" type="text" [(ngModel)]="formattedCreditAmount" placeholder="$" (input)="formatCreditAmountCurrency()"
                               [class.invalid]="addInvoiceForm.get('creditAmount').invalid && addInvoiceForm.get('creditAmount').touched"
@@ -270,7 +270,7 @@
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
-                              <label class="col-form-label">Net Due <span class="text-info">($) </span><span class="text-danger">*</span></label>
+                              <label class="col-form-label">Net Due <span class="text-danger">*</span></label>
                               <input class="form-control" type="text" appTwoDigitDecimaNumber [(ngModel)]="formattedNeDue" placeholder="$" (input)="formatNetDueCurrency()"
                                 [class.invalid]="addInvoiceForm.get('netDue').invalid && addInvoiceForm.get('netDue').touched"
                                 formControlName="netDue" placeholder="( Invoice Amount - Credit Amount )">
@@ -412,7 +412,7 @@
                       </div>
                       <div class="col-md-6">
                           <div class="form-group">
-                              <label class="col-form-label">Invoice Amount <span class="text-info">($)</span> <span class="text-danger">*</span></label>
+                              <label class="col-form-label">Invoice Amount <span class="text-danger">*</span></label>
                               <input class="form-control" type="text" [(ngModel)]="formattedInvoiceAmount" placeholder="$" (input)="formatInvoiceAmountCurrency()"
                               [class.invalid]="editInvoiceForm.get('editInvoiceAmount').invalid && editInvoiceForm.get('editInvoiceAmount').touched"
                               formControlName="editInvoiceAmount" appTwoDigitDecimaNumber>
@@ -445,7 +445,7 @@
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                            <label class="col-form-label">Credit Amount <span class="text-info">($)</span><span class="text-danger">*</span></label>
+                            <label class="col-form-label">Credit Amount <span class="text-danger">*</span></label>
                             <small class="text-info"> ( If there is no credit amount, Type ' 0 ')</small>
                             <input class="form-control" type="text" [(ngModel)]="formattedCreditAmount" placeholder="$" (input)="formatCreditAmountCurrency()"
                             [class.invalid]="editInvoiceForm.get('editCreditAmount').invalid && editInvoiceForm.get('editCreditAmount').touched"
@@ -485,7 +485,7 @@
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                            <label class="col-form-label">Net Due <span class="text-info">($)</span><span class="text-danger">*</span></label>
+                            <label class="col-form-label">Net Due <span class="text-danger">*</span></label>
                             <input class="form-control" type="text" appTwoDigitDecimaNumber [(ngModel)]="formattedNeDue" placeholder="$" (input)="formatNetDueCurrency()"
                               [class.invalid]="editInvoiceForm.get('editNetDue').invalid && editInvoiceForm.get('editNetDue').touched"
                               formControlName="editNetDue" placeholder="( Invoice Amount - Credit Amount )">

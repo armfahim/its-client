@@ -178,8 +178,9 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
     this.formattedInvoiceAmount = '$' + invoice[0]?.invoiceAmount;
     this.formattedCreditAmount = '$' + invoice[0]?.creditAmount;
     this.formattedNeDue = '$' + invoice[0]?.netDue;
-    this.invoice.creditAmount = invoice[0]?.creditAmount;
-    this.invoice.netDue = invoice[0]?.netDue;
+    this.invoice.invoiceAmount = invoice[0]?.invoiceAmount.replace(/,/g,'');
+    this.invoice.creditAmount = invoice[0]?.creditAmount.replace(/,/g,'');
+    this.invoice.netDue = invoice[0]?.netDue.replace(/,/g,'');
     console.log(this.editInvoiceForm);
   }
 
