@@ -66,11 +66,11 @@
                                     <a>{{supplier.supplierID}}</a>
                                 </h2>
                             </td> -->
-                            <td>{{supplier.supplierName}}</td>
-                            <td>{{supplier.email}}</td>
-                            <td>{{supplier.phone}}</td>
-                            <td>{{supplier.contactPerson}}</td>
-                            <td>{{supplier.address}}</td>
+                            <td>{{supplier.supplierName ? supplier.supplierName : "N/A"}}</td>
+                            <td>{{supplier.email ? supplier.email : "N/A"}}</td>
+                            <td>{{supplier.phone ? supplier.phone : "N/A"}}</td>
+                            <td>{{supplier.contactPerson ? supplier.contactPerson : "N/A"}}</td>
+                            <td>{{supplier.address ? supplier.address : "N/A"}}</td>
                             <!-- <td>
                                 <div class="dropdown action-label">
                                     <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown"
@@ -123,7 +123,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="col-form-label">Supplier Name <span class="text-danger">*</span></label>
+                                <label class="col-form-label">Supplier Name </label>
                                 <input class="form-control" type="text"
                                   [class.invalid]="addSupplierForm.get('supplierName').invalid && addSupplierForm.get('supplierName').touched"
                                     formControlName="supplierName">
@@ -137,7 +137,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="col-form-label">Contact Person <span class="text-danger">*</span></label>
+                                <label class="col-form-label">Contact Person </label>
                                 <input class="form-control" type="text"
                                   [class.invalid]="addSupplierForm.get('contactPerson').invalid && addSupplierForm.get('contactPerson').touched"
                                     formControlName="contactPerson">
@@ -151,7 +151,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="col-form-label">Email <span class="text-danger">*</span></label>
+                                <label class="col-form-label">Email </label>
                                 <input class="form-control" type="text"
                                     [class.invalid]="addSupplierForm.get('email').invalid && addSupplierForm.get('email').touched"
                                     formControlName="email">
@@ -165,7 +165,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="col-form-label">Phone <span class="text-danger">*</span></label>
+                                <label class="col-form-label">Phone </label>
                                 <input class="form-control" type="text"
                                   [class.invalid]="addSupplierForm.get('phone').invalid && addSupplierForm.get('phone').touched"
                                   formControlName="phone">
@@ -179,7 +179,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="col-form-label">Address <span class="text-danger">*</span></label>
+                                <label class="col-form-label">Address </label>
                                 <textarea rows="4" class="form-control"
                                 [class.invalid]="addSupplierForm.get('address').invalid && addSupplierForm.get('address').touched"
                                 formControlName="address"></textarea>
@@ -217,7 +217,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                              <label class="col-form-label">Supplier Name <span class="text-danger">*</span></label>
+                              <label class="col-form-label">Supplier Name </label>
                               <input class="form-control" type="text"
                                 [class.invalid]="editSupplierForm.get('editSupplierName').invalid && editSupplierForm.get('editSupplierName').touched"
                                   formControlName="editSupplierName">
@@ -231,7 +231,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                              <label class="col-form-label">Contact Person <span class="text-danger">*</span></label>
+                              <label class="col-form-label">Contact Person </label>
                               <input class="form-control" type="text"
                                 [class.invalid]="editSupplierForm.get('editContactPerson').invalid && editSupplierForm.get('editContactPerson').touched"
                                   formControlName="editContactPerson">
@@ -245,7 +245,7 @@
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
-                              <label class="col-form-label">Email <span class="text-danger">*</span></label>
+                              <label class="col-form-label">Email </label>
                               <input class="form-control" type="text"
                                   [class.invalid]="editSupplierForm.get('editEmail').invalid && editSupplierForm.get('editEmail').touched"
                                   formControlName="editEmail">
@@ -259,7 +259,7 @@
                       </div>
                       <div class="col-md-6">
                           <div class="form-group">
-                              <label class="col-form-label">Phone <span class="text-danger">*</span></label>
+                              <label class="col-form-label">Phone </label>
                               <input class="form-control" type="text"
                                 [class.invalid]="editSupplierForm.get('editPhone').invalid && editSupplierForm.get('editPhone').touched"
                                 formControlName="editPhone">
@@ -273,7 +273,7 @@
                       </div>
                       <div class="col-md-6">
                           <div class="form-group">
-                              <label class="col-form-label">Address <span class="text-danger">*</span></label>
+                              <label class="col-form-label">Address </label>
                               <textarea rows="4" class="form-control"
                                 [class.invalid]="editSupplierForm.get('editAddress').invalid && editSupplierForm.get('editAddress').touched"
                                 formControlName="editAddress"></textarea>

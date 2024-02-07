@@ -86,20 +86,20 @@ export class SuppliersListComponent implements OnInit, OnDestroy {
     //Add clients form
     this.addSupplierForm = this.formBuilder.group({
       supplierName: ["", [Validators.required]],
-      contactPerson: ["", [Validators.required]],
-      phone: ["", [Validators.required]],
-      email: ["", [Validators.required]],
-      address: ["", [Validators.required]],
+      contactPerson: ["", []],
+      phone: ["", []],
+      email: ["", []],
+      address: ["", []],
     });
 
     //Edit Clients Form
     this.editSupplierForm = this.formBuilder.group({
       editSupplierName: ["", [Validators.required]],
-      editContactPerson: ["", [Validators.required]],
-      editPhone: ["", [Validators.required]],
-      editEmail: ["", [Validators.required]],
-      editAddress: ["", [Validators.required]],
-      editId: ["", [Validators.required]],
+      editContactPerson: ["", []],
+      editPhone: ["", []],
+      editEmail: ["", []],
+      editAddress: ["", []],
+      editId: ["", []],
     });
 
     // Search Form
@@ -175,7 +175,7 @@ onSearch(){
   // Update Supplier
   public onSave() {
     if (this.editSupplierForm.invalid) {
-      this.toastr.info("Please insert valid data");
+      this.toastr.info("Please insert supplier name");
       return;
     }
     this.editedSupplier = {
@@ -211,7 +211,7 @@ onSearch(){
   //Add new client
   public onAddSupplier() {
     if (this.addSupplierForm.invalid) {
-      this.toastr.info("Please insert valid data");
+      this.toastr.info("Please insert supplier name");
       return;
     }
     let newSupplier = {
