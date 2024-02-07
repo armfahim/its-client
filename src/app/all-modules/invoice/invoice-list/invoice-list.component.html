@@ -105,7 +105,7 @@
                             <td>{{invoice.supplierName}}</td>
                             <td>{{invoice.invoiceDate}}</td>
                             <td>{{invoice.term}}</td>
-                            <td>{{invoice.paymentDueDate}}</td>
+                            <td>{{invoice.paymentDueDate ? invoice.paymentDueDate : 'N/A'}}</td>
                             <td>${{invoice.invoiceAmount}}</td>
                             <td>${{invoice.creditAmount}}</td>
                             <td>${{invoice.netDue}}</td>
@@ -198,6 +198,22 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
+                                <label class="col-form-label">Term <span class="text-danger">*</span></label>
+                                <ng-select [items]="term"
+                                  bindLabel="value" placeholder="--Select--" bindValue="value" [searchable]="true"
+                                  [clearable]="false" [virtualScroll]="true" class="custom-ng-select"
+                                  formControlName="term" [(ngModel)]="invoice.term" (ngModelChange)="paymentDueDateCalculation($event)">
+                                </ng-select>
+                              <div
+                                  *ngIf="addInvoiceForm.get('term').invalid && addInvoiceForm.get('term').touched">
+                                  <small
+                                      *ngIf="addInvoiceForm.get('term').invalid && addInvoiceForm.get('term').touched"
+                                      class="text-danger"> *Term is required</small>
+                              </div>
+                            </div>
+                          </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
                                 <label class="col-form-label">Invoice Amount <span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" [(ngModel)]="formattedInvoiceAmount" placeholder="$" (input)="formatInvoiceAmountCurrency()"
                                   [class.invalid]="addInvoiceForm.get('invoiceAmount').invalid && addInvoiceForm.get('invoiceAmount').touched"
@@ -212,22 +228,6 @@
                                       class="text-danger"> *Invoice amount is required</small>
                               </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                              <label class="col-form-label">Term (in days) <span class="text-danger">*</span></label>
-                              <ng-select [items]="term"
-                                bindLabel="value" placeholder="--Select--" bindValue="value" [searchable]="true"
-                                [clearable]="false" [virtualScroll]="true" class="custom-ng-select"
-                                formControlName="term" [(ngModel)]="invoice.term" (ngModelChange)="paymentDueDateCalculation($event)">
-                              </ng-select>
-                            <div
-                                *ngIf="addInvoiceForm.get('term').invalid && addInvoiceForm.get('term').touched">
-                                <small
-                                    *ngIf="addInvoiceForm.get('term').invalid && addInvoiceForm.get('term').touched"
-                                    class="text-danger"> *Term is required</small>
-                            </div>
-                          </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
@@ -251,7 +251,17 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" *ngIf="invoice.term === codTerm">
+                            <div class="form-group">
+                              <label class="col-form-label">COD in cheque </label>
+                              <div class="custom-control custom-switch">
+                                  <input type="checkbox" formControlName="codIncheque" [(ngModel)]="codInCheque" (change)="setChequeNumber()"
+                                  class="custom-control-input" id="customSwitch3" checked="">
+                                  <label class="custom-control-label" for="customSwitch3"></label>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6" *ngIf="invoice.term != codTerm ">
                           <div class="form-group">
                               <label class="col-form-label">Payment Due Date <span class="text-danger">*</span></label>
                               <div class="cal-icon">
@@ -273,7 +283,7 @@
                               <label class="col-form-label">Net Due <span class="text-danger">*</span></label>
                               <input class="form-control" type="text" appTwoDigitDecimaNumber [(ngModel)]="formattedNeDue" placeholder="$" (input)="formatNetDueCurrency()"
                                 [class.invalid]="addInvoiceForm.get('netDue').invalid && addInvoiceForm.get('netDue').touched"
-                                formControlName="netDue" placeholder="( Invoice Amount - Credit Amount )">
+                                formControlName="netDue">
                               <!-- <input class="form-control" type="text" appTwoDigitDecimaNumber [(ngModel)]="invoice.netDue"
                                 [class.invalid]="addInvoiceForm.get('netDue').invalid && addInvoiceForm.get('netDue').touched"
                                 formControlName="netDue" placeholder="( Invoice Amount - Credit Amount )"> -->
@@ -287,18 +297,6 @@
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
-                              <label class="col-form-label">Cheque Number</label>
-                              <input class="form-control" type="text" formControlName="chequeNumber">
-                            <!-- <div
-                                *ngIf="addInvoiceForm.get('chequeNumber').invalid && addInvoiceForm.get('chequeNumber').touched">
-                                <small
-                                    *ngIf="addInvoiceForm.get('chequeNumber').invalid && addInvoiceForm.get('chequeNumber').touched"
-                                    class="text-danger"> *Cheque Number is required</small>
-                            </div> -->
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
                             <label class="col-form-label">Paid </label>
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" formControlName="isPaid" [(ngModel)]="invoice.isPaid"
@@ -307,11 +305,23 @@
                             </div>
                           </div>
                         </div>
+                        <div class="col-md-6" *ngIf="invoice.isPaid || codInCheque">
+                            <div class="form-group">
+                                <label class="col-form-label">Cheque Number <span *ngIf="codInCheque" class="text-danger">*</span></label>
+                                <input class="form-control" type="text" formControlName="chequeNumber">
+                              <div
+                                  *ngIf="addInvoiceForm.get('chequeNumber').invalid && addInvoiceForm.get('chequeNumber').touched">
+                                  <small
+                                      *ngIf="addInvoiceForm.get('chequeNumber').invalid && addInvoiceForm.get('chequeNumber').touched"
+                                      class="text-danger"> *Cheque Number is required</small>
+                              </div>
+                            </div>
+                          </div>
                         <div class="col-md-6" *ngIf="invoice.isPaid">
                           <div class="form-group">
                               <label class="col-form-label">Paid Date <span class="text-danger">*</span></label>
-                              <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker type="text" placeholder="yyyy-mm-dd"
-                                  [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true,isAnimated: true }"
+                              <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker type="text" placeholder="mm-dd-yyyy"
+                                  [bsConfig]="{ dateInputFormat: 'MM-DD-YYYY',  returnFocusToInput: true,isAnimated: true }"
                                 [class.invalid]="addInvoiceForm.get('paidDate').invalid && addInvoiceForm.get('paidDate').touched"
                                 formControlName="paidDate">
                             <div
@@ -411,6 +421,22 @@
                         </div>
                       </div>
                       <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Term <span class="text-danger">*</span></label>
+                            <ng-select [items]="term"
+                              bindLabel="value" placeholder="--Select--" bindValue="value" [searchable]="true"
+                              [clearable]="false" [virtualScroll]="true" class="custom-ng-select"
+                              formControlName="editTerm" [(ngModel)]="invoice.term" (ngModelChange)="paymentDueDateCalculation($event)">
+                            </ng-select>
+                          <div
+                              *ngIf="editInvoiceForm.get('editTerm').invalid && editInvoiceForm.get('editTerm').touched">
+                              <small
+                                  *ngIf="editInvoiceForm.get('editTerm').invalid && editInvoiceForm.get('editTerm').touched"
+                                  class="text-danger"> *Term is required</small>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
                           <div class="form-group">
                               <label class="col-form-label">Invoice Amount <span class="text-danger">*</span></label>
                               <input class="form-control" type="text" [(ngModel)]="formattedInvoiceAmount" placeholder="$" (input)="formatInvoiceAmountCurrency()"
@@ -426,22 +452,6 @@
                                     class="text-danger"> *Invoice amount is required</small>
                             </div>
                           </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="col-form-label">Term (in days) <span class="text-danger">*</span></label>
-                            <ng-select [items]="term"
-                              bindLabel="value" placeholder="--Select--" bindValue="value" [searchable]="true"
-                              [clearable]="false" [virtualScroll]="true" class="custom-ng-select"
-                              formControlName="editTerm" [(ngModel)]="invoice.term" (ngModelChange)="paymentDueDateCalculation($event)">
-                            </ng-select>
-                          <div
-                              *ngIf="editInvoiceForm.get('editTerm').invalid && editInvoiceForm.get('editTerm').touched">
-                              <small
-                                  *ngIf="editInvoiceForm.get('editTerm').invalid && editInvoiceForm.get('editTerm').touched"
-                                  class="text-danger"> *Term is required</small>
-                          </div>
-                        </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
@@ -465,7 +475,17 @@
                         </div>
                         </div>
                       </div>
-                      <div class="col-md-6">
+                      <div class="col-md-6" *ngIf="invoice.term === codTerm">
+                        <div class="form-group">
+                          <label class="col-form-label">COD in cheque </label>
+                          <div class="custom-control custom-switch">
+                              <input type="checkbox" formControlName="editCodIncheque" [(ngModel)]="codInCheque" (change)="setChequeNumber()"
+                              class="custom-control-input" id="customSwitch4" checked="">
+                              <label class="custom-control-label" for="customSwitch4"></label>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6" *ngIf="invoice.term != codTerm ">
                         <div class="form-group">
                             <label class="col-form-label">Payment Due Date <span class="text-danger">*</span></label>
                             <div class="cal-icon">
@@ -502,24 +522,24 @@
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                            <label class="col-form-label">Cheque Number </label>
-                            <input class="form-control" type="text" formControlName="editChequeNumber">
-                          <!-- <div
-                              *ngIf="editInvoiceForm.get('editChequeNumber').invalid && editInvoiceForm.get('editChequeNumber').touched">
-                              <small
-                                  *ngIf="editInvoiceForm.get('editChequeNumber').invalid && editInvoiceForm.get('editChequeNumber').touched"
-                                  class="text-danger"> *Cheque Number is required</small>
-                          </div> -->
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
                           <label class="col-form-label">Paid </label>
                           <div class="custom-control custom-switch">
                               <input type="checkbox" formControlName="editIsPaid" [(ngModel)]="invoice.isPaid"
                               class="custom-control-input" id="customSwitch2" checked="">
                               <label class="custom-control-label" for="customSwitch2"></label>
                             </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6" *ngIf="invoice.isPaid || codInCheque">
+                        <div class="form-group">
+                            <label class="col-form-label">Cheque Number </label>
+                            <input class="form-control" type="text" formControlName="editChequeNumber">
+                          <div
+                              *ngIf="editInvoiceForm.get('editChequeNumber').invalid && editInvoiceForm.get('editChequeNumber').touched">
+                              <small
+                                  *ngIf="editInvoiceForm.get('editChequeNumber').invalid && editInvoiceForm.get('editChequeNumber').touched"
+                                  class="text-danger"> *Cheque Number is required</small>
+                          </div>
                         </div>
                       </div>
                       <div class="col-md-6" *ngIf="invoice.isPaid">
