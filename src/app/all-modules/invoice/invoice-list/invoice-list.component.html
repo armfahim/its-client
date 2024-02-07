@@ -255,7 +255,7 @@
                             <div class="form-group">
                               <label class="col-form-label">COD in cheque </label>
                               <div class="custom-control custom-switch">
-                                  <input type="checkbox" formControlName="codIncheque" [(ngModel)]="codInCheque" (change)="setChequeNumber()"
+                                  <input type="checkbox" formControlName="codIncheque" [(ngModel)]="codInCheque" (change)="setChequeNumberOnAdd()"
                                   class="custom-control-input" id="customSwitch3" checked="">
                                   <label class="custom-control-label" for="customSwitch3"></label>
                               </div>
@@ -479,7 +479,7 @@
                         <div class="form-group">
                           <label class="col-form-label">COD in cheque </label>
                           <div class="custom-control custom-switch">
-                              <input type="checkbox" formControlName="editCodIncheque" [(ngModel)]="codInCheque" (change)="setChequeNumber()"
+                              <input type="checkbox" formControlName="editCodIncheque" [(ngModel)]="codInCheque" (change)="setChequeNumberOnEdit()"
                               class="custom-control-input" id="customSwitch4" checked="">
                               <label class="custom-control-label" for="customSwitch4"></label>
                           </div>
@@ -532,7 +532,7 @@
                       </div>
                       <div class="col-md-6" *ngIf="invoice.isPaid || codInCheque">
                         <div class="form-group">
-                            <label class="col-form-label">Cheque Number </label>
+                            <label class="col-form-label">Cheque Number <span *ngIf="codInCheque" class="text-danger">*</span></label>
                             <input class="form-control" type="text" formControlName="editChequeNumber">
                           <div
                               *ngIf="editInvoiceForm.get('editChequeNumber').invalid && editInvoiceForm.get('editChequeNumber').touched">

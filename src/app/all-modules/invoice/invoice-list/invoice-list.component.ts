@@ -163,9 +163,7 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
 
   // On Set Edit invoice
   public onInvoice(invoiceId: any) {
-    this.codInCheque;
     let invoice = this.invoicesData.filter((invoice) => invoice.id === invoiceId);
-    // this.codInCheque = invoice[0]?.chequeNumber ? true : false;
     this.editInvoiceForm.setValue({
       editInvoiceNumber: invoice[0]?.invoiceNumber,
       editInvoiceDesc: invoice[0]?.invoiceDesc,
@@ -185,19 +183,23 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
     this.formattedInvoiceAmount = '$' + invoice[0]?.invoiceAmount;
     this.formattedCreditAmount = '$' + invoice[0]?.creditAmount;
     this.formattedNeDue = '$' + invoice[0]?.netDue;
-    this.invoice.invoiceAmount = invoice[0]?.invoiceAmount.replace(/,/g,'');
+    this.invoice.invoiceAmount = invoice[0]?.invoiceAmount.replace(/,/g,''); // replace comma and $ sign from the value
     this.invoice.creditAmount = invoice[0]?.creditAmount.replace(/,/g,'');
     this.invoice.netDue = invoice[0]?.netDue.replace(/,/g,'');
+    if(this.invoice.term == this.codTerm && invoice[0]?.chequeNumber != null && invoice[0]?.chequeNumber != undefined) {
+      this.codInCheque = true;
+    }
     console.log(this.editInvoiceForm);
   }
 
 
   // Update Invoice - api calling
   public onEditInvoice() {
-    this.loading = true;  
+    this.loading = true;
     if(!this.customValidationForUpdate()) return;
 
     this.invoice.isPaid = this.invoice.isPaid ? this.invoice.isPaid : false;
+   // if(this.invoice.term == this.codTerm && this.editInvoiceForm.value.editChequeNumber != null && this.editInvoiceForm.value.editChequeNumber != undefined)
     this.editedInvoice = {
       invoiceNumber: this.editInvoiceForm.value.editInvoiceNumber,
       invoiceDesc: this.editInvoiceForm.value.editInvoiceDesc,
@@ -346,6 +348,13 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
       this.loading = false;
       return false;
     }
+    if(this.creditAmount > this.invoiceAmount) {
+      this.toastr.error("Credit amount is greater than invoice amount","Net due is required");
+      this.addInvoiceForm.get('netDue').markAsTouched();
+      this.addInvoiceForm.get('netDue').setErrors({ 'invalid': true });
+      this.loading = false;
+      return false;
+    }
     return true;
   }
 
@@ -390,12 +399,26 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
       this.loading = false;
       return false;
     }
+    if(this.creditAmount > this.invoiceAmount) {
+      this.toastr.error("Credit amount is greater than invoice amount","Net due is required");
+      this.addInvoiceForm.get('netDue').markAsTouched();
+      this.addInvoiceForm.get('netDue').setErrors({ 'invalid': true });
+      this.loading = false;
+      return false;
+    }
     return true;
   }
 
   /** set chequeNumber in addInvoiceForm according to set of checkbox of COD in Cheque */
-  setChequeNumber(){
+  setChequeNumberOnAdd(){
     this.addInvoiceForm.value.chequeNumber = this.codInCheque == true ? this.addInvoiceForm.value.chequeNumber : null;
+  }
+  setChequeNumberOnEdit(){
+    if(this.codInCheque != true ){
+      this.editInvoiceForm.value.editChequeNumber = null;
+      this.invoice.chequeNumber = null;
+    }
+    // this.editInvoiceForm.value.editChequeNumber = this.codInCheque == true ? this.editInvoiceForm.value.editChequeNumber : null;
   }
 
   /**
@@ -443,6 +466,7 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
       }
     }
     this.invoice.netDue = null;
+    this.formattedNeDue = this.invoice.netDue ? '$' + this.invoice.netDue : '$';
     this.isGreaterThan = true;
   }
 
