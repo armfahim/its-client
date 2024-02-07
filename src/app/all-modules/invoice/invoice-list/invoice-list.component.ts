@@ -304,16 +304,17 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
       this.dtTrigger.next();
     },
     (error) => {
+      this.loading = false;
       console.error("API Error:", error);
       // Extract error message from the API response
       const customErrorMessage = error && error.error && error.error.errors ? error.error.errors.toString(): "Unknown error";
-      this.toastr.error(customErrorMessage, "Error",{ timeOut: 5000 });
+      this.toastr.error(customErrorMessage, "Failed",{ timeOut: 5000 });
       return;
     });
   }
 
   /**
-   * Fomat number fields to prefix '$' in the input fields and calculate net due
+   * Fomat number fields to add prefix '$' in the input fields and calculate net due
    */
 
   // Method to format the input as currency
@@ -348,7 +349,6 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
     }
     this.formattedNeDue = '$' + this.invoice.netDue;
   }
-
   /** End of formatting fields with '$' */
 
 

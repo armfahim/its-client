@@ -30,12 +30,13 @@ export class AuthInterceptor implements HttpInterceptor{
         //handle your auth error or rethrow
         if(err.status === 0){
           // this.toastr.error('Your session has timed out','error',{timeOut: 4000});
-          this.login.logout();
-          this.router.navigate(['login']);
+        //   this.login.logout();
+        //   this.router.navigate(['login']);
+          this.router.navigate(['error/error404']);
           return;
         }
         if(err.status == 500){
-          this.router.navigate(['error/error404']);
+          this.router.navigate(['error/error500']);
           return;
         }
         console.error(errorMsg);
