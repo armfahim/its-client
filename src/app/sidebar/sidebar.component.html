@@ -31,6 +31,10 @@
                       <a routerLink="/invoice/invoicelist">
                         <i class="la la-files-o"></i> <span>Invoices</span></a>
                     </li>
+                    <li [ngClass]="{ 'active' : urlComplete.mainUrl === 'purchasereports' }">
+                        <a routerLink="/purchasereports" href="javascript:">
+                          <i class="la la-pie-chart"></i> <span>Purchase Reports</span></a>
+                      </li>
 
                     <!-- <li class="submenu" [ngClass]="{ 'active' : urlComplete.mainUrl === 'apps' }">
                         <a href="javascript:" [ngClass]="{ 'subdrop' : urlComplete.mainUrl === 'apps' }">
