@@ -411,14 +411,14 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
 
   /** set chequeNumber in addInvoiceForm according to set of checkbox of COD in Cheque */
   setChequeNumberOnAdd(){
-    this.addInvoiceForm.value.chequeNumber = this.codInCheque == true ? this.addInvoiceForm.value.chequeNumber : null;
+    if(this.codInCheque != true ){
+      this.addInvoiceForm.get('chequeNumber').patchValue('');
+    }
   }
   setChequeNumberOnEdit(){
     if(this.codInCheque != true ){
-      this.editInvoiceForm.value.editChequeNumber = null;
-      this.invoice.chequeNumber = null;
+      this.editInvoiceForm.get('editChequeNumber').patchValue('');
     }
-    // this.editInvoiceForm.value.editChequeNumber = this.codInCheque == true ? this.editInvoiceForm.value.editChequeNumber : null;
   }
 
   /**
@@ -481,6 +481,9 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
       newDate.setDate(newDate.getDate() + termAsNumber);
       let formatDate = this.datePipe.transform(newDate, 'MM-dd-yyyy');
       this.invoice.paymentDueDate = formatDate.toLocaleString();
+    }
+    if(this.invoice.term != this.codTerm){
+      this.codInCheque = false;
     }
   }
 
