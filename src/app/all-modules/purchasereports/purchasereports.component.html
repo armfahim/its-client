@@ -1,6 +1,82 @@
 <!-- Page Wrapper -->
 <div class="page-wrapper" (resized)="onResize($event)" [ngStyle]="{ 'height' : innerHeight }">
     <router-outlet></router-outlet>
-    <p>purchasereports works!</p>
+   <!-- Page Content -->
+<div class="content container-fluid">
+    <ng-http-loader></ng-http-loader>
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Invoice</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Invoice</li>
+                </ul>
+            </div>
+            <!-- <div class="col-auto float-right ml-auto">
+                <a class="btn add-btn" data-toggle="modal" data-target="#add_invoice" (click)="resetForm()"><i
+                        class="fa fa-plus"></i>
+                    Add Invoice</a>
+                <div class="view-icons">
+                    <a routerLink="/invoice/invoicelist" class="list-view btn btn-link active"><i
+                            class="fa fa-bars"></i></a>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <!-- Search Filter -->
+      <form (ngSubmit)="onSearch()" [formGroup]="searchForm">
+          <div class="row filter-row">
+              <div class="col-sm-6 col-md-3">
+                  <div class="form-group form-focus">
+                      <ng-select [items]="suppliers"
+                          bindLabel="supplierName" placeholder="Select Company" bindValue="id" [searchable]="true"
+                          [clearable]="true" [virtualScroll]="true" class="custom-ng-select"
+                          formControlName="supplierId" [(ngModel)]="searchSupplierId">
+                      </ng-select>
+                  </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <div class="form-group form-focus">
+                  <ng-select [items]="years"
+                      bindLabel="supplierName" placeholder="Select Year" bindValue="id" [searchable]="true"
+                      [clearable]="true" [virtualScroll]="true" class="custom-ng-select"
+                      formControlName="year" [(ngModel)]="searchYear">
+                  </ng-select>
+                </div>
+            </div>
+              <div class="col-sm-6 col-md-3">
+                <button class="btn btn-success btn-block" type="submit">Search</button>
+              </div>
+          </div>
+      </form>
+    <!-- Search Filter -->
+    <div class="row">
+        <div class="col-md-6 col-sm-6 col-lg-6 ">
+            <a routerLink="/invoice/invoicelist">
+            <div class="card dash-widget">
+                <div class="card-body">
+                    <span class="dash-widget-icon"><i class="fa fa-files-o"></i></span>
+                    <div class="dash-widget-info">
+                        <h3>$32,43.44</h3>
+                        <span style="color: black;">Total Amount</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+        </div>
+        <div class="col-md-6">
+            <div class="card dash-widget">
+                <div class="card-body">
+                    <div echarts [options]="chartOptions"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- /Page Content --> 
 </div>
 

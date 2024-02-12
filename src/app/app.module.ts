@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { authInterceptorProviders } from './guard/auth.interceptor';
 import { DatePipe, HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { NgHttpLoaderModule } from 'ng-http-loader';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,9 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
         preventDuplicates: true,
       }
     ),
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts'),
+    }),
   ],
   providers: [authInterceptorProviders,{ provide: LocationStrategy, useClass: HashLocationStrategy},DatePipe],
   bootstrap: [AppComponent]

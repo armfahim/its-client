@@ -23,7 +23,7 @@ export class AuthInterceptor implements HttpInterceptor{
             errorMsg = `Backend returned code ${err.status}, body was: ${err.error}`;
         }
         if (err.status === 404 || err.status === 403 || err.status === 401) {
-          this.login.logout();
+          this.login.logoutWithoutToastr();
           this.router.navigate(['login']);
           return;
         }
