@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { AllModulesService } from '../all-modules.service';
 import * as echarts from 'echarts';
+import { PurchasereportsService } from '../services/purchasereports.service';
 
 @Component({
   selector: 'app-purchasereports',
@@ -23,6 +24,10 @@ export class PurchasereportsComponent implements OnInit {
   searchMonth:any;
   searchYear:any;
   years:any;
+  monthlyInvoiceAmount:any;
+  totalPurchase:any;
+  selectedYear:any;
+  yearAndMonthsObj:any;
   public chartOptions: any;
 
 
@@ -34,6 +39,7 @@ export class PurchasereportsComponent implements OnInit {
     private formBuilder: FormBuilder,
     private http: HttpClient,
     private invoiceService: InvoiceService,
+    private purchaseReportsService: PurchasereportsService
     ) {
     window.onresize = (e) => {
       this.ngZone.run(() => {
@@ -47,6 +53,7 @@ export class PurchasereportsComponent implements OnInit {
 
     this.loadYearsAndMonths();
     this.loadAllSuppliers();
+    this.getPurchaseAmountBySupplier();
 
     // Search Form
     this.searchForm = this.formBuilder.group({
@@ -55,10 +62,8 @@ export class PurchasereportsComponent implements OnInit {
       year:["",[]]
     })
 
-    //
     // prettier-ignore
-    // prettier-ignore
-    let dataAxis = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    let dataAxis = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     // prettier-ignore
     let data = [220, 182, 191, 234, 290, 330, 310, 123, 442, 321, 90, 149];
     let yMax = 500;
@@ -69,8 +74,7 @@ export class PurchasereportsComponent implements OnInit {
     }
     this.chartOptions = {
       title: {
-        text: 'Month wise comparison',
-        subtext: 'Feature Sample: Gradient Color, Shadow, Click Zoom'
+        text: 'Month wise purchase comparison',
       },
       tooltip: {
         trigger: 'axis',
@@ -81,7 +85,21 @@ export class PurchasereportsComponent implements OnInit {
           let tar;
           if (params[0]) {
             tar = params[0];
-            return tar && tar.axisValue + ' : ' + tar.data;
+            let monthName;
+            if(tar.axisValue == 'Jan') {
+              monthName = 'January'
+            }else if(tar.axisValue == 'Feb') monthName = 'February'
+            else if(tar.axisValue == 'Mar') monthName = 'March'
+            else if(tar.axisValue == 'Apr') monthName = 'April'
+            else if(tar.axisValue == 'May') monthName = 'May'
+            else if(tar.axisValue == 'Jun') monthName = 'June'
+            else if(tar.axisValue == 'Jul') monthName = 'July'
+            else if(tar.axisValue == 'Aug') monthName = 'August'
+            else if(tar.axisValue == 'Sep') monthName = 'September'
+            else if(tar.axisValue == 'Oct') monthName = 'October'
+            else if(tar.axisValue == 'Nov') monthName = 'November'
+            else if(tar.axisValue == 'Dec') monthName = 'December'
+            return tar && monthName + ' : ' + tar.data;
           }
         }
       },
@@ -161,11 +179,48 @@ export class PurchasereportsComponent implements OnInit {
     }
   }
 
+
+  getPurchaseAmountBySupplierAndYearInMonth() {
+    let params = {
+      year: this.selectedYear,
+      supplierId : this.searchSupplierId ? this.searchSupplierId : ""
+    };
+
+    this.purchaseReportsService.getPurchaseAmountBySupplierAndYearInMonth("/v1/purchase/amount/by/supplier/year-month",params).subscribe((response: any) => {
+      this.monthlyInvoiceAmount = response?.data?.years;
+    }, (error) => {
+      // Extract error message from the API response
+      const customErrorMessage = error && error.error && error.error.errors ? error.error.errors.toString(): "Unknown error";
+      this.toastr.error(customErrorMessage, "",{ timeOut: 5000 });
+      return;
+    });
+  }
+
+
+  getPurchaseAmountBySupplier() {
+    let params = {
+      supplierId : this.searchSupplierId ? this.searchSupplierId : ""
+    };
+
+    this.purchaseReportsService.getPurchaseAmountBySupplier("/v1/purchase/amount/by/supplier",params).subscribe((response: any) => {
+      this.totalPurchase = response?.data?.totalPurchase;
+    }, (error) => {
+      const customErrorMessage = error && error.error && error.error.errors ? error.error.errors.toString(): "Unknown error";
+      this.toastr.error(customErrorMessage, "",{ timeOut: 5000 });
+      return;
+    });
+  }
+
   loadYearsAndMonths() {
     this.allModulesService.get("/v1/invoice-details/distinct/years-months").subscribe((response: any) => {
         this.years = response?.data.years;
+        this.yearAndMonthsObj = response;
+        this.selectedYear = this.yearAndMonthsObj?.data.currentYear;
+        this.getPurchaseAmountBySupplierAndYearInMonth();
       }, (error) => {
-        this.toastr.error(error.error.message);
+        const customErrorMessage = error && error.error && error.error.errors ? error.error.errors.toString(): "Unknown error";
+        this.toastr.error(customErrorMessage, "",{ timeOut: 5000 });
+        return;
       });
   }
 

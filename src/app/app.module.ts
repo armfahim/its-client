@@ -24,7 +24,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
     AppRoutingModule,
     DataTablesModule,
     HttpClientModule,
-    NgHttpLoaderModule.forRoot(), 
+    NgHttpLoaderModule.forRoot(),
     ToastrModule.forRoot(
       {
         timeOut: 2000,

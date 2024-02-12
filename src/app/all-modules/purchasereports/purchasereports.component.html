@@ -35,48 +35,50 @@
                       <ng-select [items]="suppliers"
                           bindLabel="supplierName" placeholder="Select Company" bindValue="id" [searchable]="true"
                           [clearable]="true" [virtualScroll]="true" class="custom-ng-select"
-                          formControlName="supplierId" [(ngModel)]="searchSupplierId">
+                          formControlName="supplierId" [(ngModel)]="searchSupplierId" (change)="getPurchaseAmountBySupplier()">
                       </ng-select>
                   </div>
-              </div>
-              <div class="col-sm-6 col-md-3">
-                <div class="form-group form-focus">
-                  <ng-select [items]="years"
-                      bindLabel="supplierName" placeholder="Select Year" bindValue="id" [searchable]="true"
-                      [clearable]="true" [virtualScroll]="true" class="custom-ng-select"
-                      formControlName="year" [(ngModel)]="searchYear">
-                  </ng-select>
-                </div>
-            </div>
-              <div class="col-sm-6 col-md-3">
-                <button class="btn btn-success btn-block" type="submit">Search</button>
               </div>
           </div>
       </form>
     <!-- Search Filter -->
     <div class="row">
         <div class="col-md-6 col-sm-6 col-lg-6 ">
-            <a routerLink="/invoice/invoicelist">
             <div class="card dash-widget">
                 <div class="card-body">
-                    <span class="dash-widget-icon"><i class="fa fa-files-o"></i></span>
+                    <span class="dash-widget-icon"><i class="fa fa-usd"></i></span>
                     <div class="dash-widget-info">
-                        <h3>$32,43.44</h3>
-                        <span style="color: black;">Total Amount</span>
+                        <h3 class="text-primary">${{totalPurchase ? totalPurchase : "0"}}</h3>
+                        <span style="color: black;">Total Purchase</span>
                     </div>
                 </div>
             </div>
-        </a>
         </div>
         <div class="col-md-6">
             <div class="card dash-widget">
                 <div class="card-body">
+                  <div class="p-3">
+                    <div class="dropdown action-label">
+                      <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown"
+                          aria-expanded="false">
+                          <i class="fa fa-dot-circle-o text-danger"></i>  {{selectedYear}}
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-right" *ngFor="let data of years; let i = index">
+                          <a class="dropdown-item" (click)="setDays(data)"><i
+                                  class="fa fa-dot-circle-o text-danger"></i>
+                              {{data}}</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="action-label float-right">
+                    <h4 class="float-right">Total Purchase: <span class="text-info">$87,323.23</span></h4> <!-- Added label here -->
+                  </div>
                     <div echarts [options]="chartOptions"></div>
-                </div>
-            </div>
+              </div>
+          </div>
         </div>
     </div>
   </div>
-  <!-- /Page Content --> 
+  <!-- /Page Content -->
 </div>
 
