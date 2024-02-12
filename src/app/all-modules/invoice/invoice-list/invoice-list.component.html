@@ -307,7 +307,8 @@
                         </div>
                         <div class="col-md-6" *ngIf="invoice.isPaid || codInCheque">
                             <div class="form-group">
-                                <label class="col-form-label">Cheque Number <span *ngIf="codInCheque" class="text-danger">*</span></label>
+                              <!-- <span *ngIf="codInCheque" class="text-danger">*</span> -->
+                                <label class="col-form-label">Cheque Number </label>
                                 <input class="form-control" type="text" formControlName="chequeNumber">
                               <div
                                   *ngIf="addInvoiceForm.get('chequeNumber').invalid && addInvoiceForm.get('chequeNumber').touched">
@@ -319,7 +320,8 @@
                           </div>
                         <div class="col-md-6" *ngIf="invoice.isPaid">
                           <div class="form-group">
-                              <label class="col-form-label">Paid Date <span class="text-danger">*</span></label>
+                            <!-- <span class="text-danger">*</span> -->
+                              <label class="col-form-label">Paid Date </label>
                               <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker type="text" placeholder="mm-dd-yyyy"
                                   [bsConfig]="{ dateInputFormat: 'MM-DD-YYYY',  returnFocusToInput: true,isAnimated: true }"
                                 [class.invalid]="addInvoiceForm.get('paidDate').invalid && addInvoiceForm.get('paidDate').touched"
@@ -532,7 +534,8 @@
                       </div>
                       <div class="col-md-6" *ngIf="invoice.isPaid || codInCheque">
                         <div class="form-group">
-                            <label class="col-form-label">Cheque Number <span *ngIf="codInCheque" class="text-danger">*</span></label>
+                          <!-- <span *ngIf="codInCheque" class="text-danger">*</span> -->
+                            <label class="col-form-label">Cheque Number </label>
                             <input class="form-control" type="text" formControlName="editChequeNumber">
                           <div
                               *ngIf="editInvoiceForm.get('editChequeNumber').invalid && editInvoiceForm.get('editChequeNumber').touched">
@@ -544,7 +547,8 @@
                       </div>
                       <div class="col-md-6" *ngIf="invoice.isPaid">
                         <div class="form-group">
-                            <label class="col-form-label">Paid Date <span class="text-danger">*</span></label>
+                          <!-- <span class="text-danger">*</span> -->
+                            <label class="col-form-label">Paid Date </label>
                             <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker type="text" placeholder="mm-dd-yyyy"
                                 [bsConfig]="{ dateInputFormat: 'MM-DD-YYYY',  returnFocusToInput: true,isAnimated: true }"
                               [class.invalid]="editInvoiceForm.get('editPaidDate').invalid && editInvoiceForm.get('editPaidDate').touched"

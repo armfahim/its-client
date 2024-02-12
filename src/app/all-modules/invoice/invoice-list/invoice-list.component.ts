@@ -183,7 +183,7 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
     this.formattedInvoiceAmount = '$' + invoice[0]?.invoiceAmount;
     this.formattedCreditAmount = '$' + invoice[0]?.creditAmount;
     this.formattedNeDue = '$' + invoice[0]?.netDue;
-    this.invoice.invoiceAmount = invoice[0]?.invoiceAmount.replace(/,/g,''); // replace comma and $ sign from the value
+    this.invoice.invoiceAmount = invoice[0]?.invoiceAmount.replace(/,/g,''); // replaced $ sign from the value
     this.invoice.creditAmount = invoice[0]?.creditAmount.replace(/,/g,'');
     this.invoice.netDue = invoice[0]?.netDue.replace(/,/g,'');
     if(this.invoice.term == this.codTerm && invoice[0]?.chequeNumber != null && invoice[0]?.chequeNumber != undefined) {
@@ -327,20 +327,20 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
       this.loading = false;
       return false;
     }
-    if (this.invoice.isPaid && !this.addInvoiceForm.value.paidDate) {
-      this.toastr.info("Please insert paid date");
-      this.addInvoiceForm.get('paidDate').markAsTouched();
-      this.addInvoiceForm.get('paidDate').setErrors({ 'invalid': true });
-      this.loading = false;
-      return false;
-    }
-    if(this.codInCheque && !this.addInvoiceForm.value.chequeNumber){
-      this.toastr.info("Please provide cheque number");
-      this.addInvoiceForm.get('chequeNumber').markAsTouched();
-      this.addInvoiceForm.get('chequeNumber').setErrors({ 'invalid': true });
-      this.loading = false;
-      return false;
-    }
+    // if (this.invoice.isPaid && !this.addInvoiceForm.value.paidDate) {
+    //   this.toastr.info("Please insert paid date");
+    //   this.addInvoiceForm.get('paidDate').markAsTouched();
+    //   this.addInvoiceForm.get('paidDate').setErrors({ 'invalid': true });
+    //   this.loading = false;
+    //   return false;
+    // }
+    // if(this.codInCheque && !this.addInvoiceForm.value.chequeNumber){
+    //   this.toastr.info("Please provide cheque number");
+    //   this.addInvoiceForm.get('chequeNumber').markAsTouched();
+    //   this.addInvoiceForm.get('chequeNumber').setErrors({ 'invalid': true });
+    //   this.loading = false;
+    //   return false;
+    // }
     if (this.invoice.term != this.codTerm && !this.invoice.paymentDueDate) {
       this.toastr.error("Failed to calculate payment due data","Error");
       this.addInvoiceForm.get('paymentDueDate').markAsTouched();
@@ -378,20 +378,20 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
       this.loading = false;
       return false;
     }
-    if (this.invoice.isPaid && !this.editInvoiceForm.value.editPaidDate) {
-      this.toastr.info("Please insert paid date");
-      this.editInvoiceForm.get('editPaidDate').markAsTouched();
-      this.editInvoiceForm.get('editPaidDate').setErrors({ 'invalid': true });
-      this.loading = false;
-      return false;
-    }
-    if(this.codInCheque && !this.editInvoiceForm.value.editChequeNumber){
-      this.toastr.info("Please provide cheque number");
-      this.editInvoiceForm.get('editChequeNumber').markAsTouched();
-      this.editInvoiceForm.get('editChequeNumber').setErrors({ 'invalid': true });
-      this.loading = false;
-      return false;
-    }
+    // if (this.invoice.isPaid && !this.editInvoiceForm.value.editPaidDate) {
+    //   this.toastr.info("Please insert paid date");
+    //   this.editInvoiceForm.get('editPaidDate').markAsTouched();
+    //   this.editInvoiceForm.get('editPaidDate').setErrors({ 'invalid': true });
+    //   this.loading = false;
+    //   return false;
+    // }
+    // if(this.codInCheque && !this.editInvoiceForm.value.editChequeNumber){
+    //   this.toastr.info("Please provide cheque number");
+    //   this.editInvoiceForm.get('editChequeNumber').markAsTouched();
+    //   this.editInvoiceForm.get('editChequeNumber').setErrors({ 'invalid': true });
+    //   this.loading = false;
+    //   return false;
+    // }
     if (this.invoice.term != this.codTerm && !this.invoice.paymentDueDate) {
       this.toastr.error("Failed to calculate payment due data","Error");
       this.editInvoiceForm.get('editPaymentDueDate').markAsTouched();
@@ -473,6 +473,7 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
   paymentDueDateCalculation(event){
     if(this.invoice?.term != undefined && this.invoice?.term == this.codTerm) {
       this.invoice.paymentDueDate = null;
+      this.invoice.isPaid = true;
       return;
     }
     if(this.invoice?.term && this.invoice?.invoiceDate){
