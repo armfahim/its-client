@@ -368,8 +368,8 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
     }
     if(!this.editInvoiceForm.value.editCreditAmount){
       this.toastr.info("Please insert credit amount");
-      this.addInvoiceForm.get('editCreditAmount').markAsTouched();
-      this.addInvoiceForm.get('editCreditAmount').setErrors({ 'invalid': true });
+      this.editInvoiceForm.get('editCreditAmount').markAsTouched();
+      this.editInvoiceForm.get('editCreditAmount').setErrors({ 'invalid': true });
       this.loading = false;
       return false;
     }
@@ -401,8 +401,8 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
     }
     if(this.creditAmount > this.invoiceAmount) {
       this.toastr.error("Credit amount is greater than invoice amount","Net due is required");
-      this.addInvoiceForm.get('netDue').markAsTouched();
-      this.addInvoiceForm.get('netDue').setErrors({ 'invalid': true });
+      this.editInvoiceForm.get('netDue').markAsTouched();
+      this.editInvoiceForm.get('netDue').setErrors({ 'invalid': true });
       this.loading = false;
       return false;
     }
