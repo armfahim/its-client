@@ -14,15 +14,13 @@
                     <li class="breadcrumb-item active">Invoice</li>
                 </ul>
             </div>
-            <!-- <div class="col-auto float-right ml-auto">
-                <a class="btn add-btn" data-toggle="modal" data-target="#add_invoice" (click)="resetForm()"><i
-                        class="fa fa-plus"></i>
-                    Add Invoice</a>
-                <div class="view-icons">
-                    <a routerLink="/invoice/invoicelist" class="list-view btn btn-link active"><i
-                            class="fa fa-bars"></i></a>
-                </div>
-            </div> -->
+            <div class="col-auto float-right ml-auto">
+                <div class="col-auto float-right ml-auto">
+                    <a class="btn add-btn" routerLink="/invoice/invoicelist">
+                        <i class="fa fa-share"></i>Invoice List
+                    </a>
+                  </div>
+            </div>
         </div>
     </div>
     <!-- /Page Header -->
@@ -42,41 +40,104 @@
           </div>
       </form>
     <!-- Search Filter -->
+
     <div class="row">
-        <div class="col-md-6 col-sm-6 col-lg-6 ">
+        <div class="col-md-12 col-sm-12 col-lg-12 ">
             <div class="card dash-widget">
                 <div class="card-body">
-                    <span class="dash-widget-icon"><i class="fa fa-usd"></i></span>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3">
+                            <div>
+                                <span class="d-block"><h3>Overall Total Purchase</h3></span>
+                            </div>
+                            <div>
+                                <span class="text-success"></span>
+                            </div>
+                        </div>
+                        <h3 class="mb-3 text-info">${{totalPurchase ? totalPurchase : "0"}}</h3>
+                        <div class="progress mb-2" style="height: 5px;">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 70%;"
+                                aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <!-- <p class="mb-0">Overall Employees 218</p> -->
+                    </div>
+                    <div class="card-footer">
+                        <a *ngIf="searchSupplierId" class="text-info" (click)="findBySupplier()" style="cursor: pointer;">View Details</a>
+                    </div>
+                    <!-- <span class="dash-widget-icon"><i class="fa fa-usd"></i></span>
                     <div class="dash-widget-info">
                         <h3 class="text-primary">${{totalPurchase ? totalPurchase : "0"}}</h3>
                         <span style="color: black;">Total Purchase</span>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-12 col-sm-12 col-lg-12">
             <div class="card dash-widget">
                 <div class="card-body">
                   <div class="p-3">
                     <div class="dropdown action-label">
-                      <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown"
-                          aria-expanded="false">
-                          <i class="fa fa-dot-circle-o text-danger"></i>  {{selectedYear}}
-                      </a>
-                      <div class="dropdown-menu dropdown-menu-right" *ngFor="let data of years; let i = index">
-                          <a class="dropdown-item" (click)="setDays(data)"><i
-                                  class="fa fa-dot-circle-o text-danger"></i>
-                              {{data}}</a>
-                      </div>
+                        <ng-select [items]="years"
+                            bindLabel="years" placeholder="Select year" bindValue="years" [searchable]="false"
+                            [virtualScroll]="true" class="custom-ng-select" [clearable]="false"
+                            [(ngModel)]="selectedYear" (change)="getPurchaseAmountBySupplierAndYearInMonth()">
+                        </ng-select>
                     </div>
+                    <h4 class="float-right">{{selectedYear}}, Purchase: <span class="text-info">${{monthlyInvoiceAmount?.totalPurchaseInYear}}</span></h4> <!-- Added label here -->
                   </div>
-                  <div class="action-label float-right">
-                    <h4 class="float-right">Total Purchase: <span class="text-info">$87,323.23</span></h4> <!-- Added label here -->
-                  </div>
+                  <!-- <div class="action-label float-right">
+                    <h4 class="float-right">{{selectedYear}}, Purchase: <span class="text-info">${{monthlyInvoiceAmount?.totalPurchaseInYear}}</span></h4>
+                  </div> -->
                     <div echarts [options]="chartOptions"></div>
               </div>
           </div>
         </div>
+        <div class="col-md-12 d-flex" *ngIf="detailsInvoice">
+            <div class="card card-table flex-fill">
+                <div class="card-header badge p-3 mb-2 bg-info">
+                    <h3 class="card-title mb-0 text-white ">
+                        {{supplierName}}
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table custom-table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Invoice Number</th>
+                                    <th>Invoice Amount</th>
+                                    <th>Due Date</th>
+                                    <th>Net Due</th>
+                                    <th>Invoice Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of detailsInvoice; let i = index">
+                                    <td class="text-info">#{{data.invoiceNumber}}
+                                      <small class="block text-ellipsis">
+                                        <span class="badge bg-inverse-danger">{{data.isPaid == true ? "PAID" : "UNPAID"}}</span>
+                                        <span *ngIf="data.isPaid == false">
+                                          {{data.paymentDueInDays}} days
+                                          {{data.paymentDueInMonth}} months
+                                          {{data.paymentDueInYears}} years
+                                        </span>
+                                        <span class="text-muted" *ngIf="data.isPaid == false"> past</span>
+                                      </small>
+                                    </td>
+                                    <td>{{data.invoiceAmount}}</td>
+                                    <td>{{data.paymentDueDate}}</td>
+                                    <td>${{data.netDue}}</td>
+                                    <td>{{data.invoiceDate}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a routerLink="/invoice/invoicelist">View all invoices</a>
+                </div>
+            </div>
+          </div>
     </div>
   </div>
   <!-- /Page Content -->
