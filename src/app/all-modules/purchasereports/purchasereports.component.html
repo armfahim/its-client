@@ -83,7 +83,7 @@
                             [(ngModel)]="selectedYear" (change)="getPurchaseAmountBySupplierAndYearInMonth()">
                         </ng-select>
                     </div>
-                    <h4 class="float-right">{{selectedYear}}, Purchase: <span class="text-info">${{monthlyInvoiceAmount?.totalPurchaseInYear}}</span></h4> <!-- Added label here -->
+                    <h4 class="float-right">{{selectedYear}}, Purchase: <span class="text-info">${{monthlyInvoiceAmount?.totalPurchaseInYear ? monthlyInvoiceAmount?.totalPurchaseInYear : "0"}}</span></h4> <!-- Added label here -->
                   </div>
                   <!-- <div class="action-label float-right">
                     <h4 class="float-right">{{selectedYear}}, Purchase: <span class="text-info">${{monthlyInvoiceAmount?.totalPurchaseInYear}}</span></h4>

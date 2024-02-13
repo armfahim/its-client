@@ -68,11 +68,16 @@ export class PurchasereportsComponent implements OnInit {
      // prettier-ignore
      let dataAxis = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
      // prettier-ignore
-     let data = this.monthlyInvoiceAmount.monthlyInvoiceAmount.map(item => Number(item.monthlyTotal));
+     let data ;
+     if(this.monthlyInvoiceAmount) {
+       data = this.monthlyInvoiceAmount.monthlyInvoiceAmount.map(item => Number(item.monthlyTotal));
+     }else{
+        data = [];
+     }
     //  let data = [220, 182, 191, 234, 290, 330, 310, 123, 442, 321, 90, 149];
      let yMax = 500;
      let dataShadow = [];
- 
+
      for (let i = 0; i < data.length; i++) {
        dataShadow.push(yMax);
      }
@@ -194,8 +199,9 @@ export class PurchasereportsComponent implements OnInit {
 
   getPurchaseAmountBySupplierAndYearInMonth() {
     if(!this.selectedYear){
-      this.toastr.info("Please select a year", "",{ timeOut: 5000 });
-      return;
+      // this.toastr.info("Please select a year", "",{ timeOut: 5000 });
+      // return;
+      this.selectedYear = "2024";
     }
     this.detailsInvoice = null;
     let params = {

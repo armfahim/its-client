@@ -203,7 +203,7 @@ onSearch(){
         console.error("API Error:", error);
         // Extract error message from the API response
         const customErrorMessage = error && error.error && error.error.errors ? error.error.errors.toString(): "Unknown error";
-        this.toastr.error(customErrorMessage, "Error",{ timeOut: 5000 });
+        this.toastr.info(customErrorMessage, "Failed",{ timeOut: 5000 });
         return;
       });
   }
@@ -240,7 +240,7 @@ onSearch(){
       console.error("API Error:", error);
       // Extract error message from the API response
       const customErrorMessage = error && error.error && error.error.errors ? error.error.errors.toString(): "Unknown error";
-      this.toastr.error(customErrorMessage, "Error",{ timeOut: 5000 });
+      this.toastr.info(customErrorMessage, "Failed",{ timeOut: 5000 });
       return;
     });
     // this.getClients();
