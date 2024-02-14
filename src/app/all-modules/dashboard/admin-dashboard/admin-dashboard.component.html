@@ -97,6 +97,7 @@
                                   <th>Due Date</th>
                                   <th>Net Due</th>
                                   <th>Invoice Date</th>
+                                  <th><i class="material-icons">more_vert</i></th>
                               </tr>
                           </thead>
                           <tbody>
@@ -116,6 +117,10 @@
                                   <td>{{data.paymentDueDate}}</td>
                                   <td>${{data.netDue}}</td>
                                   <td>{{data.invoiceDate}}</td>
+                                  <td>
+                                    <a data-toggle="modal" data-target="#edit_invoice" class="m-r-5" style="cursor: pointer;"
+                                        (click)="onDueInvoice(data.id)"><i class="fa fa-pencil-square-o m-r-5"></i></a>
+                                  </td>
                               </tr>
                           </tbody>
                       </table>
@@ -176,6 +181,7 @@
                                     <th>Due Date</th>
                                     <th>Net Due</th>
                                     <th>Invoice Date</th>
+                                    <th><i class="material-icons">more_vert</i></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -195,6 +201,10 @@
                                     <td>{{data.paymentDueDate}}</td>
                                     <td>${{data.netDue}}</td>
                                     <td>{{data.invoiceDate}}</td>
+                                    <td>
+                                        <a data-toggle="modal" data-target="#edit_invoice" class="m-r-5" style="cursor: pointer;"
+                                            (click)="onPendingInvoice(data.id)"><i class="fa fa-pencil-square-o m-r-5"></i></a>
+                                      </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -214,4 +224,80 @@
             </div>
     </div>
 </div>
+
+  <!-- Edit Invoice Modal -->
+  <div id="edit_invoice" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Change Payment Status - <span class="text-info">#{{invoiceObj?.invoiceNumber}}</span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+              <form [formGroup]="editInvoiceForm">
+                  <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="col-form-label">Paid </label>
+                          <div class="custom-control custom-switch">
+                              <input type="checkbox" [(ngModel)]="invoiceObj.isPaid" formControlName="editIsPaid"
+                              class="custom-control-input" id="customSwitch5" checked="">
+                              <label class="custom-control-label" for="customSwitch5"></label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <!-- <span *ngIf="codInCheque" class="text-danger">*</span> -->
+                            <label class="col-form-label">Cheque Number </label>
+                            <input class="form-control" type="text" [(ngModel)]="invoiceObj.chequeNumber" formControlName="editChequeNumber" placeholder="Cheque Number">
+                          <!-- <div
+                              *ngIf="editInvoiceForm.get('editChequeNumber').invalid && editInvoiceForm.get('editChequeNumber').touched">
+                              <small
+                                  *ngIf="editInvoiceForm.get('editChequeNumber').invalid && editInvoiceForm.get('editChequeNumber').touched"
+                                  class="text-danger"> *Cheque Number is required</small>
+                          </div> -->
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <!-- <span class="text-danger">*</span> -->
+                            <label class="col-form-label">Paid Date </label>
+                            <div class="cal-icon"><input class="form-control datetimepicker" bsDatepicker type="text" placeholder="mm-dd-yyyy" formControlName="editPaidDate"
+                                [(ngModel)]="invoiceObj.paidDate" [bsConfig]="{ dateInputFormat: 'MM-DD-YYYY',  returnFocusToInput: true, isAnimated: true }">
+                          <!-- <div
+                              *ngIf="editInvoiceForm.get('editPaidDate').invalid && editInvoiceForm.get('editPaidDate').touched">
+                              <small
+                                  *ngIf="editInvoiceForm.get('editPaidDate').invalid && editInvoiceForm.get('editPaidDate').touched"
+                                  class="text-danger"> *Paid date is required</small>
+                          </div> -->
+                        </div>
+                      </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Invoice Description</label>
+                            <textarea rows="4" class="form-control" [(ngModel)]="invoiceObj.invoiceDesc" placeholder="Description" formControlName="editInvoiceDesc"></textarea>
+                          <!-- <div
+                              *ngIf="editInvoiceForm.get('editInvoiceDesc').invalid && editInvoiceForm.get('editInvoiceDesc').touched">
+                              <small
+                                  *ngIf="editInvoiceForm.get('editInvoiceDesc').invalid && editInvoiceForm.get('editInvoiceDesc').touched"
+                                  class="text-danger"> *Provide valid data</small>
+                          </div> -->
+                        </div>
+                    </div>
+                  </div>
+                  <div class="submit-section">
+                      <button class="btn btn-primary submit-btn" (click)="onEditInvoice()">
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                        Submit</button>
+                  </div>
+              </form>
+          </div>
+        </div>
+    </div>
+  </div>
+  <!-- /Edit Invoice Modal -->
 <!-- /Page Content -->
