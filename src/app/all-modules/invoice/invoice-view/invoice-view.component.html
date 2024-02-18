@@ -21,22 +21,22 @@
                     <i class="fa fa-trash"></i>Delete
                 </a>
             </div> -->
-            <div class="col-auto float-right ml-auto">
+            <!-- <div class="col-auto float-right ml-auto">
               <a class="btn add-btn" routerLink="/invoice/invoicelist">
                   <i class="fa fa-share"></i>Back To List
               </a>
-            </div>
-            <!-- <div class="col-auto float-right ml-auto">
-                <div class="btn-group btn-group-sm">
-                    <button class="btn btn-white">PDF</button>
-                    <button class="btn btn-white"><i class="fa fa-print fa-lg"></i> Print</button>
-                </div>
             </div> -->
+            <div class="col-auto float-right ml-auto">
+                <div class="btn-group btn-group-sm">
+                    <!-- <button class="btn btn-white">PDF</button> -->
+                    <button class="btn btn-white" (click)="loadPdf()"><i class="fa fa-print fa-lg"></i> Print</button>
+                </div>
+            </div>
         </div>
     </div>
     <!-- /Page Header -->
 
-    <div class="row">
+    <div class="row" *ngIf="dataLocalUrl == undefined">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
@@ -166,5 +166,19 @@
             </div>
         </div>
     </div>
+
+    <div class="row" style="height: 100%;">
+      <div class="col-sm-12" style="height: 100%;">
+          <div *ngIf="dataLocalUrl != undefined" style="height: 100%;">
+              <div class="card" style="height: 100%;">
+                  <div class="card-body" style="height: 100%;">
+                    <a class="float-right" (click)="cancelPrintPdf()" style="cursor: pointer;"><i class="fa fa-times-circle" aria-hidden="true"></i> Cancel</a>
+                      <iframe [attr.src]="dataLocalUrl" type="application/pdf"
+                          style="width: 100%; height: 100%; min-width: 700px; min-height: 550px;"></iframe>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
 </div>
 <!-- /Page Content -->

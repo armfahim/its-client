@@ -1,3 +1,7 @@
 .content {
 	padding: 30px;
 }
+
+a.float-right {
+  text-decoration: underline !important;
+}

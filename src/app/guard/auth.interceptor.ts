@@ -31,9 +31,10 @@ export class AuthInterceptor implements HttpInterceptor{
         if(err.status === 0){
           // this.toastr.error('Your session has timed out','error',{timeOut: 4000});
           this.login.logoutWithoutToastr();
-        //   this.router.navigate(['login']);
+          this.router.navigate(['login']);
           this.router.navigate(['error/error404']);
-          return;
+          this.toastr.error('Network error occurred. Try to login again!','error',{timeOut: 4000});
+          return throwError('Network error occurred. Try to login again!');
         }
         if(err.status == 500){
           this.router.navigate(['error/error500']);

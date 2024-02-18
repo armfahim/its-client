@@ -32,4 +32,14 @@ export class InvoiceService {
     return this.http.get(url);
   }
 
+  getInvoiceDetailsPdf(endPoint: any,params: any){
+    const httpOptions = {
+      responseType: 'arraybuffer' as 'json'
+    };
+    const url = `${this.baseUrl}${endPoint}?` +
+                `invoiceId=${params.invoiceId}`;
+    console.log(url);
+    return this.http.get(url,httpOptions);
+  }
+
 }
