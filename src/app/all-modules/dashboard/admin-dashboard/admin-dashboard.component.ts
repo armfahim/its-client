@@ -70,6 +70,7 @@ export class AdminDashboardComponent implements OnInit {
     editPaidDate: ["", []],
     editId: ["", []],
     editInvoiceDesc: ["", [WhiteSpaceValidator]],
+    editDueDate: ["", []],
   });
   }
 
@@ -132,6 +133,7 @@ export class AdminDashboardComponent implements OnInit {
       editPaidDate: invoice[0]?.paidDate ? invoice[0]?.paidDate : null,
       editInvoiceDesc: invoice[0]?.invoiceDesc ? invoice[0]?.invoiceDesc : null,
       editId: invoice[0]?.id,
+      editDueDate: invoice[0]?.paymentDueDate
     });
     console.log(this.editInvoiceForm);
   }
