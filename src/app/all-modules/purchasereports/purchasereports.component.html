@@ -72,6 +72,53 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-12 d-flex" *ngIf="detailsInvoice">
+          <div class="card card-table flex-fill">
+              <div class="card-header badge p-3 mb-2 bg-info">
+                <a class="float-right text-white" (click)="hideDetails()" style="cursor: pointer;"><i class="fa fa-times-circle" aria-hidden="true"></i> Hide</a>
+                  <h3 class="card-title mb-0 text-white ">
+                      {{supplierName}}
+                  </h3>
+              </div>
+              <div class="card-body">
+                  <div class="table-responsive">
+                      <table class="table custom-table mb-0">
+                          <thead>
+                              <tr>
+                                  <th>Invoice Number</th>
+                                  <th>Invoice Amount</th>
+                                  <th>Due Date</th>
+                                  <th>Net Due</th>
+                                  <th>Invoice Date</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let data of detailsInvoice; let i = index">
+                                  <td class="text-info">#{{data.invoiceNumber}}
+                                    <small class="block text-ellipsis">
+                                      <span class="badge bg-inverse-danger">{{data.isPaid == true ? "PAID" : "UNPAID"}}</span>
+                                      <span *ngIf="data.isPaid == false">
+                                        {{data.paymentDueInDays}} days
+                                        {{data.paymentDueInMonth}} months
+                                        {{data.paymentDueInYears}} years
+                                      </span>
+                                      <span class="text-muted" *ngIf="data.isPaid == false"> past</span>
+                                    </small>
+                                  </td>
+                                  <td>{{data.invoiceAmount}}</td>
+                                  <td>{{data.paymentDueDate}}</td>
+                                  <td>${{data.netDue}}</td>
+                                  <td>{{data.invoiceDate}}</td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+              <div class="card-footer">
+                  <a routerLink="/invoice/invoicelist">View all invoices</a>
+              </div>
+          </div>
+      </div>
         <div class="col-md-12 col-sm-12 col-lg-12">
             <div class="card dash-widget">
                 <div class="card-body">
@@ -92,52 +139,6 @@
               </div>
           </div>
         </div>
-        <div class="col-md-12 d-flex" *ngIf="detailsInvoice">
-            <div class="card card-table flex-fill">
-                <div class="card-header badge p-3 mb-2 bg-info">
-                    <h3 class="card-title mb-0 text-white ">
-                        {{supplierName}}
-                    </h3>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table custom-table mb-0">
-                            <thead>
-                                <tr>
-                                    <th>Invoice Number</th>
-                                    <th>Invoice Amount</th>
-                                    <th>Due Date</th>
-                                    <th>Net Due</th>
-                                    <th>Invoice Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let data of detailsInvoice; let i = index">
-                                    <td class="text-info">#{{data.invoiceNumber}}
-                                      <small class="block text-ellipsis">
-                                        <span class="badge bg-inverse-danger">{{data.isPaid == true ? "PAID" : "UNPAID"}}</span>
-                                        <span *ngIf="data.isPaid == false">
-                                          {{data.paymentDueInDays}} days
-                                          {{data.paymentDueInMonth}} months
-                                          {{data.paymentDueInYears}} years
-                                        </span>
-                                        <span class="text-muted" *ngIf="data.isPaid == false"> past</span>
-                                      </small>
-                                    </td>
-                                    <td>{{data.invoiceAmount}}</td>
-                                    <td>{{data.paymentDueDate}}</td>
-                                    <td>${{data.netDue}}</td>
-                                    <td>{{data.invoiceDate}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <a routerLink="/invoice/invoicelist">View all invoices</a>
-                </div>
-            </div>
-          </div>
     </div>
   </div>
   <!-- /Page Content -->

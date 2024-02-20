@@ -87,6 +87,12 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
         ajax: (dataTablesParameters: any, callback) => {
           // dataTablesParameters.orderColumnIndex = this.orderColumnIndex;
           dataTablesParameters.orderColumnName = this.orderColumnName;
+
+          // If it's the default order, override it with your desired order
+          if (!this.orderColumnName) {
+              dataTablesParameters.order = [{ column: 2, dir: 'desc' }];
+          }
+
           dataTablesParameters.supplier = this.searchSupplierId ? this.searchSupplierId : "";
           dataTablesParameters.fromInvoiceDate = this.datePipe.transform(this.fromInvoiceDate, 'yyyy-MM-dd') ? this.datePipe.transform(this.fromInvoiceDate, 'yyyy-MM-dd') : "";
           dataTablesParameters.toInvoiceDate = this.datePipe.transform(this.toInvoiceDate, 'yyyy-MM-dd') ? this.datePipe.transform(this.toInvoiceDate, 'yyyy-MM-dd') : "";

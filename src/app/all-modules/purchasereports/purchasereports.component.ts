@@ -236,6 +236,10 @@ export class PurchasereportsComponent implements OnInit {
     });
   }
 
+  hideDetails(){
+    this.detailsInvoice = null;
+  }
+
   loadYearsAndMonths() {
     this.allModulesService.get("/v1/invoice-details/distinct/years-months").subscribe((response: any) => {
         this.years = response?.data.years;
