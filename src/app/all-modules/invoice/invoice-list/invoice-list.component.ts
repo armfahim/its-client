@@ -82,8 +82,6 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
         dom: "lrtip",
         ordering: true,
         serverSide: true,
-        processing: true,
-        searching:true,
         ajax: (dataTablesParameters: any, callback) => {
           // dataTablesParameters.orderColumnIndex = this.orderColumnIndex;
           dataTablesParameters.orderColumnName = this.orderColumnName;
