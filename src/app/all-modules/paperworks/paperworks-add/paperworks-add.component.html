@@ -1,0 +1,347 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+    <ng-http-loader></ng-http-loader>
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Paperwork for January, 2024</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a routerLink="/dashboard">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a routerLink="/paperworks/paperwork-list">Paperwork</a>
+                    </li>
+                    <li class="breadcrumb-item active">add</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <!-- <div>
+                    <mwl-calendar-month-view [viewDate]="viewDate"
+                        [events]="events" [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen"
+                        (dayClicked)="dayClicked($event.day)" (eventClicked)="handleEvent('Clicked', $event.event)"
+                        (eventTimesChanged)="eventTimesChanged($event)">
+                    </mwl-calendar-month-view> 
+                </div> -->
+            </div>
+        </div>
+    </div>
+    <!-- Page Header -->
+    <form (ngSubmit)="onSearch()" [formGroup]="addPaperworkForm"> 
+        <div class="row filter-row">
+            <div class="col-sm-6 col-md-3">
+                <div class="form-group form-focus">
+                    <div class="cal-icon">
+                        <input
+                            class="form-control floating datetimepicker"
+                            bsDatepicker
+                            formControlName="paperworkDate"
+                            [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'YYYY-MM-DD', todayHighlight:true, returnFocusToInput: true,isAnimated: true }"
+                            [(ngModel)]="paperworkDate"
+                            (focusout)="rerender()"
+                        />
+                    </div>
+                    <label class="focus-label">Select Date<span class="text-danger">*</span></label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-9">
+                <div class="form-group">
+                    <div class="table-responsive">
+                        <table class="table table-bordered mb-0">
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>2</td>
+                                    <td>3</td>
+                                    <td>4</td>
+                                    <td>5</td>
+                                    <td>6</td>
+                                    <td>7</td>
+                                    <td>8</td>
+                                    <td>9</td>
+                                    <td>10</td>
+                                </tr>
+                                <tr>
+                                    <td>11</td>
+                                    <td>12</td>
+                                    <td>13</td>
+                                    <td>14</td>
+                                    <td>15</td>
+                                    <td>16</td>
+                                    <td>17</td>
+                                    <td>18</td>
+                                    <td>19</td>
+                                    <td>20</td>
+                                </tr>
+                                <tr>
+                                    <td>21</td>
+                                    <td>22</td>
+                                    <td>23</td>
+                                    <td>24</td>
+                                    <td>25</td>
+                                    <td>26</td>
+                                    <td>27</td>
+                                    <td>28</td>
+                                    <td>29</td>
+                                    <td>30</td>
+                                    <td>31</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-card">
+
+                <div class="card">
+                    <div class="card-header" style="background-color: rgb(20% 27% 30%);">
+                        <h4 class="card-title">
+                            <a class="collapsed" data-toggle="collapse" href="#collapseOne" style="color: white;">Sales Record (Incoming)</a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="card-collapse collapse">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Merchant Sale<span class="text-danger">*</span> </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Sales Tax<span class="text-danger">*</span> </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Inside Sales<span class="text-danger">*</span> </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Total<span class="text-danger">*</span> </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" style="background-color: rgb(20% 27% 30%);">
+                        <h4 class="card-title">
+                            <a class="collapsed" data-toggle="collapse" href="#collapseTwo" style="color: white;">Inside Sales Breakdown</a>
+                        </h4>
+                    </div>
+                    <div id="collapseTwo" class="card-collapse collapse">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Credit Card<span class="text-danger">*</span> </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Debit Card<span class="text-danger">*</span> </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Total Credit/Debit Card<span class="text-danger">*</span> </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label">EBT<span class="text-danger">*</span> </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Expense<span class="text-danger">*</span> </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Office Expenses<span class="text-danger">*</span> </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Trust Fund/Checks REV.<span class="text-danger">*</span> </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label">House A/C<span class="text-danger">*</span> </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Store Deposit<span class="text-danger">*</span> </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Total<span class="text-danger">*</span> </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" style="background-color: rgb(20% 27% 30%);">
+                        <h4 class="card-title">
+                            <a class="collapsed" data-toggle="collapse" href="#collapseThree" style="color: white;">Cash Purchase</a>
+                        </h4>
+                    </div>
+                    <div id="collapseThree" class="card-collapse collapse">
+                        <div class="card-body">
+                            <div class="row">
+                                <div  class="col-md-12" formArrayName="items">
+                                    <div class="form-group" *ngFor="let item of items.controls; let i = index" [formGroupName]="i"
+                                    style="display: flex; gap:10px; margin-bottom: 10px;">
+                                        <div class="row row-sm">
+                                            <button (click)="addItem()" class="btn btn-primary btn-block" type="button"><i
+                                                class="fa fa-plus"></i></button>
+                                        </div>
+                                            <input class="form-control" formControlName="itemName" placeholder="Item Name" type="text"/>
+                                            <input class="form-control" formControlName="cashPurchaseAmount"  placeholder="Amount" type="text"/>
+                                            <div class="row row-sm">
+                                                <button *ngIf="items?.length > 1" (click)="deleteItem(i)"  class="btn btn-danger btn-block set-btn" type="button"><i
+                                                class="fa fa-trash-o"></i></button>
+                                            </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group"> 
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Total</label>
+                                        <input
+                                            class="form-control"
+                                            type="text"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" style="background-color: rgb(20% 27% 30%);">
+                        <h4 class="card-title">
+                            <a class="collapsed" data-toggle="collapse" href="#collapseFour" style="color: white;">Cash Over/Short</a>
+                        </h4>
+                    </div>
+                    <div id="collapseFour" class="card-collapse collapse show">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Total Inside Sales<span class="text-danger">*</span> </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Total Sales Record<span class="text-danger">*</span> </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Over/Short<span class="text-danger">*</span> </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Notes<span class="text-danger">*</span> </label>
+                                        <textarea rows="4" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </form>
+
+
+
+
+</div>
+    <!-- /Page Header -->

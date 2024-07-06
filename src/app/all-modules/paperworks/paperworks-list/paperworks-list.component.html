@@ -1,0 +1,217 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+    <ng-http-loader></ng-http-loader>
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Paperworks</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a routerLink="/dashboard">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">Paperworks</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <a class="btn add-btn" data-toggle="modal" data-target="#add_paperwork" (click)="resetForm()"> <i class="fa fa-plus"></i> Add Paperwork </a>
+                <div class="view-icons">
+                    <a routerLink="/paperworks/paperwork-list" class="list-view btn btn-link active">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+    <!-- Search Filter -->
+    <!-- <form (ngSubmit)="onSearch()" [formGroup]="searchForm">
+        <div class="row filter-row">
+            <div class="col-sm-6 col-md-3">
+                <div class="form-group form-focus">
+                    <div class="cal-icon">
+                        <input
+                            class="form-control floating datetimepicker"
+                            bsDatepicker
+                            type="text"
+                            formControlName="fromInvoiceDate"
+                            [bsConfig]="{ adaptivePosition: true,containerClass: 'theme-red',
+                              dateInputFormat: 'YYYY-MM-DD', isAnimated: true}"
+                            [(ngModel)]="fromInvoiceDate"
+                            (focusout)="rerender()"
+                        />
+                    </div>
+                    <label class="focus-label">From</label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <div class="form-group form-focus">
+                    <div class="cal-icon">
+                        <input
+                            class="form-control floating datetimepicker"
+                            bsDatepicker
+                            formControlName="toInvoiceDate"
+                            [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'YYYY-MM-DD', todayHighlight:true, returnFocusToInput: true,isAnimated: true }"
+                            [(ngModel)]="toInvoiceDate"
+                            (focusout)="rerender()"
+                        />
+                    </div>
+                    <label class="focus-label">To</label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <button class="btn btn-success btn-block" type="submit">Search</button>
+            </div>
+        </div>
+    </form> -->
+    <!-- Search Filter -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped custom-table datatable mb-0">
+                    <thead>
+                        <tr>
+                            <th (click)="onTableHeaderClick(0, 'invoiceNumber')">Invoice Number</th>
+                            <th (click)="onTableHeaderClick(0, 'supplierDetails')">Company Name</th>
+                            <th (click)="onTableHeaderClick(1, 'invoiceDate')">Invoice Date</th>
+                            <th (click)="onTableHeaderClick(3, 'term')">Term</th>
+                            <th (click)="onTableHeaderClick(4, 'paymentDueDate')">Payment Due Date</th>
+                            <th (click)="onTableHeaderClick(2, 'invoiceAmount')">Invoice Amount ($)</th>
+                            <th (click)="onTableHeaderClick(4, 'creditAmount')">Credit Amount ($)</th>
+                            <th (click)="onTableHeaderClick(4, 'netDue')">Net Due ($)</th>
+                            <th (click)="onTableHeaderClick(4, 'chequeNumber')">Cheque Number</th>
+                            <th (click)="onTableHeaderClick(4, 'paidDate')">Paid Date</th>
+                            <!-- <th>Status</th> -->
+                            <th class="text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="invoicesData">
+                        <tr *ngFor="let invoice of invoicesData; let i = index">
+                            <!-- <td><h2 class="table-avatar"><a class="avatar"><img
+                                            src="assets/img/profiles/avatar-{{ i + 1 }}.jpg" alt=""></a><a>{{supplier.supplierID}}</a></h2></td> -->
+                            <td class="text-info">
+                                #{{invoice.invoiceNumber}}
+                                <small class="block text-ellipsis">
+                                    <span class="badge bg-inverse-danger"> {{invoice.isPaid == true ? 'Paid' :'Unpaid'}} </span>
+                                </small>
+                            </td>
+                            <td>{{invoice.supplierName}}</td>
+                            <td>{{invoice.invoiceDate}}</td>
+                            <td>{{invoice.term}}</td>
+                            <td>{{invoice.paymentDueDate ? invoice.paymentDueDate : 'N/A'}}</td>
+                            <td>${{invoice.invoiceAmount}}</td>
+                            <td>${{invoice.creditAmount}}</td>
+                            <td>${{invoice.netDue}}</td>
+                            <td>{{invoice.chequeNumber ? invoice.chequeNumber : 'N/A'}}</td>
+                            <td>{{invoice.paidDate ? invoice.paidDate : 'N/A'}}</td>
+                            <td class="text-right">
+                                <div class="dropdown dropdown-action">
+                                    <a class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#edit_invoice" (click)="onInvoice(invoice.id)"> <i class="fa fa-pencil m-r-5"></i> Edit </a>
+                                        <a class="dropdown-item" routerLink="/invoice/view-invoice/{{invoice.id}}"> <i class="fa fa-eye m-r-5"></i> View </a>
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#delete_invoice" (click)="tempId = invoice.id"> <i class="fa fa-trash-o m-r-5"></i> Delete </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- /Page Content -->
+  <!-- Add Invoice Modal -->
+  <div id="add_paperwork" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" *ngIf="!selectedMonth">New Paperwork</h5>
+                <h5 class="modal-title" *ngIf="selectedMonth">New Paperwork for {{selectedMonth}}, {{selectedYear}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>  
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="newPaperworkFileForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Select Month <span class="text-danger">*</span> </label>
+                                <ng-select
+                                    [items]="months"
+                                    bindLabel="months"
+                                    placeholder="--Select Year--"
+                                    bindValue="months"
+                                    [searchable]="true"
+                                    [clearable]="true"
+                                    [virtualScroll]="true"
+                                    class="custom-ng-select"
+                                    formControlName="month"
+                                    [(ngModel)]="selectedMonth">
+                                 </ng-select>
+                                <div *ngIf="newPaperworkFileForm.get('month').invalid && newPaperworkFileForm.get('month').touched">
+                                    <small *ngIf="newPaperworkFileForm.get('month').invalid && newPaperworkFileForm.get('month').touched" class="text-danger"> *Month is required</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Select Year <span class="text-danger">*</span> </label>
+                                <ng-select
+                                    [items]="years"
+                                    bindLabel="years"
+                                    placeholder="--Select Year--"
+                                    bindValue="years"
+                                    [searchable]="true"
+                                    [clearable]="true"
+                                    [virtualScroll]="true"
+                                    class="custom-ng-select"
+                                    formControlName="year"
+                                    [(ngModel)]="selectedYear">
+                                 </ng-select>
+                                <div *ngIf="newPaperworkFileForm.get('year').invalid && newPaperworkFileForm.get('year').touched">
+                                    <small *ngIf="newPaperworkFileForm.get('year').invalid && newPaperworkFileForm.get('year').touched" class="text-danger"> *Year is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" (click)="onNewPaperworkFile()"><span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span> Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- /Add Invoice Modal -->
+
+  <!-- Delete Invoice Modal -->
+  <!-- <div class="modal custom-modal fade" id="delete_invoice" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete Supplier</h3>
+                    <p>Are you sure want to delete?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a class="btn btn-primary continue-btn" (click)="onDelete()">Delete</a>
+                        </div>
+                        <div class="col-6">
+                            <a data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div> -->
+  <!-- /Delete Invoice Modal -->
+  

@@ -13,6 +13,8 @@ import { authInterceptorProviders } from './guard/auth.interceptor';
 import { DatePipe, HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { NgHttpLoaderModule } from 'ng-http-loader';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,10 @@ import { NgxEchartsModule } from 'ngx-echarts';
     ),
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'),
+    }),
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
     }),
   ],
   providers: [authInterceptorProviders,{ provide: LocationStrategy, useClass: HashLocationStrategy},DatePipe],

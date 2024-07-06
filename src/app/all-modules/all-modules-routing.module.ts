@@ -28,6 +28,10 @@ const routes: Routes = [
         path: 'purchasereports',
         loadChildren: () => import('./purchasereports/purchasereports.module').then(m => m.PurchasereportsModule)
       },
+      {
+        path: 'paperworks',
+        loadChildren: () => import('./paperworks/paperworks.module').then(m => m.PaperworksModule)
+      },
 
       /** Below are template's routing */
       {
