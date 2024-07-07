@@ -5,7 +5,7 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Paperwork for January, 2024</h3>
+                <h3 class="page-title">Paperwork for {{paperworkObj.month}}, {{paperworkObj.year}}</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item">
                         <a routerLink="/dashboard">Dashboard</a>
@@ -17,13 +17,9 @@
                 </ul>
             </div>
             <div class="col-auto float-right ml-auto">
-                <!-- <div>
-                    <mwl-calendar-month-view [viewDate]="viewDate"
-                        [events]="events" [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen"
-                        (dayClicked)="dayClicked($event.day)" (eventClicked)="handleEvent('Clicked', $event.event)"
-                        (eventTimesChanged)="eventTimesChanged($event)">
-                    </mwl-calendar-month-view> 
-                </div> -->
+                <div>
+                    Complete <span class="fa fa-circle-thin" style="background-color: rgb(206, 21, 21);"></span> Current <span class="fa fa-circle-thin"></span>
+                </div>
             </div>
         </div>
     </div>
@@ -51,41 +47,26 @@
                         <table class="table table-bordered mb-0">
                             <tbody>
                                 <tr>
-                                    <td>1</td>
-                                    <td>2</td>
-                                    <td>3</td>
-                                    <td>4</td>
-                                    <td>5</td>
-                                    <td>6</td>
-                                    <td>7</td>
-                                    <td>8</td>
-                                    <td>9</td>
-                                    <td>10</td>
+                                    <td *ngFor="let day of first10; let i = index" style="text-align: center; vertical-align: middle;">
+                                        <a href="#">
+                                            <!-- margin: 0; color: white; -->
+                                            <p style="background-color: aquamarine; font-size: 20px;">{{day}}</p>
+                                        </a>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td>11</td>
-                                    <td>12</td>
-                                    <td>13</td>
-                                    <td>14</td>
-                                    <td>15</td>
-                                    <td>16</td>
-                                    <td>17</td>
-                                    <td>18</td>
-                                    <td>19</td>
-                                    <td>20</td>
+                                    <td *ngFor="let day of second10; let i = index" style="text-align: center; vertical-align: middle;">
+                                        <a href="#">
+                                            <p style="background-color: rgb(206, 21, 21); font-size: 20px;">{{day}}</p>
+                                        </a>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td>21</td>
-                                    <td>22</td>
-                                    <td>23</td>
-                                    <td>24</td>
-                                    <td>25</td>
-                                    <td>26</td>
-                                    <td>27</td>
-                                    <td>28</td>
-                                    <td>29</td>
-                                    <td>30</td>
-                                    <td>31</td>
+                                    <td *ngFor="let day of third10; let i = index" style="text-align: center; vertical-align: middle;">
+                                        <a href="#">
+                                            <p style="background-color: rgb(14, 202, 139); font-size: 20px;">{{day}}</p>
+                                        </a>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -102,7 +83,7 @@
                             <a class="collapsed" data-toggle="collapse" href="#collapseOne" style="color: white;">Sales Record (Incoming)</a>
                         </h4>
                     </div>
-                    <div id="collapseOne" class="card-collapse collapse">
+                    <div id="collapseOne" class="card-collapse collapse show">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-3">
@@ -151,7 +132,7 @@
                             <a class="collapsed" data-toggle="collapse" href="#collapseTwo" style="color: white;">Inside Sales Breakdown</a>
                         </h4>
                     </div>
-                    <div id="collapseTwo" class="card-collapse collapse">
+                    <div id="collapseTwo" class="card-collapse collapse show">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-3">
@@ -254,7 +235,7 @@
                             <a class="collapsed" data-toggle="collapse" href="#collapseThree" style="color: white;">Cash Purchase</a>
                         </h4>
                     </div>
-                    <div id="collapseThree" class="card-collapse collapse">
+                    <div id="collapseThree" class="card-collapse collapse show">
                         <div class="card-body">
                             <div class="row">
                                 <div  class="col-md-12" formArrayName="items">

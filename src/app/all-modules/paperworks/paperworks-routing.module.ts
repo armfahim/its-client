@@ -17,6 +17,10 @@ const routes: Routes = [
         path: 'add-paperwork',
         component: PaperworksAddComponent
       },
+      {
+        path:"add-paperwork/:id",
+        component:PaperworksAddComponent
+      },
       // {
       //   path: 'view-invoice/:id',
       //   component: InvoiceViewComponent

@@ -150,8 +150,8 @@ export class PaperworksListComponent implements OnInit,OnDestroy {
           dtInstance.destroy();
         });
         this.dtTrigger.next();
-        this.setSharedPaperworkObj(res.data);
-        this.router.navigate(["/paperworks/add-paperwork"]);
+        // this.setSharedPaperworkObj(res.data);
+        this.router.navigate(['/paperworks/add-paperwork/',res.data.id]);
       },
       (error) => {
         this.loading = false;
