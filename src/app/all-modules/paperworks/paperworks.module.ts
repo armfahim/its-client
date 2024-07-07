@@ -5,12 +5,11 @@ import { PaperworksRoutingModule } from './paperworks-routing.module';
 import { PaperworksComponent } from './paperworks.component';
 import { PaperworksListComponent } from './paperworks-list/paperworks-list.component';
 import { PaperworksAddComponent } from './paperworks-add/paperworks-add.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { BsDatepickerModule } from 'ngx-bootstrap';
 import { NgHttpLoaderModule } from 'ng-http-loader';
-import { CalendarModule, DateAdapter } from 'angular-calendar';
-import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { DataTablesModule } from 'angular-datatables';
 
 
 @NgModule({
@@ -18,14 +17,12 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
   imports: [
     CommonModule,
     PaperworksRoutingModule,
+    DataTablesModule,
+    FormsModule,
     ReactiveFormsModule,
     NgSelectModule,
     BsDatepickerModule.forRoot(),
-    NgHttpLoaderModule.forRoot(),
-    CalendarModule.forRoot({
-      provide: DateAdapter,
-      useFactory: adapterFactory,
-    }),
+    NgHttpLoaderModule.forRoot(), 
   ]
 })
 export class PaperworksModule { }
