@@ -36,8 +36,13 @@
                             bsDatepicker
                             formControlName="paperworkDate"
                             [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'YYYY-MM-DD', todayHighlight:true, returnFocusToInput: true,isAnimated: true }"
+                            [class.invalid]="addPaperworkBreakdownForm.get('paperworkDate').invalid && addPaperworkBreakdownForm.get('paperworkDate').touched"
+                            [(ngModel)]="paperworkBreakdown.paperworkDate"
                             (focusout)="rerender()"
                         />
+                        <div *ngIf="addPaperworkBreakdownForm.get('paperworkDate').invalid && addPaperworkBreakdownForm.get('paperworkDate').touched">
+                            <small *ngIf="addPaperworkBreakdownForm.get('paperworkDate').invalid && addPaperworkBreakdownForm.get('paperworkDate').touched" class="text-danger"> *Date is required</small>
+                        </div>
                     </div>
                     <label class="focus-label">Select Date<span class="text-danger">*</span></label>
                 </div>
@@ -49,7 +54,7 @@
                             <tbody>
                                 <tr>
                                     <td *ngFor="let day of first10; let i = index" style="text-align: center; vertical-align: middle;">
-                                        <a href="#">
+                                        <a (click)="convertToPaperworkDate(day)" style="cursor: pointer;">
                                             <!-- margin: 0; color: white; -->
                                             <p style="background-color: aquamarine; font-size: 20px;">{{day}}</p>
                                         </a>
@@ -57,14 +62,14 @@
                                 </tr>
                                 <tr>
                                     <td *ngFor="let day of second10; let i = index" style="text-align: center; vertical-align: middle;">
-                                        <a href="#">
+                                        <a (click)="convertToPaperworkDate(day)" style="cursor: pointer;">
                                             <p style="background-color: rgb(206, 21, 21); font-size: 20px;">{{day}}</p>
                                         </a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td *ngFor="let day of third10; let i = index" style="text-align: center; vertical-align: middle;">
-                                        <a href="#">
+                                        <a (click)="convertToPaperworkDate(day)" style="cursor: pointer;">
                                             <p style="background-color: rgb(14, 202, 139); font-size: 20px;">{{day}}</p>
                                         </a>
                                     </td>

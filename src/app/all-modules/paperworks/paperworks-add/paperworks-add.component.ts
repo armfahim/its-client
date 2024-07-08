@@ -33,6 +33,20 @@ export class PaperworksAddComponent implements OnInit, OnDestroy  {
   first10 = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
   second10 = ["11", "12", "13", "14", "15", "16", "17", "18", "19", "20"];
   third10 = ["21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"];
+  monthMap: { [key: string]: number } = {
+    January: 0,
+    February: 1,
+    March: 2,
+    April: 3,
+    May: 4,
+    June: 5,
+    July: 6,
+    August: 7,
+    September: 8,
+    October: 9,
+    November: 10,
+    December: 11
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -88,6 +102,14 @@ export class PaperworksAddComponent implements OnInit, OnDestroy  {
   }
 
   formatAmountCurrency() {
+  }
+
+  convertToPaperworkDate(value:any){
+    let year: number = parseInt(this.paperworkObj.year, 10);
+    let month: number = this.monthMap[this.paperworkObj.month];
+    let date: number = parseInt(value, 10);
+    this.paperworkBreakdown.paperworkDate = new Date(year, month,date);
+    alert(new Date(year, month,date));
   }
 
   checkMerchantAndInsideSaleAmt(){
