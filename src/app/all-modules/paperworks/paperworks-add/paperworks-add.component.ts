@@ -65,18 +65,36 @@ export class PaperworksAddComponent implements OnInit, OnDestroy  {
       trustFund:["",[]],
       houseAc:["",[]],
       storeDeposit:["",[]],
-      total:["",[]],
+      totalInsideSalesBreakdown:["",[]],
+      totalCashPurchase: ["",[]],
+      totalInsideSales:["",[]], // Sum of Including totalCashPurchase
+      cashOverShort: ["",[]],
+      notes: ["",[]],
       items: this.formBuilder.array([]),
     })
+    this.addPaperworkBreakdownForm.get("salesTax").disable();
+    this.addPaperworkBreakdownForm.get("totalSalesRecord").disable();
+    this.addPaperworkBreakdownForm.get("totalInsideSalesBreakdown").disable();
+    this.addPaperworkBreakdownForm.get("totalCashPurchase").disable();
+    this.addPaperworkBreakdownForm.get("totalInsideSales").disable();
+    this.addPaperworkBreakdownForm.get("cashOverShort").disable();
     this.addItems();
   }
 
   //Add new Invoice
   public onAdd() {
     this.loading = true;
+    this.paperworkBreakdown.merchantSale;
   }
 
   formatAmountCurrency() {
+  }
+
+  checkMerchantAndInsideSaleAmt(){
+    if (this.paperworkBreakdown.insideSales > this.paperworkBreakdown.merchantSale) {
+      this.toastr.warning("Insides sales can't be more than merchant sales!","Warning",{ timeOut: 5000 });
+      this.paperworkBreakdown.insideSales = null;
+    }
   }
 
   rerender(): void {

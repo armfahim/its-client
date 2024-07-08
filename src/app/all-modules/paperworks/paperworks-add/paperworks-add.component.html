@@ -90,45 +90,98 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="col-form-label">Merchant Sale<span class="text-danger">*</span> </label>
-                                        <input
-                                            class="form-control"
-                                            type="text"
-                                            [(ngModel)]="paperworkBreakdown.merchantSale"
-                                            placeholder="$"
-                                            (input)="formatAmountCurrency()"
-                                            [class.invalid]="addPaperworkBreakdownForm.get('merchantSale').invalid && addPaperworkBreakdownForm.get('merchantSale').touched"
-                                            formControlName="merchantSale"
-                                            appTwoDigitDecimaNumber/>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            <input
+                                                class="form-control"
+                                                type="number"
+                                                min="0"
+                                                [(ngModel)]="paperworkBreakdown.merchantSale"
+                                                (input)="formatAmountCurrency()"
+                                                [class.invalid]="addPaperworkBreakdownForm.get('merchantSale').invalid && addPaperworkBreakdownForm.get('merchantSale').touched"
+                                                formControlName="merchantSale"/>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
                                         <div *ngIf="addPaperworkBreakdownForm.get('merchantSale').invalid && addPaperworkBreakdownForm.get('merchantSale').touched">
-                                            <small *ngIf="addPaperworkBreakdownForm.get('merchantSale').invalid && addPaperworkBreakdownForm.get('merchantSale').touched" class="text-danger"> *Merchant sale is required</small>
+                                            <small *ngIf="addPaperworkBreakdownForm.get('merchantSale').invalid && addPaperworkBreakdownForm.get('merchantSale').touched" class="text-danger"> *Merchant sales is required</small>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="col-form-label">Sales Tax<span class="text-danger">*</span> </label>
-                                        <input
-                                            class="form-control"
-                                            type="text"/>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="form-group">
                                         <label class="col-form-label">Inside Sales<span class="text-danger">*</span> </label>
-                                        <input
-                                            class="form-control"
-                                            type="text"/>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            <input
+                                                class="form-control"
+                                                type="number"
+                                                min="0"
+                                                [(ngModel)]="paperworkBreakdown.insideSales"
+                                                (input)="formatAmountCurrency()"
+                                                (ngModelChange)="checkMerchantAndInsideSaleAmt()"
+                                                [class.invalid]="addPaperworkBreakdownForm.get('insideSales').invalid && addPaperworkBreakdownForm.get('insideSales').touched"
+                                                formControlName="insideSales"/>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="addPaperworkBreakdownForm.get('insideSales').invalid && addPaperworkBreakdownForm.get('insideSales').touched">
+                                            <small *ngIf="addPaperworkBreakdownForm.get('insideSales').invalid && addPaperworkBreakdownForm.get('insideSales').touched" class="text-danger"> *Inside sales is required</small>
+                                        </div>
+                                        <div *ngIf="paperworkBreakdown.insideSales > paperworkBreakdown.merchantSale">
+                                            <small *ngIf="creditAmount > invoiceAmount" class="text-danger"> *Inside sales can't be greater than merchant sales</small>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="col-form-label">Total<span class="text-danger">*</span> </label>
-                                        <input
-                                            class="form-control"
-                                            type="text"/>
+                                        <label class="col-form-label">Sales Tax </label>
+                                        <small class="text-info"> (Merchant Sales - Inside Sales )</small>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            <input
+                                                class="form-control"
+                                                type="number"
+                                                min="0"
+                                                [(ngModel)]="paperworkBreakdown.salesTax"
+                                                (input)="formatAmountCurrency()"
+                                                formControlName="salesTax"/>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Total </label>
+                                        <small class="text-info"> (Inside Sales + Sales Tax )</small>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            <input
+                                                class="form-control"
+                                                type="number"
+                                                min="0"
+                                                [(ngModel)]="paperworkBreakdown.totalSalesRecord"
+                                                (input)="formatAmountCurrency()"
+                                                formControlName="totalSalesRecord"/>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -147,91 +200,211 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="col-form-label">Credit Card<span class="text-danger">*</span> </label>
-                                        <input
-                                            class="form-control"
-                                            type="text"/>
+                                        <label class="col-form-label">Credit Card </label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            <input
+                                                class="form-control"
+                                                type="number"
+                                                min="0"
+                                                [(ngModel)]="paperworkBreakdown.creditCard"
+                                                (input)="formatAmountCurrency()"
+                                                formControlName="creditCard"/>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="col-form-label">Debit Card<span class="text-danger">*</span> </label>
-                                        <input
-                                            class="form-control"
-                                            type="text"/>
+                                        <label class="col-form-label">Debit Card </label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            <input
+                                                class="form-control"
+                                                type="number"
+                                                min="0"
+                                                [(ngModel)]="paperworkBreakdown.debitCard"
+                                                (input)="formatAmountCurrency()"
+                                                formControlName="debitCard"/>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="col-form-label">Total Credit/Debit Card<span class="text-danger">*</span> </label>
-                                        <input
-                                            class="form-control"
-                                            type="text"/>
+                                        <label class="col-form-label">Total Credit/Debit Card </label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            <input
+                                                class="form-control"
+                                                type="number"
+                                                min="0"
+                                                [(ngModel)]="paperworkBreakdown.totalCreditDebitCard"
+                                                (input)="formatAmountCurrency()"
+                                                formControlName="totalCreditDebitCard"/>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="col-form-label">EBT<span class="text-danger">*</span> </label>
-                                        <input
-                                            class="form-control"
-                                            type="text"/>
+                                        <label class="col-form-label">EBT </label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            <input
+                                                class="form-control"
+                                                type="number"
+                                                min="0"
+                                                [(ngModel)]="paperworkBreakdown.ebt"
+                                                (input)="formatAmountCurrency()"
+                                                formControlName="ebt"/>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="col-form-label">Expense<span class="text-danger">*</span> </label>
-                                        <input
-                                            class="form-control"
-                                            type="text"/>
+                                        <label class="col-form-label">Expense </label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            <input
+                                                class="form-control"
+                                                type="number"
+                                                min="0"
+                                                [(ngModel)]="paperworkBreakdown.expense"
+                                                (input)="formatAmountCurrency()"
+                                                formControlName="expense"/>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="col-form-label">Office Expenses<span class="text-danger">*</span> </label>
-                                        <input
-                                            class="form-control"
-                                            type="text"/>
+                                        <label class="col-form-label">Office Expenses </label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            <input
+                                                class="form-control"
+                                                type="number"
+                                                min="0"
+                                                [(ngModel)]="paperworkBreakdown.officeExpense"
+                                                (input)="formatAmountCurrency()"
+                                                formControlName="officeExpense"/>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="col-form-label">Trust Fund/Checks REV.<span class="text-danger">*</span> </label>
-                                        <input
-                                            class="form-control"
-                                            type="text"/>
+                                        <label class="col-form-label">Trust Fund/Checks REV. </label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            <input
+                                                class="form-control"
+                                                type="number"
+                                                min="0"
+                                                [(ngModel)]="paperworkBreakdown.trustFund"
+                                                (input)="formatAmountCurrency()"
+                                                formControlName="trustFund"/>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="col-form-label">House A/C<span class="text-danger">*</span> </label>
-                                        <input
-                                            class="form-control"
-                                            type="text"/>
+                                        <label class="col-form-label">House A/C </label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            <input
+                                                class="form-control"
+                                                type="number"
+                                                min="0"
+                                                [(ngModel)]="paperworkBreakdown.houseAc"
+                                                (input)="formatAmountCurrency()"
+                                                formControlName="houseAc"/>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="col-form-label">Store Deposit<span class="text-danger">*</span> </label>
-                                        <input
-                                            class="form-control"
-                                            type="text"/>
+                                        <label class="col-form-label">Store Deposit </label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            <input
+                                                class="form-control"
+                                                type="number"
+                                                min="0"
+                                                [(ngModel)]="paperworkBreakdown.storeDeposit"
+                                                (input)="formatAmountCurrency()"
+                                                formControlName="storeDeposit"/>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="col-form-label">Total<span class="text-danger">*</span> </label>
-                                        <input
-                                            class="form-control"
-                                            type="text"/>
+                                        <label class="col-form-label">Total </label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            <input
+                                                class="form-control"
+                                                type="number"
+                                                min="0"
+                                                [(ngModel)]="paperworkBreakdown.totalInsideSalesBreakdown"
+                                                (input)="formatAmountCurrency()"
+                                                formControlName="totalInsideSalesBreakdown"/>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -256,7 +429,22 @@
                                                 class="fa fa-plus"></i></button>
                                         </div>
                                             <input class="form-control" formControlName="itemName" placeholder="Item Name" type="text"/>
-                                            <input class="form-control" formControlName="cashPurchaseAmount"  placeholder="Amount" type="text"/>
+                                            <!-- <input class="form-control" formControlName="cashPurchaseAmount"  placeholder="Amount" type="text"/> -->
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">$</span>
+                                                </div>
+                                                <input
+                                                    class="form-control"
+                                                    type="number"
+                                                    placeholder="Amount"
+                                                    min="0"
+                                                    (input)="formatAmountCurrency()"
+                                                    formControlName="cashPurchaseAmount"/>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">.00</span>
+                                                </div>
+                                            </div>
                                             <div class="row row-sm">
                                                 <button *ngIf="items?.length > 1" (click)="deleteItem(i)"  class="btn btn-danger btn-block set-btn" type="button"><i
                                                 class="fa fa-trash-o"></i></button>
@@ -272,9 +460,22 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="col-form-label">Total</label>
-                                        <input
-                                            class="form-control"
-                                            type="text"/>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            <input
+                                                class="form-control"
+                                                type="number"
+                                                [(ngModel)]="paperworkBreakdown.totalCashPurchase"
+                                                placeholder="Total"
+                                                min="0"
+                                                (input)="formatAmountCurrency()"
+                                                formControlName="totalCashPurchase"/>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -293,35 +494,76 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="col-form-label">Total Inside Sales<span class="text-danger">*</span> </label>
-                                        <input
-                                            class="form-control"
-                                            type="text"/>
+                                        <label class="col-form-label">Total Inside Sales </label>
+                                        <small class="text-info"> (Total Inside Sales Breakdown + Total Cash Purchase )</small>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            <input
+                                                class="form-control"
+                                                type="number"
+                                                [(ngModel)]="paperworkBreakdown.totalInsideSales"
+                                                placeholder="Amount"
+                                                min="0"
+                                                (input)="formatAmountCurrency()"
+                                                formControlName="totalInsideSales"/>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="col-form-label">Total Sales Record<span class="text-danger">*</span> </label>
-                                        <input
-                                            class="form-control"
-                                            type="text"/>
+                                        <label class="col-form-label">Total Sales Record </label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            <input
+                                                class="form-control"
+                                                type="number"
+                                                [(ngModel)]="paperworkBreakdown.totalSalesRecord"
+                                                placeholder="Amount"
+                                                min="0"
+                                                (input)="formatAmountCurrency()"
+                                                formControlName="totalSalesRecord"/>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="col-form-label">Over/Short<span class="text-danger">*</span> </label>
-                                        <input
-                                            class="form-control"
-                                            type="text"/>
+                                        <label class="col-form-label">Over/Short </label>
+                                        <small class="text-info"> (Total Inside Sales - Total Sales Record )</small>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            <input
+                                                class="form-control"
+                                                type="number"
+                                                [(ngModel)]="paperworkBreakdown.cashOverShort"
+                                                placeholder="Amount"
+                                                min="0"
+                                                (input)="formatAmountCurrency()"
+                                                formControlName="cashOverShort"/>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="col-form-label">Notes<span class="text-danger">*</span> </label>
-                                        <textarea rows="4" class="form-control"></textarea>
+                                        <label class="col-form-label">Notes </label>
+                                        <textarea rows="4" class="form-control"  formControlName="notes" [(ngModel)]="paperworkBreakdown.notes"></textarea>
                                     </div>
                                 </div>
                             </div>

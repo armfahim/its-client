@@ -4,20 +4,24 @@ export class PaperworkBreakdown {
     paperworkDate!:Date;
 
     //Sales Record(Incoming)
-    merchantSale!:number;
-    salesTax!:number;
-    insideSales!:number;
-    totalSalesRecord!:number;
+    merchantSale: any;
+    salesTax: any = 0;
+    insideSales: any;
+    totalSalesRecord: any = 0;
 
     //Inside Sales Breakdown
-    creditCard!:number;
-    debitCard!:number;
-    totalCreditDebitCard!:number;
-    ebt!:number;
-    expense!:number;
-    officeExpense!:number;
-    trustFund!:number;
-    houseAc!:number;
-    storeDeposit!:number;
-    total!:number; // totalCreditDebitCard + ebt + expense + officeExpense + trustFund + houseAc + storeDeposit
+    creditCard: any;
+    debitCard: any;
+    totalCreditDebitCard: any;
+    ebt: any;
+    expense: any;
+    officeExpense: any;
+    trustFund: any;
+    houseAc: any;
+    storeDeposit: any;
+    totalInsideSalesBreakdown:any = 0;// totalCreditDebitCard + ebt + expense + officeExpense + trustFund + houseAc + storeDeposit
+    totalCashPurchase: any = 0;
+    totalInsideSales: any = 0; // totalCreditDebitCard + ebt + expense + officeExpense + trustFund + houseAc + storeDeposit + totalCashPurchase
+    cashOverShort: any = 0;
+    notes: any;
 }
