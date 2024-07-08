@@ -429,19 +429,17 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
    * Fomat number fields to add prefix '$' in the input fields and calculate net due
    */
 
-  // Method to format the input as currency
+  // Method to format the input in '$' currency
   formatInvoiceAmountCurrency() {
-    // Remove non-numeric characters from the input
-    const numericValue = parseFloat(this.formattedInvoiceAmount.replace(/[^0-9.]/g, ''));
+    const numericValue = parseFloat(this.formattedInvoiceAmount.replace(/[^0-9.]/g, ''));// Remove non-numeric characters from the input
     this.invoice.invoiceAmount = isNaN(numericValue) ? null : numericValue;
 
-    // Format the numeric value as currency with a dollar sign
-    this.formattedInvoiceAmount = isNaN(numericValue) ? '$' : '$' + this.invoice.invoiceAmount;
+    this.formattedInvoiceAmount = isNaN(numericValue) ? '$' : '$' + this.invoice.invoiceAmount;// Format the numeric value with a dollar sign '$'
     this.netDueCalculation(null);
   }
 
   formatCreditAmountCurrency() {
-    const numericValue = parseFloat(this.formattedCreditAmount.replace(/[^0-9.]/g, ''));
+    const numericValue = parseFloat(this.formattedCreditAmount.replace(/[^0-9.]/g, '')); // Convert string value to numeric
     this.invoice.creditAmount = isNaN(numericValue) ? null : numericValue;
     this.formattedCreditAmount = isNaN(numericValue) ? '$' : '$' + this.invoice.creditAmount;
 
@@ -449,7 +447,7 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
   }
 
   formatNetDueCurrency() {
-    const numericValue = parseFloat(this.formattedNeDue.replace(/[^0-9.]/g, ''));
+    const numericValue = parseFloat(this.formattedNeDue.replace(/[^0-9.]/g, '')); // Convert string value to numeric
     this.invoice.netDue = isNaN(numericValue) ? null : numericValue;
     this.formattedNeDue = isNaN(numericValue) ? '$' : '$' + this.invoice.netDue;
   }

@@ -18,13 +18,15 @@
             </div>
             <div class="col-auto float-right ml-auto">
                 <div>
-                    Complete <span class="fa fa-circle-thin" style="background-color: rgb(206, 21, 21);"></span> Current <span class="fa fa-circle-thin"></span>
+                    Completed <span class="fa fa-circle-thin" style="background-color: rgb(206, 21, 21);"></span> 
+                    Current <span style="background-color: rgb(14, 202, 139);" class="fa fa-circle-thin"></span>   
+                    Pending <span class="fa fa-circle-thin"></span>
                 </div>
             </div>
         </div>
     </div>
     <!-- Page Header -->
-    <form (ngSubmit)="onSearch()" [formGroup]="addPaperworkForm"> 
+    <form (ngSubmit)="onAdd()" [formGroup]="addPaperworkBreakdownForm"> 
         <div class="row filter-row">
             <div class="col-sm-6 col-md-3">
                 <div class="form-group form-focus">
@@ -34,7 +36,6 @@
                             bsDatepicker
                             formControlName="paperworkDate"
                             [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'YYYY-MM-DD', todayHighlight:true, returnFocusToInput: true,isAnimated: true }"
-                            [(ngModel)]="paperworkDate"
                             (focusout)="rerender()"
                         />
                     </div>
@@ -91,7 +92,16 @@
                                         <label class="col-form-label">Merchant Sale<span class="text-danger">*</span> </label>
                                         <input
                                             class="form-control"
-                                            type="text"/>
+                                            type="text"
+                                            [(ngModel)]="paperworkBreakdown.merchantSale"
+                                            placeholder="$"
+                                            (input)="formatAmountCurrency()"
+                                            [class.invalid]="addPaperworkBreakdownForm.get('merchantSale').invalid && addPaperworkBreakdownForm.get('merchantSale').touched"
+                                            formControlName="merchantSale"
+                                            appTwoDigitDecimaNumber/>
+                                        <div *ngIf="addPaperworkBreakdownForm.get('merchantSale').invalid && addPaperworkBreakdownForm.get('merchantSale').touched">
+                                            <small *ngIf="addPaperworkBreakdownForm.get('merchantSale').invalid && addPaperworkBreakdownForm.get('merchantSale').touched" class="text-danger"> *Merchant sale is required</small>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -242,7 +252,7 @@
                                     <div class="form-group" *ngFor="let item of items.controls; let i = index" [formGroupName]="i"
                                     style="display: flex; gap:10px; margin-bottom: 10px;">
                                         <div class="row row-sm">
-                                            <button (click)="addItem()" class="btn btn-primary btn-block" type="button"><i
+                                            <button (click)="addItems()" class="btn btn-primary btn-block" type="button"><i
                                                 class="fa fa-plus"></i></button>
                                         </div>
                                             <input class="form-control" formControlName="itemName" placeholder="Item Name" type="text"/>
@@ -318,6 +328,9 @@
                         </div>
                     </div>
                 </div>
+        </div>
+        <div class="submit-section">
+            <button class="btn btn-primary submit-btn"><span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span> Submit</button>
         </div>
     </form>
 

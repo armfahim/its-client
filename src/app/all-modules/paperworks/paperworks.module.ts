@@ -10,10 +10,11 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { BsDatepickerModule } from 'ngx-bootstrap';
 import { NgHttpLoaderModule } from 'ng-http-loader';
 import { DataTablesModule } from 'angular-datatables';
+import { TwoDigitDecimaNumberDirective } from 'src/app/utils/two-digit-decima-number.directive';
 
 
 @NgModule({
-  declarations: [PaperworksComponent, PaperworksListComponent, PaperworksAddComponent],
+  declarations: [PaperworksComponent, PaperworksListComponent, PaperworksAddComponent, TwoDigitDecimaNumberDirective],
   imports: [
     CommonModule,
     PaperworksRoutingModule,

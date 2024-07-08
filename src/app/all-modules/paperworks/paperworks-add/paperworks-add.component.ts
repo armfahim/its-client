@@ -6,6 +6,7 @@ import { PaperworksService } from '../../services/paperworks.service';
 import { ActivatedRoute } from '@angular/router';
 import { AllModulesService } from '../../all-modules.service';
 import { ToastrService } from 'ngx-toastr';
+import { PaperworkBreakdown } from '../../model/paperwork-breakdown';
 
 @Component({
   selector: 'app-paperworks-add',
@@ -17,19 +18,24 @@ export class PaperworksAddComponent implements OnInit, OnDestroy  {
   viewDate: Date = new Date();
   events: CalendarEvent[] = [];
 
-  public addPaperworkForm: FormGroup;
+  public addPaperworkBreakdownForm: FormGroup;
   subscription: Subscription;
   // sharedPaperworkObj: any;
 
   paperworkId!: number;
   paperworkObj:any;
+  
+  //Model
+  paperworkBreakdown: PaperworkBreakdown = new PaperworkBreakdown();
+  loading = false;
 
   //Days List
   first10 = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
   second10 = ["11", "12", "13", "14", "15", "16", "17", "18", "19", "20"];
   third10 = ["21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"];
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(
+    private formBuilder: FormBuilder,
     private paperworksService: PaperworksService,
     private route: ActivatedRoute,
     private allModulesService: AllModulesService,
@@ -43,11 +49,37 @@ export class PaperworksAddComponent implements OnInit, OnDestroy  {
       this.getPaperworkInfoWithBreakdown();
     }
 
-    this.addPaperworkForm = this.formBuilder.group({
+    //Initialization of add paperwork form
+    this.addPaperworkBreakdownForm = this.formBuilder.group({
       paperworkDate: ["", [Validators.required]],
+      merchantSale:["", [Validators.required]],
+      salesTax:["",[]],
+      insideSales:["",[Validators.required]],
+      totalSalesRecord:["",[Validators.required]],
+      creditCard:["",[]],
+      debitCard:["",[]],
+      totalCreditDebitCard:["",[]],
+      ebt:["",[]],
+      expense:["",[]],
+      officeExpense:["",[]],
+      trustFund:["",[]],
+      houseAc:["",[]],
+      storeDeposit:["",[]],
+      total:["",[]],
       items: this.formBuilder.array([]),
     })
-    this.addItem();
+    this.addItems();
+  }
+
+  //Add new Invoice
+  public onAdd() {
+    this.loading = true;
+  }
+
+  formatAmountCurrency() {
+  }
+
+  rerender(): void {
   }
 
   getPaperworkInfoWithBreakdown() {
@@ -59,14 +91,14 @@ export class PaperworksAddComponent implements OnInit, OnDestroy  {
   }
 
   get items(){
-    return this.addPaperworkForm.get('items') as FormArray;
+    return this.addPaperworkBreakdownForm.get('items') as FormArray;
   }
 
   deleteItem(index: number){
     this.items.removeAt(index);
   }
 
-  addItem(){
+  addItems(){
     this.items.push(
       this.formBuilder.group({
         itemName: [''],
