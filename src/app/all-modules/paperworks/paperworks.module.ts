@@ -11,6 +11,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap';
 import { NgHttpLoaderModule } from 'ng-http-loader';
 import { DataTablesModule } from 'angular-datatables';
 import { TwoDigitDecimaNumberDirective } from 'src/app/utils/two-digit-decima-number.directive';
+import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { TwoDigitDecimaNumberDirective } from 'src/app/utils/two-digit-decima-nu
     NgSelectModule,
     BsDatepickerModule.forRoot(),
     NgHttpLoaderModule.forRoot(), 
+    CalendarModule
   ]
 })
 export class PaperworksModule { }

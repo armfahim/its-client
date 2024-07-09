@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AllModulesService } from '../../all-modules.service';
 import { ToastrService } from 'ngx-toastr';
 import { PaperworkBreakdown } from '../../model/paperwork-breakdown';
+import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
 
 @Component({
   selector: 'app-paperworks-add',

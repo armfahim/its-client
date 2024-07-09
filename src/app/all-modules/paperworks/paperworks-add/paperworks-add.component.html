@@ -28,9 +28,10 @@
     <!-- Page Header -->
     <form (ngSubmit)="onAdd()" [formGroup]="addPaperworkBreakdownForm"> 
         <div class="row filter-row">
-            <div class="col-sm-6 col-md-3">
-                <div class="form-group form-focus">
-                    <div class="cal-icon">
+            <div class="col-sm-12 col-md-3">
+                <div class="form-group">
+                    <ejs-calendar [isMultiSelection]="true"></ejs-calendar>
+                    <!-- <div class="cal-icon">
                         <input
                             class="form-control floating datetimepicker"
                             bsDatepicker
@@ -44,18 +45,129 @@
                             <small *ngIf="addPaperworkBreakdownForm.get('paperworkDate').invalid && addPaperworkBreakdownForm.get('paperworkDate').touched" class="text-danger"> *Date is required</small>
                         </div>
                     </div>
-                    <label class="focus-label">Select Date<span class="text-danger">*</span></label>
+                    <label class="focus-label">Select Date<span class="text-danger">*</span></label> -->
                 </div>
             </div>
-            <div class="col-sm-6 col-md-9">
+            <div class="col-sm-12 col-md-9">
                 <div class="form-group">
-                    <div class="table-responsive">
+                    <div class="card">
+                        <div class="card-header" style="background-color: rgb(20% 27% 30%);">
+                            <h4 class="card-title">
+                                <a class="collapsed" data-toggle="collapse" href="#collapseOne" style="color: white;">Sales Record (Incoming)</a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="card-collapse collapse show">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Merchant Sale<span class="text-danger">*</span> </label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">$</span>
+                                                </div>
+                                                <input
+                                                    class="form-control"
+                                                    type="number"
+                                                    min="0"
+                                                    [(ngModel)]="paperworkBreakdown.merchantSale"
+                                                    (input)="formatAmountCurrency()"
+                                                    [class.invalid]="addPaperworkBreakdownForm.get('merchantSale').invalid && addPaperworkBreakdownForm.get('merchantSale').touched"
+                                                    formControlName="merchantSale"/>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">.00</span>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="addPaperworkBreakdownForm.get('merchantSale').invalid && addPaperworkBreakdownForm.get('merchantSale').touched">
+                                                <small *ngIf="addPaperworkBreakdownForm.get('merchantSale').invalid && addPaperworkBreakdownForm.get('merchantSale').touched" class="text-danger"> *Merchant sales is required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Inside Sales<span class="text-danger">*</span> </label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">$</span>
+                                                </div>
+                                                <input
+                                                    class="form-control"
+                                                    type="number"
+                                                    min="0"
+                                                    [(ngModel)]="paperworkBreakdown.insideSales"
+                                                    (input)="formatAmountCurrency()"
+                                                    (ngModelChange)="checkMerchantAndInsideSaleAmt()"
+                                                    [class.invalid]="addPaperworkBreakdownForm.get('insideSales').invalid && addPaperworkBreakdownForm.get('insideSales').touched"
+                                                    formControlName="insideSales"/>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">.00</span>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="addPaperworkBreakdownForm.get('insideSales').invalid && addPaperworkBreakdownForm.get('insideSales').touched">
+                                                <small *ngIf="addPaperworkBreakdownForm.get('insideSales').invalid && addPaperworkBreakdownForm.get('insideSales').touched" class="text-danger"> *Inside sales is required</small>
+                                            </div>
+                                            <div *ngIf="paperworkBreakdown.insideSales > paperworkBreakdown.merchantSale">
+                                                <small *ngIf="creditAmount > invoiceAmount" class="text-danger"> *Inside sales can't be greater than merchant sales</small>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Sales Tax </label>
+                                            <small class="text-info"> (Merchant Sales - Inside Sales )</small>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">$</span>
+                                                </div>
+                                                <input
+                                                    class="form-control"
+                                                    type="number"
+                                                    min="0"
+                                                    [(ngModel)]="paperworkBreakdown.salesTax"
+                                                    (input)="formatAmountCurrency()"
+                                                    formControlName="salesTax"/>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">.00</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Total </label>
+                                            <small class="text-info"> (Inside Sales + Sales Tax )</small>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">$</span>
+                                                </div>
+                                                <input
+                                                    class="form-control"
+                                                    type="number"
+                                                    min="0"
+                                                    [(ngModel)]="paperworkBreakdown.totalSalesRecord"
+                                                    (input)="formatAmountCurrency()"
+                                                    formControlName="totalSalesRecord"/>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">.00</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <ejs-calendar></ejs-calendar> -->
+                    <!-- <div class="table-responsive">
                         <table class="table table-bordered mb-0">
                             <tbody>
                                 <tr>
                                     <td *ngFor="let day of first10; let i = index" style="text-align: center; vertical-align: middle;">
                                         <a (click)="convertToPaperworkDate(day)" style="cursor: pointer;">
-                                            <!-- margin: 0; color: white; -->
+                                           
                                             <p style="background-color: aquamarine; font-size: 20px;">{{day}}</p>
                                         </a>
                                     </td>
@@ -76,7 +188,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -500,7 +612,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="col-form-label">Total Inside Sales </label>
-                                        <small class="text-info"> (Total Inside Sales Breakdown + Total Cash Purchase )</small>
+                                        <small class="text-info"> (Total Inside Sales Breakdown + Total Cash Purchase)</small>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">$</span>
@@ -545,7 +657,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="col-form-label">Over/Short </label>
-                                        <small class="text-info"> (Total Inside Sales - Total Sales Record )</small>
+                                        <small class="text-info"> (Total Inside Sales - Total Sales Record)</small>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">$</span>
