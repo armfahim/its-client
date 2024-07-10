@@ -25,6 +25,10 @@ export class PaperworksAddComponent implements OnInit, OnDestroy  {
 
   paperworkId!: number;
   paperworkObj:any;
+  minDate:any;
+  maxDate:any;
+  dateValues:any;
+  dateValue: any;
   
   //Model
   paperworkBreakdown: PaperworkBreakdown = new PaperworkBreakdown();
@@ -96,6 +100,29 @@ export class PaperworksAddComponent implements OnInit, OnDestroy  {
     this.addItems();
   }
 
+  setCalendar() {
+    let year: number = parseInt(this.paperworkObj.year, 10);
+    let month: number = this.monthMap[this.paperworkObj.month];
+
+    this.minDate = new Date(year, month, 1);
+    this.maxDate =  new Date(year, month, 30);
+
+    this.dateValues = [new Date(year, month, 1), new Date(year, month, 14), new Date(year, month, 4), new Date(year, month, 25)];
+    this.dateValue = new Date(year, month, 14);
+    this.dateValues;
+  }
+
+  onChange(args: any) {
+    args.value;    
+}
+
+  customDates(args: any): void {
+    if (args.date.getDay() === 0 || args.date.getDay() === 6 ) {
+        // To highlight the week end of every month
+        args.element.classList.add('e-highlightweekend');
+    }
+  }
+
   //Add new Invoice
   public onAdd() {
     this.loading = true;
@@ -126,6 +153,7 @@ export class PaperworksAddComponent implements OnInit, OnDestroy  {
   getPaperworkInfoWithBreakdown() {
     this.allModulesService.findById(this.paperworkId,"v1/paperwork/find").subscribe((data: any) => {
       this.paperworkObj = data?.data;
+      this.setCalendar();
     }, (error) => {
       this.toastr.error(error.error.message);
     });

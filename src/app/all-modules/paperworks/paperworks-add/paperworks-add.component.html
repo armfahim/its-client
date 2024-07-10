@@ -5,7 +5,7 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Paperwork for {{paperworkObj.month}}, {{paperworkObj.year}}</h3>
+                <h3 class="page-title">Paperwork for {{paperworkObj?.month}}, {{paperworkObj?.year}}</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item">
                         <a routerLink="/dashboard">Dashboard</a>
@@ -16,12 +16,17 @@
                     <li class="breadcrumb-item active">add</li>
                 </ul>
             </div>
-            <div class="col-auto float-right ml-auto">
+            <!-- <div class="col-auto float-right ml-auto">
                 <div>
                     Completed <span class="fa fa-circle-thin" style="background-color: rgb(206, 21, 21);"></span> 
                     Current <span style="background-color: rgb(14, 202, 139);" class="fa fa-circle-thin"></span>   
                     Pending <span class="fa fa-circle-thin"></span>
                 </div>
+            </div> -->
+            <div class="col-auto float-right ml-auto">
+              <a class="btn add-btn" routerLink="/paperworks/paperwork-list">
+                  <i class="fa fa-share"></i>Back To List
+              </a>
             </div>
         </div>
     </div>
@@ -30,13 +35,20 @@
         <div class="row filter-row">
             <div class="col-sm-12 col-md-3">
                 <div class="form-group">
-                    <ejs-calendar [isMultiSelection]="true"></ejs-calendar>
-                    <!-- <div class="cal-icon">
+                    <div class="cal-icon">
                         <input
                             class="form-control floating datetimepicker"
                             bsDatepicker
                             formControlName="paperworkDate"
-                            [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'YYYY-MM-DD', todayHighlight:true, returnFocusToInput: true,isAnimated: true }"
+                            placeholder="--Select Date--"
+                            [bsConfig]="{ 
+                                adaptivePosition: true,
+                                dateInputFormat: 'YYYY-MM-DD',
+                                todayHighlight:true,
+                                returnFocusToInput: true,
+                                isAnimated: true,
+                                minDate: minDate,
+                                maxDate: maxDate}"
                             [class.invalid]="addPaperworkBreakdownForm.get('paperworkDate').invalid && addPaperworkBreakdownForm.get('paperworkDate').touched"
                             [(ngModel)]="paperworkBreakdown.paperworkDate"
                             (focusout)="rerender()"
@@ -45,122 +57,13 @@
                             <small *ngIf="addPaperworkBreakdownForm.get('paperworkDate').invalid && addPaperworkBreakdownForm.get('paperworkDate').touched" class="text-danger"> *Date is required</small>
                         </div>
                     </div>
-                    <label class="focus-label">Select Date<span class="text-danger">*</span></label> -->
                 </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <ejs-calendar [min]='minDate' [max]='maxDate' [values]='dateValues' [isMultiSelection]="true" (change)='onChange($event)'></ejs-calendar>
             </div>
             <div class="col-sm-12 col-md-9">
                 <div class="form-group">
-                    <div class="card">
-                        <div class="card-header" style="background-color: rgb(20% 27% 30%);">
-                            <h4 class="card-title">
-                                <a class="collapsed" data-toggle="collapse" href="#collapseOne" style="color: white;">Sales Record (Incoming)</a>
-                            </h4>
-                        </div>
-                        <div id="collapseOne" class="card-collapse collapse show">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-form-label">Merchant Sale<span class="text-danger">*</span> </label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">$</span>
-                                                </div>
-                                                <input
-                                                    class="form-control"
-                                                    type="number"
-                                                    min="0"
-                                                    [(ngModel)]="paperworkBreakdown.merchantSale"
-                                                    (input)="formatAmountCurrency()"
-                                                    [class.invalid]="addPaperworkBreakdownForm.get('merchantSale').invalid && addPaperworkBreakdownForm.get('merchantSale').touched"
-                                                    formControlName="merchantSale"/>
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">.00</span>
-                                                </div>
-                                            </div>
-                                            <div *ngIf="addPaperworkBreakdownForm.get('merchantSale').invalid && addPaperworkBreakdownForm.get('merchantSale').touched">
-                                                <small *ngIf="addPaperworkBreakdownForm.get('merchantSale').invalid && addPaperworkBreakdownForm.get('merchantSale').touched" class="text-danger"> *Merchant sales is required</small>
-                                            </div>
-                                        </div>
-                                    </div>
-    
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-form-label">Inside Sales<span class="text-danger">*</span> </label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">$</span>
-                                                </div>
-                                                <input
-                                                    class="form-control"
-                                                    type="number"
-                                                    min="0"
-                                                    [(ngModel)]="paperworkBreakdown.insideSales"
-                                                    (input)="formatAmountCurrency()"
-                                                    (ngModelChange)="checkMerchantAndInsideSaleAmt()"
-                                                    [class.invalid]="addPaperworkBreakdownForm.get('insideSales').invalid && addPaperworkBreakdownForm.get('insideSales').touched"
-                                                    formControlName="insideSales"/>
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">.00</span>
-                                                </div>
-                                            </div>
-                                            <div *ngIf="addPaperworkBreakdownForm.get('insideSales').invalid && addPaperworkBreakdownForm.get('insideSales').touched">
-                                                <small *ngIf="addPaperworkBreakdownForm.get('insideSales').invalid && addPaperworkBreakdownForm.get('insideSales').touched" class="text-danger"> *Inside sales is required</small>
-                                            </div>
-                                            <div *ngIf="paperworkBreakdown.insideSales > paperworkBreakdown.merchantSale">
-                                                <small *ngIf="creditAmount > invoiceAmount" class="text-danger"> *Inside sales can't be greater than merchant sales</small>
-                                            </div>
-                                        </div>
-                                    </div>
-    
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-form-label">Sales Tax </label>
-                                            <small class="text-info"> (Merchant Sales - Inside Sales )</small>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">$</span>
-                                                </div>
-                                                <input
-                                                    class="form-control"
-                                                    type="number"
-                                                    min="0"
-                                                    [(ngModel)]="paperworkBreakdown.salesTax"
-                                                    (input)="formatAmountCurrency()"
-                                                    formControlName="salesTax"/>
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">.00</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-    
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-form-label">Total </label>
-                                            <small class="text-info"> (Inside Sales + Sales Tax )</small>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">$</span>
-                                                </div>
-                                                <input
-                                                    class="form-control"
-                                                    type="number"
-                                                    min="0"
-                                                    [(ngModel)]="paperworkBreakdown.totalSalesRecord"
-                                                    (input)="formatAmountCurrency()"
-                                                    formControlName="totalSalesRecord"/>
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">.00</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <ejs-calendar></ejs-calendar> -->
                     <!-- <div class="table-responsive">
                         <table class="table table-bordered mb-0">
                             <tbody>
@@ -204,7 +107,7 @@
                     <div id="collapseOne" class="card-collapse collapse show">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="col-form-label">Merchant Sale<span class="text-danger">*</span> </label>
                                         <div class="input-group">
@@ -229,7 +132,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="col-form-label">Inside Sales<span class="text-danger">*</span> </label>
                                         <div class="input-group">
@@ -258,7 +161,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="col-form-label">Sales Tax </label>
                                         <small class="text-info"> (Merchant Sales - Inside Sales )</small>
@@ -280,7 +183,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="col-form-label">Total </label>
                                         <small class="text-info"> (Inside Sales + Sales Tax )</small>

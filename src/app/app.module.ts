@@ -13,7 +13,6 @@ import { authInterceptorProviders } from './guard/auth.interceptor';
 import { DatePipe, HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { NgHttpLoaderModule } from 'ng-http-loader';
 import { NgxEchartsModule } from 'ngx-echarts';
-import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
 
 @NgModule({

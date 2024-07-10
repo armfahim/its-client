@@ -17,3 +17,19 @@
   background-color: peachpuff;
   /* border: 3px solid red; */
 }
+
+/* Change selected date color when focusing */
+.e-calendar .e-content td.e-selected span.e-day,
+.e-bigger.e-small .e-calendar .e-content td.e-selected span.e-day {
+  background-color: #20e316;
+}
+/* Change selected date color when hovering */
+.e-calendar .e-content td.e-today.e-selected:hover span.e-day,
+.e-calendar .e-content td.e-selected:hover span.e-day,
+.e-calendar .e-content td.e-selected.e-focused-date span.e-day,
+.e-bigger.e-small .e-calendar .e-content td.e-today.e-selected:hover span.e-day,
+.e-bigger.e-small .e-calendar .e-content td.e-selected:hover span.e-day,
+.e-bigger.e-small  .e-calendar  .e-content  td.e-selected.e-focused-date
+  span.e-day {
+  background-color: #34b511;
+}
