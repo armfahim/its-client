@@ -24,4 +24,6 @@ export class PaperworkBreakdown {
     totalInsideSales: any = 0; // totalCreditDebitCard + ebt + expense + officeExpense + trustFund + houseAc + storeDeposit + totalCashPurchase
     cashOverShort: any = 0;
     notes: any;
+
+    cashPurchaseList:any;
 }

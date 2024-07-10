@@ -119,6 +119,7 @@
                                                 type="number"
                                                 min="0"
                                                 [(ngModel)]="paperworkBreakdown.merchantSale"
+                                                (ngModelChange)="calculateSalesRecordAmt()"
                                                 (input)="formatAmountCurrency()"
                                                 [class.invalid]="addPaperworkBreakdownForm.get('merchantSale').invalid && addPaperworkBreakdownForm.get('merchantSale').touched"
                                                 formControlName="merchantSale"/>
@@ -145,7 +146,7 @@
                                                 min="0"
                                                 [(ngModel)]="paperworkBreakdown.insideSales"
                                                 (input)="formatAmountCurrency()"
-                                                (ngModelChange)="checkMerchantAndInsideSaleAmt()"
+                                                (ngModelChange)="calculateSalesRecordAmt()"
                                                 [class.invalid]="addPaperworkBreakdownForm.get('insideSales').invalid && addPaperworkBreakdownForm.get('insideSales').touched"
                                                 formControlName="insideSales"/>
                                             <div class="input-group-append">
@@ -230,7 +231,7 @@
                                                 type="number"
                                                 min="0"
                                                 [(ngModel)]="paperworkBreakdown.creditCard"
-                                                (input)="formatAmountCurrency()"
+                                                (input)="calculateTotalCreditDebit()"
                                                 formControlName="creditCard"/>
                                             <div class="input-group-append">
                                                 <span class="input-group-text">.00</span>
@@ -251,7 +252,7 @@
                                                 type="number"
                                                 min="0"
                                                 [(ngModel)]="paperworkBreakdown.debitCard"
-                                                (input)="formatAmountCurrency()"
+                                                (input)="calculateTotalCreditDebit()"
                                                 formControlName="debitCard"/>
                                             <div class="input-group-append">
                                                 <span class="input-group-text">.00</span>
@@ -270,9 +271,10 @@
                                             <input
                                                 class="form-control"
                                                 type="number"
+                                                disabled="true"
                                                 min="0"
                                                 [(ngModel)]="paperworkBreakdown.totalCreditDebitCard"
-                                                (input)="formatAmountCurrency()"
+                                                (ngModelChange)="calculateInsideSalesBreakdown()"
                                                 formControlName="totalCreditDebitCard"/>
                                             <div class="input-group-append">
                                                 <span class="input-group-text">.00</span>
@@ -293,7 +295,7 @@
                                                 type="number"
                                                 min="0"
                                                 [(ngModel)]="paperworkBreakdown.ebt"
-                                                (input)="formatAmountCurrency()"
+                                                (input)="calculateInsideSalesBreakdown()"
                                                 formControlName="ebt"/>
                                             <div class="input-group-append">
                                                 <span class="input-group-text">.00</span>
@@ -314,7 +316,7 @@
                                                 type="number"
                                                 min="0"
                                                 [(ngModel)]="paperworkBreakdown.expense"
-                                                (input)="formatAmountCurrency()"
+                                                (input)="calculateInsideSalesBreakdown()"
                                                 formControlName="expense"/>
                                             <div class="input-group-append">
                                                 <span class="input-group-text">.00</span>
@@ -335,7 +337,7 @@
                                                 type="number"
                                                 min="0"
                                                 [(ngModel)]="paperworkBreakdown.officeExpense"
-                                                (input)="formatAmountCurrency()"
+                                                (input)="calculateInsideSalesBreakdown()"
                                                 formControlName="officeExpense"/>
                                             <div class="input-group-append">
                                                 <span class="input-group-text">.00</span>
@@ -356,7 +358,7 @@
                                                 type="number"
                                                 min="0"
                                                 [(ngModel)]="paperworkBreakdown.trustFund"
-                                                (input)="formatAmountCurrency()"
+                                                (input)="calculateInsideSalesBreakdown()"
                                                 formControlName="trustFund"/>
                                             <div class="input-group-append">
                                                 <span class="input-group-text">.00</span>
@@ -377,7 +379,7 @@
                                                 type="number"
                                                 min="0"
                                                 [(ngModel)]="paperworkBreakdown.houseAc"
-                                                (input)="formatAmountCurrency()"
+                                                (input)="calculateInsideSalesBreakdown()"
                                                 formControlName="houseAc"/>
                                             <div class="input-group-append">
                                                 <span class="input-group-text">.00</span>
@@ -398,7 +400,7 @@
                                                 type="number"
                                                 min="0"
                                                 [(ngModel)]="paperworkBreakdown.storeDeposit"
-                                                (input)="formatAmountCurrency()"
+                                                (input)="calculateInsideSalesBreakdown()"
                                                 formControlName="storeDeposit"/>
                                             <div class="input-group-append">
                                                 <span class="input-group-text">.00</span>
@@ -419,7 +421,7 @@
                                                 type="number"
                                                 min="0"
                                                 [(ngModel)]="paperworkBreakdown.totalInsideSalesBreakdown"
-                                                (input)="formatAmountCurrency()"
+                                                (ngModelChange)="calculateTotalInsideSales()"
                                                 formControlName="totalInsideSalesBreakdown"/>
                                             <div class="input-group-append">
                                                 <span class="input-group-text">.00</span>
@@ -459,7 +461,7 @@
                                                     type="number"
                                                     placeholder="Amount"
                                                     min="0"
-                                                    (input)="formatAmountCurrency()"
+                                                    (ngModelChange)="calculateCashPurchase()"
                                                     formControlName="cashPurchaseAmount"/>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">.00</span>
@@ -490,7 +492,7 @@
                                                 [(ngModel)]="paperworkBreakdown.totalCashPurchase"
                                                 placeholder="Total"
                                                 min="0"
-                                                (input)="formatAmountCurrency()"
+                                                (ngModelChange)="calculateTotalInsideSales()"
                                                 formControlName="totalCashPurchase"/>
                                             <div class="input-group-append">
                                                 <span class="input-group-text">.00</span>
@@ -526,7 +528,7 @@
                                                 [(ngModel)]="paperworkBreakdown.totalInsideSales"
                                                 placeholder="Amount"
                                                 min="0"
-                                                (input)="formatAmountCurrency()"
+                                                (ngModelChange)="calculateOverShort()"
                                                 formControlName="totalInsideSales"/>
                                             <div class="input-group-append">
                                                 <span class="input-group-text">.00</span>
@@ -548,7 +550,7 @@
                                                 [(ngModel)]="paperworkBreakdown.totalSalesRecord"
                                                 placeholder="Amount"
                                                 min="0"
-                                                (input)="formatAmountCurrency()"
+                                                (ngModelChange)="calculateOverShort()"
                                                 formControlName="totalSalesRecord"/>
                                             <div class="input-group-append">
                                                 <span class="input-group-text">.00</span>
@@ -561,7 +563,22 @@
                                     <div class="form-group">
                                         <label class="col-form-label">Over/Short </label>
                                         <small class="text-info"> (Total Inside Sales - Total Sales Record)</small>
-                                        <div class="input-group">
+                                        <div class="input-group red-input-group" *ngIf="isShort">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            <input
+                                                class="form-control red-input" style="color: white;"
+                                                type="number"
+                                                [(ngModel)]="paperworkBreakdown.cashOverShort"
+                                                min="0"
+                                                (input)="formatAmountCurrency()"
+                                                formControlName="cashOverShort"/>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
+                                        <div class="input-group" *ngIf="!isShort">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">$</span>
                                             </div>
@@ -569,7 +586,6 @@
                                                 class="form-control"
                                                 type="number"
                                                 [(ngModel)]="paperworkBreakdown.cashOverShort"
-                                                placeholder="Amount"
                                                 min="0"
                                                 (input)="formatAmountCurrency()"
                                                 formControlName="cashOverShort"/>

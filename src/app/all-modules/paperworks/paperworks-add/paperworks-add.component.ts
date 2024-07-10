@@ -7,7 +7,6 @@ import { ActivatedRoute } from '@angular/router';
 import { AllModulesService } from '../../all-modules.service';
 import { ToastrService } from 'ngx-toastr';
 import { PaperworkBreakdown } from '../../model/paperwork-breakdown';
-import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
 
 @Component({
   selector: 'app-paperworks-add',
@@ -29,6 +28,7 @@ export class PaperworksAddComponent implements OnInit, OnDestroy  {
   maxDate:any;
   dateValues:any;
   dateValue: any;
+  isShort : boolean = false;
   
   //Model
   paperworkBreakdown: PaperworkBreakdown = new PaperworkBreakdown();
@@ -100,6 +100,61 @@ export class PaperworksAddComponent implements OnInit, OnDestroy  {
     this.addItems();
   }
 
+    //Add new Invoice
+    public onAdd() {
+      this.loading = true;
+      this.paperworkBreakdown.merchantSale;
+      this.paperworkBreakdown.cashPurchaseList = this.items.value;
+      if(this.addPaperworkBreakdownForm.invalid){
+        this.toastr.info("Please insert valid data");
+        return;
+      }
+    }
+
+  calculateSalesRecordAmt(){
+    if (this.paperworkBreakdown.insideSales > this.paperworkBreakdown.merchantSale) {
+      this.toastr.warning("Insides sales can't be more than merchant sales!","Warning",{ timeOut: 3000 });
+      this.paperworkBreakdown.insideSales = null;
+      this.paperworkBreakdown.salesTax = null;
+      return;
+    }else{
+      this.paperworkBreakdown.salesTax = this.paperworkBreakdown.merchantSale - this.paperworkBreakdown.insideSales;
+      this.paperworkBreakdown.totalSalesRecord = this.paperworkBreakdown.insideSales + this.paperworkBreakdown.salesTax;
+    }
+  }
+
+  calculateTotalCreditDebit(){
+    this.paperworkBreakdown.totalCreditDebitCard = (this.paperworkBreakdown.creditCard ? this.paperworkBreakdown.creditCard : 0) 
+                                                   + (this.paperworkBreakdown.debitCard ? this.paperworkBreakdown.debitCard : 0) 
+  }
+
+  calculateInsideSalesBreakdown(){
+    this.paperworkBreakdown.totalInsideSalesBreakdown = (this.paperworkBreakdown.totalCreditDebitCard ? this.paperworkBreakdown.totalCreditDebitCard : 0)
+                              + (this.paperworkBreakdown.ebt ? this.paperworkBreakdown.ebt : 0)
+                              + (this.paperworkBreakdown.expense ? this.paperworkBreakdown.expense : 0)
+                              + (this.paperworkBreakdown.officeExpense ? this.paperworkBreakdown.officeExpense : 0)
+                              + (this.paperworkBreakdown.trustFund ? this.paperworkBreakdown.trustFund : 0)
+                              + (this.paperworkBreakdown.houseAc ? this.paperworkBreakdown.houseAc :0 )
+                              + (this.paperworkBreakdown.storeDeposit ? this.paperworkBreakdown.storeDeposit : 0);
+  }
+
+  calculateCashPurchase(){
+      this.paperworkBreakdown.totalCashPurchase = this.items.value.reduce((sum, item) => sum + item.cashPurchaseAmount, 0);
+  }
+
+  calculateTotalInsideSales(){
+    this.paperworkBreakdown.totalInsideSales = this.paperworkBreakdown.totalInsideSalesBreakdown + this.paperworkBreakdown.totalCashPurchase;
+  }
+
+  calculateOverShort(){
+    this.paperworkBreakdown.cashOverShort = this.paperworkBreakdown.totalInsideSales - this.paperworkBreakdown.totalSalesRecord;
+    if(this.paperworkBreakdown.totalSalesRecord > this.paperworkBreakdown.totalInsideSales) {
+      this.isShort = true;
+    }else{
+      this.isShort = false;
+    }
+  }
+
   setCalendar() {
     let year: number = parseInt(this.paperworkObj.year, 10);
     let month: number = this.monthMap[this.paperworkObj.month];
@@ -113,41 +168,7 @@ export class PaperworksAddComponent implements OnInit, OnDestroy  {
   }
 
   onChange(args: any) {
-    args.value;    
-}
-
-  customDates(args: any): void {
-    if (args.date.getDay() === 0 || args.date.getDay() === 6 ) {
-        // To highlight the week end of every month
-        args.element.classList.add('e-highlightweekend');
-    }
-  }
-
-  //Add new Invoice
-  public onAdd() {
-    this.loading = true;
-    this.paperworkBreakdown.merchantSale;
-  }
-
-  formatAmountCurrency() {
-  }
-
-  convertToPaperworkDate(value:any){
-    let year: number = parseInt(this.paperworkObj.year, 10);
-    let month: number = this.monthMap[this.paperworkObj.month];
-    let date: number = parseInt(value, 10);
-    this.paperworkBreakdown.paperworkDate = new Date(year, month,date);
-    alert(new Date(year, month,date));
-  }
-
-  checkMerchantAndInsideSaleAmt(){
-    if (this.paperworkBreakdown.insideSales > this.paperworkBreakdown.merchantSale) {
-      this.toastr.warning("Insides sales can't be more than merchant sales!","Warning",{ timeOut: 5000 });
-      this.paperworkBreakdown.insideSales = null;
-    }
-  }
-
-  rerender(): void {
+    this.paperworkBreakdown.paperworkDate = args?.value;
   }
 
   getPaperworkInfoWithBreakdown() {
@@ -159,21 +180,45 @@ export class PaperworksAddComponent implements OnInit, OnDestroy  {
     });
   }
 
+  customDates(args: any): void {
+    if (args.date.getDay() === 0 || args.date.getDay() === 6 ) {
+        // To highlight the week end of every month
+        args.element.classList.add('e-highlightweekend');
+    }
+  }
+
+  rerender(): void {
+  }
+
   get items(){
     return this.addPaperworkBreakdownForm.get('items') as FormArray;
   }
 
   deleteItem(index: number){
+    const amount = this.items.value[index].cashPurchaseAmount;
+    this.paperworkBreakdown.totalCashPurchase = this.paperworkBreakdown.totalCashPurchase - amount;
     this.items.removeAt(index);
   }
 
   addItems(){
     this.items.push(
       this.formBuilder.group({
+        id: [''],
         itemName: [''],
         cashPurchaseAmount: [''],
       })
     )
+  }
+
+  formatAmountCurrency() {
+  }
+
+  convertToPaperworkDate(value:any){
+    let year: number = parseInt(this.paperworkObj.year, 10);
+    let month: number = this.monthMap[this.paperworkObj.month];
+    let date: number = parseInt(value, 10);
+    this.paperworkBreakdown.paperworkDate = new Date(year, month,date);
+    alert(new Date(year, month,date));
   }
 
   ngOnDestroy(): void {

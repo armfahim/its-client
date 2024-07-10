@@ -33,3 +33,24 @@
   span.e-day {
   background-color: #34b511;
 }
+
+.red-input-group .input-group-text, .red-input-group .form-control {
+  border-color: red;
+  color: red;
+}
+
+.red-input-group .form-control:focus {
+  border-color: red;
+  box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
+}
+
+.red-input {
+  border-color: red;
+  color: white;
+  background-color: red;
+}
+
+.red-input:focus {
+  border-color: white;
+  box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
+}
