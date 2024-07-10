@@ -13,13 +13,12 @@ import { PaperworkBreakdown } from '../../model/paperwork-breakdown';
   templateUrl: './paperworks-add.component.html',
   styleUrls: ['./paperworks-add.component.css']
 })
-export class PaperworksAddComponent implements OnInit, OnDestroy  {
+export class PaperworksAddComponent implements OnInit {
 
   viewDate: Date = new Date();
   events: CalendarEvent[] = [];
 
   public addPaperworkBreakdownForm: FormGroup;
-  subscription: Subscription;
   // sharedPaperworkObj: any;
 
   paperworkId!: number;
@@ -219,10 +218,6 @@ export class PaperworksAddComponent implements OnInit, OnDestroy  {
     let date: number = parseInt(value, 10);
     this.paperworkBreakdown.paperworkDate = new Date(year, month,date);
     alert(new Date(year, month,date));
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
   }
 
 }
