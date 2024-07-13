@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CalendarEvent } from 'angular-calendar';
-import { Subscription } from 'rxjs';
 import { PaperworksService } from '../../services/paperworks.service';
 import { ActivatedRoute } from '@angular/router';
 import { AllModulesService } from '../../all-modules.service';
 import { ToastrService } from 'ngx-toastr';
 import { PaperworkBreakdown } from '../../model/paperwork-breakdown';
+import { DatePipe } from '@angular/common';
+import { Paperworks } from '../../model/paperworks';
 
 @Component({
   selector: 'app-paperworks-add',
@@ -16,22 +16,22 @@ import { PaperworkBreakdown } from '../../model/paperwork-breakdown';
 export class PaperworksAddComponent implements OnInit {
 
   viewDate: Date = new Date();
-  events: CalendarEvent[] = [];
 
   public addPaperworkBreakdownForm: FormGroup;
-  // sharedPaperworkObj: any;
 
   paperworkId!: number;
-  paperworkObj:any;
+
   minDate:any;
   maxDate:any;
-  dateValues:any;
+  dateValues: Date[] = [];
   dateValue: any;
   isShort : boolean = false;
   
   //Model
   paperworkBreakdown: PaperworkBreakdown = new PaperworkBreakdown();
+  paperworkObj:Paperworks = new Paperworks();
   loading = false;
+  isAdd = true;
 
   //Days List
   first10 = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
@@ -61,7 +61,6 @@ export class PaperworksAddComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.subscription = this.paperworksService.currentPaperwork.subscribe(obj => this.sharedPaperworkObj = obj);
     this.paperworkId = this.route.snapshot.params["id"];
     if(this.paperworkId){
       this.getPaperworkInfoWithBreakdown();
@@ -99,16 +98,97 @@ export class PaperworksAddComponent implements OnInit {
     this.addItems();
   }
 
-    //Add new Invoice
-    public onAdd() {
-      this.loading = true;
-      this.paperworkBreakdown.merchantSale;
-      this.paperworkBreakdown.cashPurchaseList = this.items.value;
-      if(this.addPaperworkBreakdownForm.invalid){
-        this.toastr.info("Please insert valid data");
+  //Add new breakdown
+  public onAdd() {
+    this.loading = true;
+    this.paperworkBreakdown.cashPurchaseList = this.items.value;
+    this.paperworkBreakdown.paperworksId = this.paperworkObj.id;
+
+    if(!this.customValidation()) return;
+    this.formatDateString();
+
+    this.allModulesService.add(this.paperworkBreakdown, "/v1/paperwork/breakdown/save").subscribe((data) => {
+      if(data.status == "error") {
+          this.toastr.error(data.errors,"Failed");
+          this.loading = false;
+          return;
+        }
+        this.loading = false;
+        this.toastr.success("Data has been saved sucessfully!", "Success",{ timeOut: 5000 });
+      },
+      (error) => {
+        this.loading = false;
+        console.error("API Error:", error);
+        // Extract error message from the API response
+        const customErrorMessage = error && error.error && error.error.errors ? error.error.errors.toString(): "Unknown error";
+        this.toastr.warning(customErrorMessage, "Failed",{ timeOut: 5000 });
         return;
-      }
+      });
+  }
+
+  public onUpdate(){
+    this.loading = true;
+    this.paperworkBreakdown.cashPurchaseList = this.items.value;
+    this.paperworkBreakdown.paperworksId = this.paperworkObj.id;
+
+    if(!this.customValidation()) return;
+    this.formatDateString();
+
+    this.allModulesService.update(this.paperworkBreakdown, "/v1/paperwork/breakdown/update").subscribe((data) => {
+      if(data.status == "error") {
+          this.toastr.error(data.errors,"Failed");
+          this.loading = false;
+          return;
+        }
+        this.loading = false;
+        this.toastr.success("Data has been updated sucessfully!", "Success",{ timeOut: 5000 });
+      },
+      (error) => {
+        this.loading = false;
+        console.error("API Error:", error);
+        // Extract error message from the API response
+        const customErrorMessage = error && error.error && error.error.errors ? error.error.errors.toString(): "Unknown error";
+        this.toastr.warning(customErrorMessage, "Failed",{ timeOut: 5000 });
+        return;
+      });
+  }
+
+  formatDateString() {
+    var datePipe = new DatePipe('en-US');
+    // Get the formatted date string
+    const formattedDateString = datePipe.transform(this.paperworkBreakdown.paperworkDate, 'yyyy-MM-dd');
+
+    // Convert the formatted date string back to a Date object
+    if (formattedDateString) {
+      this.paperworkBreakdown.paperworkDate =  new Date(formattedDateString);
     }
+  }
+
+  customValidation(): boolean{
+    if(this.paperworkBreakdown.paperworkDate == null){
+      this.toastr.error("Select a date","",{ timeOut: 3000 });
+      this.loading = false;
+      this.addPaperworkBreakdownForm.get('paperworkDate').markAsTouched();
+      this.addPaperworkBreakdownForm.get('paperworkDate').setErrors({ 'invalid': true });
+      return false;
+    }
+    if(this.paperworkBreakdown.merchantSale == null){
+      this.toastr.error("Merchant sale is required","",{ timeOut: 3000 });
+      this.addPaperworkBreakdownForm.get('merchantSale').markAsTouched();
+      this.addPaperworkBreakdownForm.get('merchantSale').setErrors({ 'invalid': true });
+      this.loading = false;
+      return false;
+    }
+    if(this.paperworkBreakdown.insideSales == null){
+      this.toastr.error("Inside sales is required","",{ timeOut: 3000 });
+      this.loading = false;
+      this.addPaperworkBreakdownForm.get('insideSales').markAsTouched();
+      this.addPaperworkBreakdownForm.get('insideSales').setErrors({ 'invalid': true });
+      return false;
+    }
+    return true;
+  }
+  
 
   calculateSalesRecordAmt(){
     if (this.paperworkBreakdown.insideSales > this.paperworkBreakdown.merchantSale) {
@@ -160,22 +240,85 @@ export class PaperworksAddComponent implements OnInit {
 
     this.minDate = new Date(year, month, 1);
     this.maxDate =  new Date(year, month, 30);
+    this.pushToDateValues();
+  }
 
-    this.dateValues = [new Date(year, month, 1), new Date(year, month, 14), new Date(year, month, 4), new Date(year, month, 25)];
-    this.dateValue = new Date(year, month, 14);
-    this.dateValues;
+  pushToDateValues() {
+    this.dateValues = this.dateValues || []; // Initialize the array if null
+    this.dateValues.push(this.paperworkBreakdown.paperworkDate); // Push the current paperwork date to date values
+    if(this.dateValues){
+      this.dateValues = this.dateValues.map(dateString => new Date(dateString)); // convert to Date()
+    }
+    this.dateValue = new Date(this.paperworkBreakdown.paperworkDate);
+  }
+
+  onChangePaperworkDate(event: any){
+    this.paperworkBreakdown.paperworkDate = event;
+    if(this.paperworkBreakdown.paperworkDate){
+      this.pushToDateValues();
+      this.findPaperworkBreakdownByDate();
+    }
   }
 
   onChange(args: any) {
     this.paperworkBreakdown.paperworkDate = args?.value;
+    // if(this.paperworkBreakdown.paperworkDate){
+    //   this.findPaperworkBreakdownByDate();
+    // }
   }
 
   getPaperworkInfoWithBreakdown() {
-    this.allModulesService.findById(this.paperworkId,"v1/paperwork/find").subscribe((data: any) => {
+    this.allModulesService.findById(this.paperworkId,"v1/paperwork/find/details").subscribe((data: any) => {
       this.paperworkObj = data?.data;
+      this.paperworkBreakdown.paperworkDate = data?.data.newInputDate;
+      this.dateValues = data?.data.existsPaperworkBreakDownDates;
       this.setCalendar();
     }, (error) => {
       this.toastr.error(error.error.message);
+    });
+  }
+
+  findPaperworkBreakdownByDate() {
+    var datePipe = new DatePipe('en-US');
+    // Get the formatted date string
+    const formattedDateString = datePipe.transform(this.paperworkBreakdown.paperworkDate, 'yyyy-MM-dd');
+    
+    let request = {
+      paperworksId : this.paperworkId,
+      paperworkBreakdownDate: formattedDateString,
+    }
+    this.allModulesService.getPaperworkBreakdownData(request,"/v1/paperwork/breakdown/find/paperwork-breakdown-date").subscribe((data: any) => {
+      this.paperworkBreakdown = data?.data;
+      this.clearItems();
+      if(!this.paperworkBreakdown.id){
+         this.addItems();
+      }else this.isAdd = false;
+      if(this.paperworkBreakdown?.cashPurchaseList?.length > 0){
+        this.pushCashPurchaseListToItems();
+      }
+    },
+    (error) => {
+      return;
+    });
+  }
+
+  pushCashPurchaseListToItems() {
+    this.paperworkBreakdown.cashPurchaseList.forEach(purchase => {
+      this.items.push(this.createItem(purchase));
+    })
+  }
+
+  clearItems(): void {
+    while (this.items.length !== 0) {
+      this.items.removeAt(0);
+    }
+  }
+
+  createItem(purchase): FormGroup {
+    return this.formBuilder.group({
+      id: [purchase?.id],
+      itemName: [purchase?.itemName],
+      cashPurchaseAmount: [purchase?.cashPurchaseAmount]
     });
   }
 
@@ -218,6 +361,15 @@ export class PaperworksAddComponent implements OnInit {
     let date: number = parseInt(value, 10);
     this.paperworkBreakdown.paperworkDate = new Date(year, month,date);
     alert(new Date(year, month,date));
+  }
+
+  convertTDate(formattedDateString: string) {
+    const dateParts = formattedDateString.split('-'); // Split the string into parts
+    const year = parseInt(dateParts[0], 10); // Parse year as integer
+    const month = parseInt(dateParts[1], 10) - 1; // Parse month (zero-based index)
+    const day = parseInt(dateParts[2], 10); // Parse day as integer
+    
+    return new Date(year, month, day); // Create new Date object
   }
 
 }

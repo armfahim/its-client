@@ -94,11 +94,23 @@
                             <td>{{paperwork.year}}</td>
                             <td>{{paperwork.month}}</td>
                             <td class="text-right">
-                                <div class="dropdown dropdown-action">
-                                    <a class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <div>
+                                    <!-- <a class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                         <i class="material-icons">more_vert</i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
+                                    </a> -->
+                                    <div>
+                                        <a class="btn btn-sm btn-info" routerLink="/paperworks/add-paperwork/{{paperwork.id}}" title="Daily Input">
+                                            <i style="color: #fff;" class="fa fa-plus-square-o"></i>
+                                        </a>&nbsp;
+                                        <a class="btn btn-sm btn-info" title="View">
+                                            <i style="color: #fff;" class="fa fa-eye m-r-5"></i>
+                                        </a>&nbsp;
+                                        <a class="btn btn-sm btn-info" title="Report">
+                                            <i style="color: #fff;" class="fa fa-file-pdf-o"></i>
+                                        </a>&nbsp;
+                                        <a class="btn btn-sm btn-info" title="Edit Paperwork Title">
+                                            <i style="color: #fff;" class="fa fa-pencil m-r-5"></i>
+                                        </a>&nbsp;
                                         <!-- <a class="dropdown-item" data-toggle="modal" data-target="#edit_invoice" (click)="onInvoice(invoice.id)"> <i class="fa fa-pencil m-r-5"></i> Edit </a>
                                         <a class="dropdown-item" routerLink="/invoice/view-invoice/{{invoice.id}}"> <i class="fa fa-eye m-r-5"></i> View </a>
                                         <a class="dropdown-item" data-toggle="modal" data-target="#delete_invoice" (click)="tempId = invoice.id"> <i class="fa fa-trash-o m-r-5"></i> Delete </a> -->

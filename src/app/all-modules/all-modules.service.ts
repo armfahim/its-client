@@ -108,4 +108,9 @@ export class AllModulesService {
   public findById(id, endPoint) {
     return this.http.get(`${this.baseUrl}/${endPoint}/${id}`);
   }
+
+  getPaperworkBreakdownData(params: any, endPoint: any): Observable<any> {
+    const url = `${this.baseUrl}${endPoint}?paperworksId=${params.paperworksId}&paperworkBreakdownDate=${params.paperworkBreakdownDate}`;
+    return this.http.get(url);
+  }
 }

@@ -26,4 +26,6 @@ export class PaperworkBreakdown {
     notes: any;
 
     cashPurchaseList:any;
+
+    paperworksId:any;
 }

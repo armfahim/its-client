@@ -1,6 +1,6 @@
 <!-- Page Content -->
 <div class="content container-fluid">
-    <ng-http-loader></ng-http-loader>
+    <!-- <ng-http-loader></ng-http-loader> -->
     <!-- Page Header -->
     <div class="page-header">
         <div class="row align-items-center">
@@ -31,7 +31,7 @@
         </div>
     </div>
     <!-- Page Header -->
-    <form (ngSubmit)="onAdd()" [formGroup]="addPaperworkBreakdownForm"> 
+    <form [formGroup]="addPaperworkBreakdownForm"> 
         <div class="row filter-row">
             <div class="col-sm-12 col-md-3">
                 <div class="form-group">
@@ -41,6 +41,7 @@
                             bsDatepicker
                             formControlName="paperworkDate"
                             placeholder="--Select Date--"
+                            opened="true"
                             [bsConfig]="{ 
                                 adaptivePosition: true,
                                 dateInputFormat: 'YYYY-MM-DD',
@@ -51,7 +52,8 @@
                                 maxDate: maxDate}"
                             [class.invalid]="addPaperworkBreakdownForm.get('paperworkDate').invalid && addPaperworkBreakdownForm.get('paperworkDate').touched"
                             [(ngModel)]="paperworkBreakdown.paperworkDate"
-                            (focusout)="rerender()"
+                            formControlName="paperworkDate"
+                            (bsValueChange)="onChangePaperworkDate($event)"
                         />
                         <div *ngIf="addPaperworkBreakdownForm.get('paperworkDate').invalid && addPaperworkBreakdownForm.get('paperworkDate').touched">
                             <small *ngIf="addPaperworkBreakdownForm.get('paperworkDate').invalid && addPaperworkBreakdownForm.get('paperworkDate').touched" class="text-danger"> *Date is required</small>
@@ -59,8 +61,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-12 col-md-6">
-                <ejs-calendar [min]='minDate' [max]='maxDate' [values]='dateValues' [isMultiSelection]="true" (change)='onChange($event)'></ejs-calendar>
+            <div class="col-sm-12 col-md-6" style="pointer-events: none;">
+                <ejs-calendar [min]='minDate' [max]='maxDate' [values]='dateValues' [value]='dateValue' [isMultiSelection]="true"></ejs-calendar>
             </div>
             <div class="col-sm-12 col-md-9">
                 <div class="form-group">
@@ -608,7 +610,8 @@
                 </div>
         </div>
         <div class="submit-section">
-            <button class="btn btn-primary submit-btn"><span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span> Submit</button>
+            <button *ngIf="isAdd" (click)="onAdd()" class="btn btn-primary submit-btn"><span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span> Submit</button>
+            <button *ngIf="!isAdd" (click)="onUpdate()" class="btn btn-primary submit-btn"><span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span> Update</button>
         </div>
     </form>
 
