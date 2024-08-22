@@ -27,6 +27,10 @@ export class LoginService {
     return this.http.post(`${this.baseUrl}/v1/auth/authenticate`, loginData);
   }
 
+  public socialLogin(param:any){
+    return this.http.get(`${this.baseUrl}/v1/auth/oauth2/authorization/${param}`);
+  }
+
   //login user:: store token in the local storage
   public storeToken(token) {
     localStorage.setItem("token", token);

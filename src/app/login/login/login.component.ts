@@ -78,4 +78,19 @@ export class LoginComponent implements OnInit {
      })
   }
 
+  socialLogin() {
+      window.location.href = 'http://localhost:8082/its/api/login/oauth2/code/google';
+  //   this.loginService.socialLogin('google').pipe(delay(1300)).subscribe((response:any) =>{
+  //     //login...
+  //     this.loginService.storeToken(response.data.accessToken);
+
+  //      this.loginService.setUser(response.data.user);
+  //      let authorities = response.data.user.role;
+  //   },
+  //   (error) => {
+  //    this.loading = false;
+  //     this.toastr.error('Invalid Credentials', "Try again");
+  //   })
+  }
+
 }
