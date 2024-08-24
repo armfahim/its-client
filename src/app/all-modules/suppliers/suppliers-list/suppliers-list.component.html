@@ -5,16 +5,16 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Suppliers</h3>
+                <h3 class="page-title">Vendors</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Suppliers</li>
+                    <li class="breadcrumb-item active">Vendors</li>
                 </ul>
             </div>
             <div class="col-auto float-right ml-auto">
                 <a class="btn add-btn" data-toggle="modal" data-target="#add_supplier" (click)="resetForm()"><i
                         class="fa fa-plus"></i>
-                    Add Suppliers</a>
+                    Add Vendor</a>
                 <div class="view-icons">
                     <!-- <a routerLink="/clients/clientspage" class="grid-view btn btn-link"><i class="fa fa-th"></i></a> -->
                     <a routerLink="/suppliers/supplierslist" class="list-view btn btn-link active"><i
@@ -33,7 +33,7 @@
                       <!-- (input)="searchName($event.target.value)" -->
                       <input formControlName="supplierName" type="text" class="form-control floating"
                           (focusout)="rerender()">
-                      <label class="focus-label">Suppliers Name</label>
+                      <label class="focus-label">Vendor Name</label>
                   </div>
               </div>
               <div class="col-sm-6 col-md-3">
@@ -50,7 +50,7 @@
                     class="table table-striped custom-table datatable">
                     <thead>
                         <tr>
-                            <th (click)="onTableHeaderClick(0, 'supplierName')">Supplier Name</th>
+                            <th (click)="onTableHeaderClick(0, 'supplierName')">Vendor Name</th>
                             <th (click)="onTableHeaderClick(1, 'email')">Email</th>
                             <th (click)="onTableHeaderClick(2, 'phone')">Phone</th>
                             <th (click)="onTableHeaderClick(3, 'contactPerson')">Contact Person</th>
@@ -114,7 +114,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Add Suppliers</h5>
+                <h5 class="modal-title">Add Vendor</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -124,7 +124,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="col-form-label">Supplier Name </label>
+                                <label class="col-form-label">Vedor Name </label>
                                 <input class="form-control" type="text"
                                   [class.invalid]="addSupplierForm.get('supplierName').invalid && addSupplierForm.get('supplierName').touched"
                                     formControlName="supplierName">
@@ -132,7 +132,7 @@
                                     *ngIf="addSupplierForm.get('supplierName').invalid && addSupplierForm.get('supplierName').touched">
                                     <small
                                         *ngIf="addSupplierForm.get('supplierName').invalid && addSupplierForm.get('supplierName').touched"
-                                        class="text-danger"> *Supplier Name is required</small>
+                                        class="text-danger"> *Vendor Name is required</small>
                                 </div>
                             </div>
                         </div>
@@ -208,7 +208,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit Supplier</h5>
+                <h5 class="modal-title">Edit Vendor</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -218,7 +218,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                              <label class="col-form-label">Supplier Name </label>
+                              <label class="col-form-label">Vendor Name </label>
                               <input class="form-control" type="text"
                                 [class.invalid]="editSupplierForm.get('editSupplierName').invalid && editSupplierForm.get('editSupplierName').touched"
                                   formControlName="editSupplierName">
@@ -226,7 +226,7 @@
                                   *ngIf="editSupplierForm.get('editSupplierName').invalid && editSupplierForm.get('editSupplierName').touched">
                                   <small
                                       *ngIf="editSupplierForm.get('editSupplierName').invalid && editSupplierForm.get('editSupplierName').touched"
-                                      class="text-danger"> *Supplier Name is required</small>
+                                      class="text-danger"> *Vendor Name is required</small>
                               </div>
                             </div>
                         </div>
@@ -304,7 +304,7 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="form-header">
-                    <h3>Delete Supplier</h3>
+                    <h3>Delete Vendor</h3>
                     <p>Are you sure want to delete?</p>
                 </div>
                 <div class="modal-btn delete-action">

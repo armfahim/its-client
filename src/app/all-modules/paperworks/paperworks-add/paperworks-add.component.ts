@@ -26,6 +26,8 @@ export class PaperworksAddComponent implements OnInit {
   dateValues: Date[] = [];
   dateValue: any;
   isShort : boolean = false;
+
+  suppliers: [] = [];
   
   //Model
   paperworkBreakdown: PaperworkBreakdown = new PaperworkBreakdown();
@@ -33,10 +35,6 @@ export class PaperworksAddComponent implements OnInit {
   loading = false;
   isAdd = true;
 
-  //Days List
-  first10 = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
-  second10 = ["11", "12", "13", "14", "15", "16", "17", "18", "19", "20"];
-  third10 = ["21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"];
   monthMap: { [key: string]: number } = {
     January: 0,
     February: 1,
@@ -70,7 +68,7 @@ export class PaperworksAddComponent implements OnInit {
     this.addPaperworkBreakdownForm = this.formBuilder.group({
       paperworkDate: ["", [Validators.required]],
       merchantSale:["", [Validators.required]],
-      salesTax:["",[]],
+      salesTax:["",[Validators.required]],
       insideSales:["",[Validators.required]],
       totalSalesRecord:["",[Validators.required]],
       creditCard:["",[]],
@@ -88,14 +86,16 @@ export class PaperworksAddComponent implements OnInit {
       cashOverShort: ["",[]],
       notes: ["",[]],
       items: this.formBuilder.array([]),
+      checkItems: this.formBuilder.array([]),
     })
-    this.addPaperworkBreakdownForm.get("salesTax").disable();
     this.addPaperworkBreakdownForm.get("totalSalesRecord").disable();
     this.addPaperworkBreakdownForm.get("totalInsideSalesBreakdown").disable();
     this.addPaperworkBreakdownForm.get("totalCashPurchase").disable();
     this.addPaperworkBreakdownForm.get("totalInsideSales").disable();
     this.addPaperworkBreakdownForm.get("cashOverShort").disable();
     this.addItems();
+    // this.addCheckItems();
+    this.loadAllSuppliers();
   }
 
   //Add new breakdown
@@ -115,6 +115,7 @@ export class PaperworksAddComponent implements OnInit {
         }
         this.loading = false;
         this.toastr.success("Data has been saved sucessfully!", "Success",{ timeOut: 5000 });
+        this.paperworkBreakdown = data;
       },
       (error) => {
         this.loading = false;
@@ -196,8 +197,13 @@ export class PaperworksAddComponent implements OnInit {
       this.paperworkBreakdown.insideSales = null;
       this.paperworkBreakdown.salesTax = null;
       return;
+    } if (this.paperworkBreakdown.salesTax > this.paperworkBreakdown.merchantSale) {
+      this.toastr.warning("Sales tax can't be more than merchant sales!","Warning",{ timeOut: 3000 });
+      this.paperworkBreakdown.insideSales = null;
+      this.paperworkBreakdown.salesTax = null;
+      return;
     }else{
-      this.paperworkBreakdown.salesTax = this.paperworkBreakdown.merchantSale - this.paperworkBreakdown.insideSales;
+      //this.paperworkBreakdown.salesTax = this.paperworkBreakdown.merchantSale - this.paperworkBreakdown.insideSales;
       this.paperworkBreakdown.totalSalesRecord = this.paperworkBreakdown.insideSales + this.paperworkBreakdown.salesTax;
     }
   }
@@ -292,7 +298,10 @@ export class PaperworksAddComponent implements OnInit {
       this.clearItems();
       if(!this.paperworkBreakdown.id){
          this.addItems();
-      }else this.isAdd = false;
+         this.isAdd = true;
+      }else {
+        this.isAdd = false;
+      }
       if(this.paperworkBreakdown?.cashPurchaseList?.length > 0){
         this.pushCashPurchaseListToItems();
       }
@@ -322,6 +331,14 @@ export class PaperworksAddComponent implements OnInit {
     });
   }
 
+  createCheckItem(item): FormGroup {
+    return this.formBuilder.group({
+      id: [item?.id],
+      supplierId: [item?.supplierId],
+      checkPurchaseAmount: [item?.checkPurchaseAmount]
+    });
+  }
+
   customDates(args: any): void {
     if (args.date.getDay() === 0 || args.date.getDay() === 6 ) {
         // To highlight the week end of every month
@@ -334,6 +351,10 @@ export class PaperworksAddComponent implements OnInit {
 
   get items(){
     return this.addPaperworkBreakdownForm.get('items') as FormArray;
+  }
+
+  get checkItems(){
+    return this.addPaperworkBreakdownForm.get('checkItems') as FormArray;
   }
 
   deleteItem(index: number){
@@ -350,6 +371,24 @@ export class PaperworksAddComponent implements OnInit {
         cashPurchaseAmount: [''],
       })
     )
+  }
+
+  addCheckItems(){
+    this.checkItems.push(
+      this.formBuilder.group({
+        id: [''],
+        supplierId: [''],
+        checkPurchaseAmount: [''],
+      })
+    )
+  }
+
+  loadAllSuppliers() {
+    this.allModulesService.get("/v1/supplier-details/all").subscribe((response: any) => {
+      this.suppliers = response?.data;
+    }, (error) => {
+      this.toastr.error(error.error.message);
+    });
   }
 
   formatAmountCurrency() {

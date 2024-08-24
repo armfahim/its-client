@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { PaperworksComponent } from './paperworks.component';
 import { PaperworksListComponent } from './paperworks-list/paperworks-list.component';
 import { PaperworksAddComponent } from './paperworks-add/paperworks-add.component';
+import { PaperworksViewComponent } from './paperworks-view/paperworks-view.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,14 @@ const routes: Routes = [
       {
         path:"add-paperwork/:id",
         component:PaperworksAddComponent
+      },
+      {
+        path: 'view-paperwork',
+        component: PaperworksViewComponent
+      },
+      {
+        path: 'view-paperwork/:id',
+        component: PaperworksViewComponent
       },
       // {
       //   path: 'view-invoice/:id',

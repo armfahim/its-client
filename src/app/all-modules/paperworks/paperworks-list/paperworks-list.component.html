@@ -102,7 +102,7 @@
                                         <a class="btn btn-sm btn-info" routerLink="/paperworks/add-paperwork/{{paperwork.id}}" title="Daily Input">
                                             <i style="color: #fff;" class="fa fa-plus-square-o"></i>
                                         </a>&nbsp;
-                                        <a class="btn btn-sm btn-info" title="View">
+                                        <a class="btn btn-sm btn-info" routerLink="/paperworks/view-paperwork/{{paperwork.id}}" title="View">
                                             <i style="color: #fff;" class="fa fa-eye m-r-5"></i>
                                         </a>&nbsp;
                                         <a class="btn btn-sm btn-info" title="Report">
@@ -152,6 +152,7 @@
                                     [virtualScroll]="true"
                                     class="custom-ng-select"
                                     formControlName="month"
+                                    [class.invalid]="newPaperworkFileForm.get('month').invalid && newPaperworkFileForm.get('month').touched"
                                     [(ngModel)]="selectedMonth">
                                  </ng-select>
                                 <div *ngIf="newPaperworkFileForm.get('month').invalid && newPaperworkFileForm.get('month').touched">

@@ -105,8 +105,8 @@ export class PaperworksListComponent implements OnInit,OnDestroy {
     //Search form
     this.searchForm = this.formBuilder.group({
       paperworkTitle:["",[]],
-      searchMonth:["",[]],
-      searchYear:["",[]],
+      searchMonth:["",[Validators.required]],
+      searchYear:["",[Validators.required]],
       searchPaperworkTitle:["",[]]
     })
 
@@ -128,6 +128,14 @@ export class PaperworksListComponent implements OnInit,OnDestroy {
   }
 
   onNewPaperworkFile(){
+    if(this.selectedMonth == null) {
+      this.toastr.warning("Please Select a Month", "Warning");
+      return;
+    }
+    if(this.selectedYear == null) {
+      this.toastr.warning("Please Select a Year", "Warning");
+      return;
+    }
     this.loading = true;
 
     let newPaperWorkFile = {

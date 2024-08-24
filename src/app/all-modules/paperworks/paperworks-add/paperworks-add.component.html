@@ -1,6 +1,6 @@
 <!-- Page Content -->
 <div class="content container-fluid">
-    <!-- <ng-http-loader></ng-http-loader> -->
+    <ng-http-loader></ng-http-loader>
     <!-- Page Header -->
     <div class="page-header">
         <div class="row align-items-center">
@@ -166,8 +166,7 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="col-form-label">Sales Tax </label>
-                                        <small class="text-info"> (Merchant Sales - Inside Sales )</small>
+                                        <label class="col-form-label">Sales Tax <span class="text-danger">*</span> </label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">$</span>
@@ -177,12 +176,17 @@
                                                 type="number"
                                                 min="0"
                                                 [(ngModel)]="paperworkBreakdown.salesTax"
-                                                (input)="formatAmountCurrency()"
+                                                (ngModelChange)="calculateSalesRecordAmt()"
+                                                [class.invalid]="addPaperworkBreakdownForm.get('salesTax').invalid && addPaperworkBreakdownForm.get('salesTax').touched"
                                                 formControlName="salesTax"/>
                                             <div class="input-group-append">
                                                 <span class="input-group-text">.00</span>
                                             </div>
                                         </div>
+                                        <div *ngIf="addPaperworkBreakdownForm.get('salesTax').invalid && addPaperworkBreakdownForm.get('salesTax').touched">
+                                            <small *ngIf="addPaperworkBreakdownForm.get('salesTax').invalid && addPaperworkBreakdownForm.get('salesTax').touched" class="text-danger"> *Sales Tax is required</small>
+                                        </div>
+                                       
                                     </div>
                                 </div>
 
@@ -506,6 +510,86 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- <div class="card">
+                    <div class="card-header" style="background-color: rgb(20% 27% 30%);">
+                        <h4 class="card-title">
+                            <a class="collapsed" data-toggle="collapse" href="#collapseThree" style="color: white;">Check Purchase</a>
+                        </h4>
+                    </div>
+                    <div id="collapseThree" class="card-collapse collapse show">
+                        <div class="card-body">
+                            <div class="row">
+                                <div  class="col-md-12" formArrayName="checkItems">
+                                    <div class="form-group" *ngFor="let item of checkItems.controls; let i = index" [formGroupName]="i"
+                                    style="display: flex; gap:10px; margin-bottom: 10px;">
+                                        <div class="row row-sm">
+                                            <button (click)="addCheckItems()" class="btn btn-primary btn-block" type="button"><i
+                                                class="fa fa-plus"></i></button>
+                                        </div>
+                                        <ng-select
+                                            [items]="suppliers"
+                                            bindLabel="supplierName"
+                                            placeholder="--Select--"
+                                            bindValue="id"
+                                            [searchable]="true"
+                                            [clearable]="true"
+                                            [virtualScroll]="true"
+                                            class="custom-ng-select col-md-4"
+                                            formControlName="supplierId">
+                                        </ng-select>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">$</span>
+                                                </div>
+                                                <input
+                                                    class="form-control"
+                                                    type="number"
+                                                    placeholder="Amount"
+                                                    min="0"
+                                                    (ngModelChange)="calculateCashPurchase()"
+                                                    formControlName="checkPurchaseAmount"/>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">.00</span>
+                                                </div>
+                                            </div>
+                                            <div class="row row-sm">
+                                                <button *ngIf="items?.length > 1" (click)="deleteItem(i)"  class="btn btn-danger btn-block set-btn" type="button"><i
+                                                class="fa fa-trash-o"></i></button>
+                                            </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group"> 
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Total</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            <input
+                                                class="form-control"
+                                                type="number"
+                                                [(ngModel)]="paperworkBreakdown.totalCashPurchase"
+                                                placeholder="Total"
+                                                min="0"
+                                                (ngModelChange)="calculateTotalInsideSales()"
+                                                formControlName="totalCashPurchase"/>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
 
                 <div class="card">
                     <div class="card-header" style="background-color: rgb(20% 27% 30%);">

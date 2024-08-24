@@ -25,9 +25,9 @@
                     </li>
                     <li [ngClass]="{ 'active' : urlComplete.subUrl === 'clientspage' || urlComplete.subUrl === 'supplierslist' }">
                         <a routerLink="/suppliers/supplierslist" ><i
-                                class="la la-users"></i> <span>Suppliers</span></a>
+                                class="la la-users"></i> <span>Vendors</span></a>
                     </li>
-                    <li [ngClass]="{ 'active' : urlComplete.subUrl === 'clientspage' || urlComplete.subUrl === 'invoicelist' }">
+                    <li [ngClass]="{ 'active' : urlComplete.subUrl === 'view-invoice' || urlComplete.subUrl === 'invoicelist' }">
                       <a routerLink="/invoice/invoicelist">
                         <i class="la la-files-o"></i> <span>Invoices</span></a>
                     </li>

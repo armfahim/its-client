@@ -1,0 +1,58 @@
+.content {
+	padding: 30px;
+}
+
+.text-danger {
+	color: #8a0404; /* Vibrant red color */
+	font-weight: bold; /* Bold font weight */
+}
+/*  */
+.line-color {
+	border-right: 2px solid #33454d;
+}
+.table {
+	background-color: #fff;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .table thead th {
+	background-color: #343a40;
+	color: #fff;
+	border-bottom: 2px solid #dee2e6;
+  }
+  .table tbody tr:hover {
+	background-color: #f8f9fa;
+  }
+  .table tbody tr.expanded {
+	background-color: #e9ecef;
+  }
+  /* .line-color {
+	border-right: 2px solid #dee2e6;
+  } */
+  .line-color {
+	border-right: 4px solid #dee2e6; /* Increase thickness and use a more vivid color */
+	box-shadow: inset -1px 0 0 0 #dee2e6; /* Add an inset shadow for a 3D effect */
+	background: linear-gradient(to right, #e9ecef, #f8f9fa); /* Add a subtle gradient background */
+	transition: background-color 0.3s ease, border-right-color 0.3s ease; /* Smooth transition for interactive effects */
+  }
+  
+  .table tbody tr:hover .line-color {
+	border-right-color: #dee2e6; /* Change color on hover */
+	background: linear-gradient(to right, #f8f9fa, #e9ecef); /* Reverse gradient on hover */
+  }
+  .text-danger {
+	color: #dc3545 !important;
+  }
+  .btn-sort {
+	color: #fff;
+	background: none;
+	border: none;
+  }
+  .btn-sort:hover {
+	color: #ccc;
+  }
+  .icon-up::before {
+	content: '\f0d8';
+  }
+  .icon-down::before {
+	content: '\f0d7';
+  }

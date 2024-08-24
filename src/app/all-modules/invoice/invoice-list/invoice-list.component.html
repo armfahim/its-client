@@ -90,7 +90,7 @@
                   <thead>
                       <tr>
                           <th (click)="onTableHeaderClick(0, 'invoiceNumber')">Invoice Number</th>
-                          <th (click)="onTableHeaderClick(0, 'supplierDetails')">Company Name</th>
+                          <th (click)="onTableHeaderClick(0, 'supplierDetails')">Vendor Name</th>
                           <th (click)="onTableHeaderClick(1, 'invoiceDate')">Invoice Date</th>
                           <th (click)="onTableHeaderClick(3, 'term')">Term</th>
                           <th (click)="onTableHeaderClick(4, 'paymentDueDate')">Payment Due Date</th>
@@ -157,7 +157,7 @@
                   <div class="row">
                       <div class="col-md-6">
                           <div class="form-group">
-                              <label class="col-form-label">Company Name <span class="text-danger">*</span> </label>
+                              <label class="col-form-label">Vendor Name <span class="text-danger">*</span> </label>
                               <ng-select
                                   [items]="suppliers"
                                   bindLabel="supplierName"
@@ -393,7 +393,7 @@
                   <div class="row">
                       <div class="col-md-6">
                           <div class="form-group">
-                              <label class="col-form-label">Company Name <span class="text-danger">*</span> </label>
+                              <label class="col-form-label">Vendor Name <span class="text-danger">*</span> </label>
                               <ng-select
                                   [items]="suppliers"
                                   bindLabel="supplierName"
@@ -621,7 +621,7 @@
       <div class="modal-content">
           <div class="modal-body">
               <div class="form-header">
-                  <h3>Delete Supplier</h3>
+                  <h3>Delete Invoice</h3>
                   <p>Are you sure want to delete?</p>
               </div>
               <div class="modal-btn delete-action">

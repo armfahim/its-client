@@ -11,10 +11,11 @@ import { BsDatepickerModule } from 'ngx-bootstrap';
 import { NgHttpLoaderModule } from 'ng-http-loader';
 import { DataTablesModule } from 'angular-datatables';
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
+import { PaperworksViewComponent } from './paperworks-view/paperworks-view.component';
 
 
 @NgModule({
-  declarations: [PaperworksComponent, PaperworksListComponent, PaperworksAddComponent],
+  declarations: [PaperworksComponent, PaperworksListComponent, PaperworksAddComponent, PaperworksViewComponent],
   imports: [
     CommonModule,
     PaperworksRoutingModule,
