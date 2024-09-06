@@ -91,6 +91,7 @@ export class PaperworksAddComponent implements OnInit {
     this.addPaperworkBreakdownForm.get("totalSalesRecord").disable();
     this.addPaperworkBreakdownForm.get("totalInsideSalesBreakdown").disable();
     this.addPaperworkBreakdownForm.get("totalCashPurchase").disable();
+    this.addPaperworkBreakdownForm.get("insideSales").disable();
     this.addPaperworkBreakdownForm.get("totalInsideSales").disable();
     this.addPaperworkBreakdownForm.get("cashOverShort").disable();
     this.addItems();
@@ -192,35 +193,41 @@ export class PaperworksAddComponent implements OnInit {
   
 
   calculateSalesRecordAmt(){
-    if (this.paperworkBreakdown.insideSales > this.paperworkBreakdown.merchantSale) {
-      this.toastr.warning("Insides sales can't be more than merchant sales!","Warning",{ timeOut: 3000 });
-      this.paperworkBreakdown.insideSales = null;
-      this.paperworkBreakdown.salesTax = null;
-      return;
-    } if (this.paperworkBreakdown.salesTax > this.paperworkBreakdown.merchantSale) {
+    // if (this.paperworkBreakdown.insideSales > this.paperworkBreakdown.merchantSale) {
+    //   this.toastr.warning("Insides sales can't be more than merchant sales!","Warning",{ timeOut: 3000 });
+    //   this.paperworkBreakdown.insideSales = null;
+    //   this.paperworkBreakdown.salesTax = null;
+    //   return;
+    // } 
+    if (this.paperworkBreakdown.salesTax > this.paperworkBreakdown.merchantSale) {
       this.toastr.warning("Sales tax can't be more than merchant sales!","Warning",{ timeOut: 3000 });
       this.paperworkBreakdown.insideSales = null;
+      this.paperworkBreakdown.totalSalesRecord = null;
       this.paperworkBreakdown.salesTax = null;
       return;
     }else{
-      //this.paperworkBreakdown.salesTax = this.paperworkBreakdown.merchantSale - this.paperworkBreakdown.insideSales;
-      this.paperworkBreakdown.totalSalesRecord = this.paperworkBreakdown.insideSales + this.paperworkBreakdown.salesTax;
+      this.paperworkBreakdown.insideSales = (this.paperworkBreakdown.merchantSale - this.paperworkBreakdown.salesTax).toFixed(2);
+      // this.paperworkBreakdown.totalSalesRecord = this.paperworkBreakdown.insideSales + this.paperworkBreakdown.salesTax;
+      this.paperworkBreakdown.totalSalesRecord = (this.paperworkBreakdown.merchantSale || 0).toFixed(2);
     }
   }
 
   calculateTotalCreditDebit(){
     this.paperworkBreakdown.totalCreditDebitCard = (this.paperworkBreakdown.creditCard ? this.paperworkBreakdown.creditCard : 0) 
-                                                   + (this.paperworkBreakdown.debitCard ? this.paperworkBreakdown.debitCard : 0) 
+                                                   + (this.paperworkBreakdown.debitCard ? this.paperworkBreakdown.debitCard : 0) ;
+  
+    this.paperworkBreakdown.totalCreditDebitCard = (this.paperworkBreakdown.totalCreditDebitCard || 0).toFixed(2);
   }
 
   calculateInsideSalesBreakdown(){
-    this.paperworkBreakdown.totalInsideSalesBreakdown = (this.paperworkBreakdown.totalCreditDebitCard ? this.paperworkBreakdown.totalCreditDebitCard : 0)
-                              + (this.paperworkBreakdown.ebt ? this.paperworkBreakdown.ebt : 0)
-                              + (this.paperworkBreakdown.expense ? this.paperworkBreakdown.expense : 0)
-                              + (this.paperworkBreakdown.officeExpense ? this.paperworkBreakdown.officeExpense : 0)
-                              + (this.paperworkBreakdown.trustFund ? this.paperworkBreakdown.trustFund : 0)
-                              + (this.paperworkBreakdown.houseAc ? this.paperworkBreakdown.houseAc :0 )
-                              + (this.paperworkBreakdown.storeDeposit ? this.paperworkBreakdown.storeDeposit : 0);
+    this.paperworkBreakdown.totalInsideSalesBreakdown = 
+    (+this.paperworkBreakdown.totalCreditDebitCard || 0) +
+    (+this.paperworkBreakdown.ebt || 0) +
+    (+this.paperworkBreakdown.expense || 0) +
+    (+this.paperworkBreakdown.officeExpense || 0) +
+    (+this.paperworkBreakdown.trustFund || 0) +
+    (+this.paperworkBreakdown.houseAc || 0) +
+    (+this.paperworkBreakdown.storeDeposit || 0);
   }
 
   calculateCashPurchase(){
@@ -228,11 +235,16 @@ export class PaperworksAddComponent implements OnInit {
   }
 
   calculateTotalInsideSales(){
-    this.paperworkBreakdown.totalInsideSales = this.paperworkBreakdown.totalInsideSalesBreakdown + this.paperworkBreakdown.totalCashPurchase;
+    if(this.paperworkBreakdown.totalCashPurchase == null){
+      this.paperworkBreakdown.totalInsideSales = this.paperworkBreakdown.totalInsideSalesBreakdown
+    }else{
+      this.paperworkBreakdown.totalInsideSales = this.paperworkBreakdown.totalInsideSalesBreakdown + this.paperworkBreakdown.totalCashPurchase;
+    }
   }
 
   calculateOverShort(){
-    this.paperworkBreakdown.cashOverShort = this.paperworkBreakdown.totalInsideSales - this.paperworkBreakdown.totalSalesRecord;
+    this.paperworkBreakdown.cashOverShort = (this.paperworkBreakdown.totalInsideSales - this.paperworkBreakdown.totalSalesRecord);
+    this.paperworkBreakdown.cashOverShort = (this.paperworkBreakdown.cashOverShort || 0).toFixed(2);
     if(this.paperworkBreakdown.totalSalesRecord > this.paperworkBreakdown.totalInsideSales) {
       this.isShort = true;
     }else{

@@ -24,10 +24,15 @@
                 </div>
             </div> -->
             <div class="col-auto float-right ml-auto">
-              <a class="btn add-btn" routerLink="/paperworks/paperwork-list">
-                  <i class="fa fa-share"></i>Back To List
-              </a>
-            </div>
+                <a class="btn add-btn" routerLink="/paperworks/view-paperwork/{{paperworkId}}">
+                    <i class="fa fa-eye"></i>View Data
+                </a>
+              </div>
+            <div class="col-auto float-right ml-auto">
+                <a class="btn add-btn" routerLink="/paperworks/paperwork-list">
+                    <i class="fa fa-share"></i>Back To List
+                </a>
+              </div>
         </div>
     </div>
     <!-- Page Header -->
@@ -121,7 +126,6 @@
                                                 type="number"
                                                 min="0"
                                                 [(ngModel)]="paperworkBreakdown.merchantSale"
-                                                (ngModelChange)="calculateSalesRecordAmt()"
                                                 (input)="formatAmountCurrency()"
                                                 [class.invalid]="addPaperworkBreakdownForm.get('merchantSale').invalid && addPaperworkBreakdownForm.get('merchantSale').touched"
                                                 formControlName="merchantSale"/>
@@ -131,35 +135,6 @@
                                         </div>
                                         <div *ngIf="addPaperworkBreakdownForm.get('merchantSale').invalid && addPaperworkBreakdownForm.get('merchantSale').touched">
                                             <small *ngIf="addPaperworkBreakdownForm.get('merchantSale').invalid && addPaperworkBreakdownForm.get('merchantSale').touched" class="text-danger"> *Merchant sales is required</small>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label class="col-form-label">Inside Sales<span class="text-danger">*</span> </label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">$</span>
-                                            </div>
-                                            <input
-                                                class="form-control"
-                                                type="number"
-                                                min="0"
-                                                [(ngModel)]="paperworkBreakdown.insideSales"
-                                                (input)="formatAmountCurrency()"
-                                                (ngModelChange)="calculateSalesRecordAmt()"
-                                                [class.invalid]="addPaperworkBreakdownForm.get('insideSales').invalid && addPaperworkBreakdownForm.get('insideSales').touched"
-                                                formControlName="insideSales"/>
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">.00</span>
-                                            </div>
-                                        </div>
-                                        <div *ngIf="addPaperworkBreakdownForm.get('insideSales').invalid && addPaperworkBreakdownForm.get('insideSales').touched">
-                                            <small *ngIf="addPaperworkBreakdownForm.get('insideSales').invalid && addPaperworkBreakdownForm.get('insideSales').touched" class="text-danger"> *Inside sales is required</small>
-                                        </div>
-                                        <div *ngIf="paperworkBreakdown.insideSales > paperworkBreakdown.merchantSale">
-                                            <small *ngIf="creditAmount > invoiceAmount" class="text-danger"> *Inside sales can't be greater than merchant sales</small>
                                         </div>
                                     </div>
                                 </div>
@@ -187,6 +162,35 @@
                                             <small *ngIf="addPaperworkBreakdownForm.get('salesTax').invalid && addPaperworkBreakdownForm.get('salesTax').touched" class="text-danger"> *Sales Tax is required</small>
                                         </div>
                                        
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Inside Sales<span class="text-danger">*</span> </label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            <input
+                                                class="form-control"
+                                                type="number"
+                                                min="0"
+                                                [(ngModel)]="paperworkBreakdown.insideSales"
+                                                (input)="formatAmountCurrency()"
+                                                (ngModelChange)="calculateSalesRecordAmt()"
+                                                [class.invalid]="addPaperworkBreakdownForm.get('insideSales').invalid && addPaperworkBreakdownForm.get('insideSales').touched"
+                                                formControlName="insideSales"/>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="addPaperworkBreakdownForm.get('insideSales').invalid && addPaperworkBreakdownForm.get('insideSales').touched">
+                                            <small *ngIf="addPaperworkBreakdownForm.get('insideSales').invalid && addPaperworkBreakdownForm.get('insideSales').touched" class="text-danger"> *Inside sales is required</small>
+                                        </div>
+                                        <div *ngIf="paperworkBreakdown.insideSales > paperworkBreakdown.merchantSale">
+                                            <small *ngIf="creditAmount > invoiceAmount" class="text-danger"> *Inside sales can't be greater than merchant sales</small>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -658,6 +662,7 @@
                                                 type="number"
                                                 [(ngModel)]="paperworkBreakdown.cashOverShort"
                                                 min="0"
+                                                step="0.01"
                                                 (input)="formatAmountCurrency()"
                                                 formControlName="cashOverShort"/>
                                             <div class="input-group-append">
