@@ -178,10 +178,10 @@ export class PaperworksListComponent implements OnInit,OnDestroy {
       this.toastr.info('Please select an item');
       return;
     }
-    this.format = 'PDF';
+    this.format = 'XLSX';
     const reqObj: any = {
-      paperworkId: value ? value : null,
-      // format: this.dataParam.format
+      id: value ? value : null,
+      reportFormat: this.format
     };
 
     this.paperworksService.report(reqObj).subscribe(
