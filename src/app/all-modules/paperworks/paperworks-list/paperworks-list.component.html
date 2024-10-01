@@ -105,7 +105,7 @@
                                         <a class="btn btn-sm btn-info" routerLink="/paperworks/view-paperwork/{{paperwork.id}}" title="View">
                                             <i style="color: #fff;" class="fa fa-eye m-r-5"></i>
                                         </a>&nbsp;
-                                        <a class="btn btn-sm btn-info" title="Report">
+                                        <a class="btn btn-sm btn-info" (click)="onPrint(paperwork.id)" title="Report">
                                             <i style="color: #fff;" class="fa fa-file-pdf-o"></i>
                                         </a>&nbsp;
                                         <a class="btn btn-sm btn-info" title="Edit Paperwork Title">
