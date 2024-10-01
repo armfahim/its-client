@@ -105,13 +105,14 @@
                                         <a class="btn btn-sm btn-info" routerLink="/paperworks/view-paperwork/{{paperwork.id}}" title="View">
                                             <i style="color: #fff;" class="fa fa-eye m-r-5"></i>
                                         </a>&nbsp;
-                                        <a class="btn btn-sm btn-info" (click)="onPrint(paperwork.id)" title="Report">
+                                        <a class="btn btn-sm btn-info"  data-toggle="modal" data-target="#paperwork_report"
+                                         (click)="tempId = paperwork.id" title="Report">
                                             <i style="color: #fff;" class="fa fa-file-pdf-o"></i>
                                         </a>&nbsp;
                                         <a class="btn btn-sm btn-info" title="Edit Paperwork Title">
                                             <i style="color: #fff;" class="fa fa-pencil m-r-5"></i>
                                         </a>&nbsp;
-                                        <a class="btn btn-sm btn-info" title="Delete" (click)="tempId = paperwork.id"> 
+                                        <a class="btn btn-sm btn-info" title="Delete"> 
                                             <i style="color: #fff;" class="fa fa-trash-o m-r-5"></i> Delete 
                                         </a>&nbsp;
                                         <!-- <a class="dropdown-item" data-toggle="modal" data-target="#edit_invoice" (click)="onInvoice(invoice.id)"> <i class="fa fa-pencil m-r-5"></i> Edit </a>
@@ -195,27 +196,27 @@
   <!-- /Add Invoice Modal -->
 
   <!-- Delete Invoice Modal -->
-  <!-- <div class="modal custom-modal fade" id="delete_invoice" role="dialog">
+  <div class="modal custom-modal fade" id="paperwork_report" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
-                <div class="form-header">
-                    <h3>Delete Supplier</h3>
+                <!-- <div class="form-header">
+                    <h3>Supplier</h3>
                     <p>Are you sure want to delete?</p>
-                </div>
+                </div> -->
                 <div class="modal-btn delete-action">
                     <div class="row">
                         <div class="col-6">
-                            <a class="btn btn-primary continue-btn" (click)="onDelete()">Delete</a>
+                            <a class="btn btn-primary continue-btn" (click)="onPrint('1')">PDF</a>
                         </div>
                         <div class="col-6">
-                            <a data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                            <a data-dismiss="modal" class="btn btn-primary cancel-btn" (click)="onPrint('2')">EXCEL</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-  </div> -->
+  </div>
   <!-- /Delete Invoice Modal -->
   

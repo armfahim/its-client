@@ -31,6 +31,7 @@ export class PaperworksListComponent implements OnInit,OnDestroy {
   selectedMonth: string;
   loading = false;
   public paperworksData: any;
+  public tempId: any;
 
   //Search Form
   public searchForm: FormGroup;
@@ -173,14 +174,19 @@ export class PaperworksListComponent implements OnInit,OnDestroy {
   }
 
   public onPrint(value:any) {
+    if(value == 1){
+      this.format = 'PDF';
+    }else if(value == 2){
+      this.format = 'XLSX';
+    }
 
-    if (!value) {
+    if (!this.tempId) {
       this.toastr.info('Please select an item');
       return;
     }
-    this.format = 'XLSX';
+    // this.format = 'XLSX';
     const reqObj: any = {
-      id: value ? value : null,
+      id: this.tempId ? this.tempId : null,
       reportFormat: this.format
     };
 
@@ -199,6 +205,7 @@ export class PaperworksListComponent implements OnInit,OnDestroy {
         console.log(error);
       }
     );
+    $("#paperwork_report").modal("hide");
   }
 
   getYearsList() {
