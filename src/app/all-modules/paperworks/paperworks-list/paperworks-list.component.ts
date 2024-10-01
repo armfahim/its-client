@@ -37,6 +37,8 @@ export class PaperworksListComponent implements OnInit,OnDestroy {
   searchSelectedMonth:any;
   searchSelectedYear:any;
   searchFormData : any;
+  
+  format:any;
 
   // Properties for dynamic column sorting
   orderColumnIndex: number = 0;
@@ -170,6 +172,35 @@ export class PaperworksListComponent implements OnInit,OnDestroy {
       });
   }
 
+  public onPrint(value:any) {
+
+    if (!value) {
+      this.toastr.info('Please select an item');
+      return;
+    }
+    this.format = 'XLSX';
+    const reqObj: any = {
+      id: value ? value : null,
+      reportFormat: this.format
+    };
+
+    this.paperworksService.report(reqObj).subscribe(
+      (res: any) => {
+        const file = new Blob([res], { type: this.printFormat(this.format) });
+        const fileURL = URL.createObjectURL(file);
+        
+        if (this.format == 'PDF') {
+          window.open(fileURL, "", "width=1100,height=950, left=500");
+        } else {
+          window.open(fileURL);
+        }
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    );
+  }
+
   getYearsList() {
     const currentYear = (new Date()).getFullYear();
     const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
@@ -208,6 +239,18 @@ export class PaperworksListComponent implements OnInit,OnDestroy {
     // Do not forget to unsubscribe the event
     this.dtTrigger.unsubscribe();
   }
+
+  
+	printFormat(formatKey: string) {
+		let reportFormatMap = new Map();
+		reportFormatMap.set('JPG', 'image/jpg');
+		reportFormatMap.set('PNG', 'image/png');
+		reportFormatMap.set('JPEG', 'image/jpeg');
+		reportFormatMap.set('PDF', 'application/pdf');
+		reportFormatMap.set('XLSX', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		reportFormatMap.set('DOCX', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+		return reportFormatMap.get(formatKey.toUpperCase());
+	}
 
 
 }

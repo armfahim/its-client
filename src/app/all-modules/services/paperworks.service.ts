@@ -10,6 +10,8 @@ export class PaperworksService {
 
   public baseUrl = environment.baseUrl;
 
+  private PAPERWORK_REPORT = `${this.baseUrl}/${`v1/report`}/${`paperwork-report`}`;
+
   public paperworkSource: Subject<any> = new BehaviorSubject<any>(null);
   currentPaperwork = this.paperworkSource.asObservable();
 
@@ -39,4 +41,10 @@ export class PaperworksService {
     console.log(url);
     return this.http.get(url);
   }
+
+  public report(reqObj: any): Observable<any> {
+    const httpOptions = { 'responseType': 'arraybuffer' as 'json' };
+    return this.http.post<any>(this.PAPERWORK_REPORT, reqObj, httpOptions);
+  }
+
 }
