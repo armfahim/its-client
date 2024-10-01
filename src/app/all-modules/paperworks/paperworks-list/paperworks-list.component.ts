@@ -6,6 +6,7 @@ import { AllModulesService } from '../../all-modules.service';
 import { ToastrService } from 'ngx-toastr';
 import { PaperworksService } from '../../services/paperworks.service';
 import { Router } from '@angular/router';
+import { RecordStatus } from 'src/app/utils/enums.enum';
 
 
 declare const $: any;
@@ -206,6 +207,7 @@ export class PaperworksListComponent implements OnInit,OnDestroy {
       }
     );
     $("#paperwork_report").modal("hide");
+    this.tempId = null;
   }
 
   getYearsList() {
@@ -245,6 +247,33 @@ export class PaperworksListComponent implements OnInit,OnDestroy {
   ngOnDestroy(): void {
     // Do not forget to unsubscribe the event
     this.dtTrigger.unsubscribe();
+  }
+
+   //Delete Client
+   onDelete() {
+    let updateStatusDto = {
+      status: RecordStatus.Deleted,
+      id: this.tempId,
+    };
+
+    this.allModulesService.delete(this.tempId, "/v1/paperwork/delete").subscribe((data) => {
+      $("#delete_paperwork").modal("hide");
+      this.toastr.success("Deleted sucessfully...!", "Success");
+
+      $("#datatable").DataTable().clear();
+      this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+        dtInstance.destroy();
+      });
+      this.dtTrigger.next();
+    },
+      (error) => {
+        console.error("API Error:", error);
+        // Extract error message from the API response
+        const customErrorMessage = error && error.error && error.error.errors ? error.error.errors.toString(): "Unknown error";
+        this.toastr.error(customErrorMessage, "Error",{ timeOut: 5000 });
+        return;
+      });
+      this.tempId = null;
   }
 
   

@@ -99,21 +99,22 @@
                                         <i class="material-icons">more_vert</i>
                                     </a> -->
                                     <div>
-                                        <a class="btn btn-sm btn-info" routerLink="/paperworks/add-paperwork/{{paperwork.id}}" title="Daily Input">
+                                        <a class="btn btn-sm btn-info" routerLink="/paperworks/add-paperwork/{{paperwork.id}}" title="DAILY INPUT">
                                             <i style="color: #fff;" class="fa fa-plus-square-o"></i>
                                         </a>&nbsp;
-                                        <a class="btn btn-sm btn-info" routerLink="/paperworks/view-paperwork/{{paperwork.id}}" title="View">
+                                        <a class="btn btn-sm btn-info" routerLink="/paperworks/view-paperwork/{{paperwork.id}}" title="VIEW">
                                             <i style="color: #fff;" class="fa fa-eye m-r-5"></i>
                                         </a>&nbsp;
                                         <a class="btn btn-sm btn-info"  data-toggle="modal" data-target="#paperwork_report"
-                                         (click)="tempId = paperwork.id" title="Report">
+                                         (click)="tempId = paperwork.id" title="PDF/EXCEL">
                                             <i style="color: #fff;" class="fa fa-file-pdf-o"></i>
                                         </a>&nbsp;
-                                        <a class="btn btn-sm btn-info" title="Edit Paperwork Title">
+                                        <!-- <a class="btn btn-sm btn-info" title="Edit Paperwork Title">
                                             <i style="color: #fff;" class="fa fa-pencil m-r-5"></i>
-                                        </a>&nbsp;
-                                        <a class="btn btn-sm btn-info" title="Delete"> 
-                                            <i style="color: #fff;" class="fa fa-trash-o m-r-5"></i> Delete 
+                                        </a>&nbsp; -->
+                                        <a class="btn btn-sm btn-info" data-toggle="modal" data-target="#delete_paperwork"
+                                        (click)="tempId = paperwork.id" title="DELETE"> 
+                                            <i style="color: #fff;" class="fa fa-trash-o m-r-5"></i> 
                                         </a>&nbsp;
                                         <!-- <a class="dropdown-item" data-toggle="modal" data-target="#edit_invoice" (click)="onInvoice(invoice.id)"> <i class="fa fa-pencil m-r-5"></i> Edit </a>
                                         <a class="dropdown-item" routerLink="/invoice/view-invoice/{{invoice.id}}"> <i class="fa fa-eye m-r-5"></i> View </a>-->
@@ -195,7 +196,7 @@
   </div>
   <!-- /Add Invoice Modal -->
 
-  <!-- Delete Invoice Modal -->
+  <!-- Report Print Modal -->
   <div class="modal custom-modal fade" id="paperwork_report" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -218,5 +219,32 @@
         </div>
     </div>
   </div>
-  <!-- /Delete Invoice Modal -->
+  <!-- /Report Print Modal -->
+
+   <!-- Delete Paperwork Modal -->
+   <div class="modal custom-modal fade" id="delete_paperwork" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete Paperwork</h3>
+                    <p>Are you sure want to delete?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a  class="btn btn-primary continue-btn"
+                                (click)="onDelete()">Delete</a>
+                        </div>
+                        <div class="col-6">
+                            <a  data-dismiss="modal"
+                                class="btn btn-primary cancel-btn">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- /Delete Paperwork Modal -->
   
