@@ -12,11 +12,10 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
 import { DataTablesModule } from 'angular-datatables';
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
 import { PaperworksViewComponent } from './paperworks-view/paperworks-view.component';
-import { TwoDigitDecimaNumberDirective } from 'src/app/utils/two-digit-decima-number.directive';
 
 
 @NgModule({
-  declarations: [PaperworksComponent, PaperworksListComponent, PaperworksAddComponent, PaperworksViewComponent, TwoDigitDecimaNumberDirective],
+  declarations: [PaperworksComponent, PaperworksListComponent, PaperworksAddComponent, PaperworksViewComponent],
   imports: [
     CommonModule,
     PaperworksRoutingModule,

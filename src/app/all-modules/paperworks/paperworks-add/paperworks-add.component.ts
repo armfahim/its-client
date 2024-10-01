@@ -270,11 +270,17 @@ export class PaperworksAddComponent implements OnInit {
     this.dateValue = new Date(this.paperworkBreakdown.paperworkDate);
   }
 
+  previousPaperworkDate: any = null;
   onChangePaperworkDate(event: any){
-    this.paperworkBreakdown.paperworkDate = event;
-    if(this.paperworkBreakdown.paperworkDate){
-      this.pushToDateValues();
-      this.findPaperworkBreakdownByDate();
+    if (this.previousPaperworkDate !== this.paperworkBreakdown.paperworkDate) {
+      
+      var datePipe = new DatePipe('en-US');
+      this.previousPaperworkDate = datePipe.transform(this.paperworkBreakdown.paperworkDate, 'MM-dd-yyyy');
+     
+      if (this.paperworkBreakdown.paperworkDate) {
+          this.pushToDateValues();
+          this.findPaperworkBreakdownByDate();
+      }
     }
   }
 
@@ -299,7 +305,7 @@ export class PaperworksAddComponent implements OnInit {
   findPaperworkBreakdownByDate() {
     var datePipe = new DatePipe('en-US');
     // Get the formatted date string
-    const formattedDateString = datePipe.transform(this.paperworkBreakdown.paperworkDate, 'yyyy-MM-dd');
+    const formattedDateString = datePipe.transform(this.paperworkBreakdown.paperworkDate, 'MM-dd-yyyy');
     
     let request = {
       paperworksId : this.paperworkId,

@@ -49,7 +49,7 @@
                             opened="true"
                             [bsConfig]="{ 
                                 adaptivePosition: true,
-                                dateInputFormat: 'YYYY-MM-DD',
+                                dateInputFormat: 'MM-DD-YYYY',
                                 todayHighlight:true,
                                 returnFocusToInput: true,
                                 isAnimated: true,
@@ -168,6 +168,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="col-form-label">Inside Sales<span class="text-danger">*</span> </label>
+                                        <small class="text-info"> (Merchant Sale - Sales Tax )</small>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">$</span>
@@ -197,7 +198,6 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="col-form-label">Total </label>
-                                        <small class="text-info"> (Inside Sales + Sales Tax )</small>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">$</span>
