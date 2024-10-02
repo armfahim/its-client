@@ -14,4 +14,6 @@ export class Invoice {
   invoiceDesc!:string;
   isPaid:boolean;
 
+  supplierName:any;
+
 }
