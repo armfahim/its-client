@@ -116,7 +116,7 @@ export class PaperworksAddComponent implements OnInit {
         }
         this.loading = false;
         this.toastr.success("Data has been saved sucessfully!", "Success",{ timeOut: 5000 });
-        this.paperworkBreakdown = data;
+        this.paperworkBreakdown = data.data;
       },
       (error) => {
         this.loading = false;
@@ -144,6 +144,7 @@ export class PaperworksAddComponent implements OnInit {
         }
         this.loading = false;
         this.toastr.success("Data has been updated sucessfully!", "Success",{ timeOut: 5000 });
+        this.paperworkBreakdown = data.data;
       },
       (error) => {
         this.loading = false;
@@ -272,13 +273,13 @@ export class PaperworksAddComponent implements OnInit {
 
   previousPaperworkDate: any = null;
   onChangePaperworkDate(event: any){
-    if (this.previousPaperworkDate !== this.paperworkBreakdown.paperworkDate) {
-      
-      var datePipe = new DatePipe('en-US');
+    var datePipe = new DatePipe('en-US');
+    const comparableDate = datePipe.transform(this.paperworkBreakdown.paperworkDate, 'MM-dd-yyyy');
+    if (this.previousPaperworkDate != comparableDate) {
       this.previousPaperworkDate = datePipe.transform(this.paperworkBreakdown.paperworkDate, 'MM-dd-yyyy');
      
       if (this.paperworkBreakdown.paperworkDate) {
-          this.pushToDateValues();
+          // this.pushToDateValues();
           this.findPaperworkBreakdownByDate();
       }
     }

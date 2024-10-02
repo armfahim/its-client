@@ -2,7 +2,7 @@
     <ng-http-loader></ng-http-loader>
     <div class="page-header">
       <div class="row">
-        <div class="col-sm-12">
+        <div class="col">
             <h3 class="page-title">Paperwork for {{paperworkObj?.month}}, {{paperworkObj?.year}}</h3>
             <ul class="breadcrumb">
                 <li class="breadcrumb-item">
@@ -13,6 +13,16 @@
                 </li>
                 <li class="breadcrumb-item active">View</li>
             </ul>
+        </div>
+        <div class="col-auto float-right ml-auto">
+          <a class="btn add-btn" (click)="onPrint('1')">
+              <i class="fa fa-file-pdf-o"></i> PDF
+          </a>
+        </div>
+      <div class="col-auto float-right ml-auto">
+          <a class="btn add-btn" (click)="onPrint('2')">
+              <i class="fa fa-download"></i> EXCEL
+          </a>
         </div>
       </div>
     </div>
@@ -50,23 +60,23 @@
             <tbody>
               <tr *ngFor="let paperwork of paperworkBreakdown" class="table-row" onclick="toggleRow(this)">
                 <td class="text-center line-color">{{ paperwork.paperworkDate }}</td>
-                <td class="text-center">{{ paperwork.merchantSale }}</td>
-                <td class="text-center">{{ paperwork.salesTax }}</td>
-                <td class="text-center">{{ paperwork.insideSales }}</td>
-                <td class="text-center line-color">{{ paperwork.totalSalesRecord }}</td>
-                <td class="text-center">{{ paperwork.creditCard }}</td>
-                <td class="text-center">{{ paperwork.debitCard }}</td>
-                <td class="text-center">{{ paperwork.totalCreditDebitCard }}</td>
-                <td class="text-center">{{ paperwork.ebt }}</td>
-                <td class="text-center">{{ paperwork.expense }}</td>
-                <td class="text-center">{{ paperwork.officeExpense }}</td>
-                <td class="text-center">{{ paperwork.trustFund }}</td>
-                <td class="text-center">{{ paperwork.houseAc }}</td>
-                <td class="text-center">{{ paperwork.storeDeposit }}</td>
-                <td class="text-center">{{ paperwork.totalCashPurchase }}</td>
-                <td class="text-center line-color">{{ paperwork.totalInsideSales }}</td>
+                <td class="text-center">${{ paperwork.merchantSale }}</td>
+                <td class="text-center">${{ paperwork.salesTax }}</td>
+                <td class="text-center">${{ paperwork.insideSales }}</td>
+                <td class="text-center line-color">${{ paperwork.totalSalesRecord }}</td>
+                <td class="text-center">${{ paperwork.creditCard }}</td>
+                <td class="text-center">${{ paperwork.debitCard }}</td>
+                <td class="text-center">${{ paperwork.totalCreditDebitCard }}</td>
+                <td class="text-center">${{ paperwork.ebt }}</td>
+                <td class="text-center">${{ paperwork.expense }}</td>
+                <td class="text-center">${{ paperwork.officeExpense }}</td>
+                <td class="text-center">${{ paperwork.trustFund }}</td>
+                <td class="text-center">${{ paperwork.houseAc }}</td>
+                <td class="text-center">${{ paperwork.storeDeposit }}</td>
+                <td class="text-center">${{ paperwork.totalCashPurchase }}</td>
+                <td class="text-center line-color">${{ paperwork.totalInsideSales }}</td>
                 <td class="text-center text-danger" [ngClass]="{'text-danger': paperwork.cashOverShort < 0}">
-                  {{ paperwork.cashOverShort }}
+                  ${{ paperwork.cashOverShort }}
                 </td>
                 <td class="text-center">{{ paperwork.notes ? paperwork.notes : '-' }}</td>
                 <td class="text-center">
@@ -78,25 +88,25 @@
                 </td>
               </tr>
               <tr style="background-color: #e9ecef;">
-                <td class="text-center font-weight-bold line-color">Total</td>
-                <td class="text-center font-weight-bold"><strong>{{ totalMerchantSales }}</strong></td>
-                <td class="text-center font-weight-bold"><strong>{{ totalSalesTax }}</strong></td>
-                <td class="text-center font-weight-bold"><strong>{{ totalInsideSales }}</strong></td>
-                <td class="text-center font-weight-bold line-color"><strong>{{ totalSalesRecord }}</strong></td>
-                <td class="text-center font-weight-bold"><strong>{{ totalCreditCard }}</strong></td>
-                <td class="text-center font-weight-bold"><strong>{{ totalDebitCard }}</strong></td>
-                <td class="text-center font-weight-bold"><strong>{{ totalCreditDebitCard }}</strong></td>
-                <td class="text-center font-weight-bold"><strong>{{ totalEBT }}</strong></td>
-                <td class="text-center font-weight-bold"><strong>{{ totalExpense }}</strong></td>
-                <td class="text-center font-weight-bold"><strong>{{ totalOfficeExpense }}</strong></td>
-                <td class="text-center font-weight-bold"><strong>{{ totalTrustFund }}</strong></td>
-                <td class="text-center font-weight-bold"><strong>{{ totalHouseAc }}</strong></td>
-                <td class="text-center font-weight-bold"><strong>{{ totalStoreDeposit }}</strong></td>
+                <td class="text-center font-weight-bold line-color">Grand Total</td>
+                <td class="text-center font-weight-bold"><strong>${{ totalMerchantSales }}</strong></td>
+                <td class="text-center font-weight-bold"><strong>${{ totalSalesTax }}</strong></td>
+                <td class="text-center font-weight-bold"><strong>${{ totalInsideSales }}</strong></td>
+                <td class="text-center font-weight-bold line-color"><strong>${{ totalSalesRecord }}</strong></td>
+                <td class="text-center font-weight-bold"><strong>${{ totalCreditCard }}</strong></td>
+                <td class="text-center font-weight-bold"><strong>${{ totalDebitCard }}</strong></td>
+                <td class="text-center font-weight-bold"><strong>${{ totalCreditDebitCard }}</strong></td>
+                <td class="text-center font-weight-bold"><strong>${{ totalEBT }}</strong></td>
+                <td class="text-center font-weight-bold"><strong>${{ totalExpense }}</strong></td>
+                <td class="text-center font-weight-bold"><strong>${{ totalOfficeExpense }}</strong></td>
+                <td class="text-center font-weight-bold"><strong>${{ totalTrustFund }}</strong></td>
+                <td class="text-center font-weight-bold"><strong>${{ totalHouseAc }}</strong></td>
+                <td class="text-center font-weight-bold"><strong>${{ totalStoreDeposit }}</strong></td>
                 <!-- <td><strong>{{ totalInsideSalesBreakdown }}</strong></td> -->
-                <td class="text-center font-weight-bold"><strong>{{ totalCashPurchase }}</strong></td>
-                <td class="text-center font-weight-bold line-color"><strong>{{ totalInsideSalesColumn }}</strong></td>
+                <td class="text-center font-weight-bold"><strong>${{ totalCashPurchase }}</strong></td>
+                <td class="text-center font-weight-bold line-color"><strong>${{ totalInsideSalesColumn }}</strong></td>
                 <td class="text-center font-weight-bold" [ngClass]="{'text-danger': totalCashOverShort < 0}">
-                    <strong>{{ totalCashOverShort }}</strong>
+                    <strong>${{ totalCashOverShort }}</strong>
                   </td>
                 <td class="text-center font-weight-bold">-</td>
                 <td class="text-center font-weight-bold">-</td>
