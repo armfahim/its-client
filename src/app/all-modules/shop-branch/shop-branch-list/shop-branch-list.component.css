@@ -1,0 +1,9 @@
+.content {
+	padding: 30px;
+}
+.dataTables_empty {
+	display: none;
+  } 
+  ::ng-deep table.dataTable td.dataTables_empty {
+	display: none;
+}

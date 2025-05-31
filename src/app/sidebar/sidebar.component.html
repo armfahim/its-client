@@ -23,6 +23,10 @@
                                     href="javascript:">Employee Dashboard</a></li>
                         </ul>
                     </li>
+                    <li [ngClass]="{ 'active' : urlComplete.subUrl === 'clientspage' || urlComplete.subUrl === 'shopbranches' }">
+                        <a routerLink="/branches/shop/branches" ><i
+                                class="la la-university"></i> <span>Branches</span></a>
+                    </li>
                     <li [ngClass]="{ 'active' : urlComplete.subUrl === 'clientspage' || urlComplete.subUrl === 'supplierslist' }">
                         <a routerLink="/suppliers/supplierslist" ><i
                                 class="la la-users"></i> <span>Vendors</span></a>

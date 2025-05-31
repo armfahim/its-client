@@ -1,0 +1,213 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+    <ng-http-loader></ng-http-loader>
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Shop Branches</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Shop Branches</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <a class="btn add-btn" data-toggle="modal" data-target="#add_branch" (click)="resetForm()"><i
+                        class="fa fa-plus"></i>
+                    Add Branch</a>
+                <div class="view-icons">
+                    <!-- <a routerLink="/clients/clientspage" class="grid-view btn btn-link"><i class="fa fa-th"></i></a> -->
+                    <a routerLink="/suppliers/supplierslist" class="list-view btn btn-link active"><i
+                            class="fa fa-bars"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <!-- Search Filter -->
+    <form (ngSubmit)="onSearch()" [formGroup]="searchForm">
+        <div class="row filter-row">
+            <div class="col-sm-6 col-md-3">
+                <div class="form-group form-focus">
+                    <!-- (input)="searchName($event.target.value)" -->
+                    <input formControlName="branchName" type="text" class="form-control floating"
+                        (focusout)="rerender()">
+                    <label class="focus-label">Branch Name</label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <button class="btn btn-success btn-block" type="submit">Search</button>
+            </div>
+        </div>
+    </form>
+    <!-- Search Filter -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="datatable"
+                    class="table table-striped custom-table datatable">
+                    <thead>
+                        <tr>
+                            <th (click)="onTableHeaderClick(0, 'supplierName')">Branch Name</th>
+                            <th (click)="onTableHeaderClick(1, 'email')">City</th>
+                            <th (click)="onTableHeaderClick(2, 'phone')">Address</th>
+                            <th class="text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="branchesData">
+                        <tr *ngFor="let branch of branchesData; let i = index">
+                            <td>{{branch.branchName ? branch.branchName : "N/A"}}</td>
+                            <td>{{branch.city ? branch.city : "N/A"}}</td>
+                            <td>{{branch.address ? branch.address : "N/A"}}</td>
+                           
+                            <td class="text-right">
+                                <div class="dropdown dropdown-action">
+                                    <a class="action-icon dropdown-toggle" data-toggle="dropdown"
+                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#edit_branch"
+                                            (click)="onEditBranch(branch.id)"><i class="fa fa-pencil m-r-5"></i>
+                                            Edit</a>
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#delete_branch"
+                                            (click)="tempId = branch.id"><i class="fa fa-trash-o m-r-5"></i>
+                                            Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- Add Branch Modal -->
+<div id="add_branch" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Branch</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="addBranchForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Name </label>
+                                <input class="form-control" type="text" placeholder="Branch Name.."
+                                    [class.invalid]="addBranchForm.get('branchName').invalid && addBranchForm.get('branchName').touched"
+                                    formControlName="branchName">
+                                <div
+                                    *ngIf="addBranchForm.get('branchName').invalid && addBranchForm.get('branchName').touched">
+                                    <small
+                                        *ngIf="addBranchForm.get('branchName').invalid && addBranchForm.get('branchName').touched"
+                                        class="text-danger"> *Name is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">City </label>
+                                <input class="form-control" type="text" placeholder="City.." formControlName="city">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Address </label>
+                                <textarea rows="4" class="form-control" placeholder="Address.." formControlName="address"></textarea>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" (click)="onAddBranch()">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Branch Modal -->
+
+<!-- Edit Branch Modal -->
+<div id="edit_branch" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Branch</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="editBranchForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Branch Name </label>
+                                <input class="form-control" type="text"
+                                    [class.invalid]="editBranchForm.get('editBranchName').invalid && editBranchForm.get('editBranchName').touched"
+                                    formControlName="editBranchName">
+                                <div
+                                    *ngIf="editBranchForm.get('editBranchName').invalid && editBranchForm.get('editBranchName').touched">
+                                    <small
+                                        *ngIf="editBranchForm.get('editBranchName').invalid && editBranchForm.get('editBranchName').touched"
+                                        class="text-danger"> *Name is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">City </label>
+                                <input class="form-control" type="text" formControlName="editCity">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Address </label>
+                                <textarea rows="4" class="form-control" formControlName="editAddress"></textarea>
+
+                            </div>
+                            <div class="submit-section">
+                                <button class="btn btn-primary submit-btn" (click)="onSave()">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Edit Branch Modal -->
+
+<!-- Delete Branch Modal -->
+<div class="modal custom-modal fade" id="delete_branch" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete Branch</h3>
+                    <p>Are you sure want to delete?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a class="btn btn-primary continue-btn" (click)="onDelete()">Delete</a>
+                        </div>
+                        <div class="col-6">
+                            <a data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete Supplier Modal -->

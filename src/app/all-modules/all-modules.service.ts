@@ -62,6 +62,13 @@ export class AllModulesService {
     return this.http.get(url);
   }
 
+  getBranchesPaginatedData(endPoint: any,params: any): Observable<any> {
+    // Include DataTables parameters in the API request
+    // &sort=${params.orderColumnName}&dir=${params.order[0].dir}
+    const url = `${this.baseUrl}${endPoint}?page=${params.start / params.length + 1}&size=${params.length}&sortBy=${params.orderColumnName}&dir=${params.order[0].dir}&branchName=${params.branchName}`;
+    return this.http.get(url);
+  }
+
   // Post Method Api
   add(user: any, endPoint): Observable<any> {
     const url = `${this.baseUrl}${endPoint}`;
