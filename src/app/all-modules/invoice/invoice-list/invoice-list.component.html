@@ -27,6 +27,23 @@
   <!-- Search Filter -->
   <form (ngSubmit)="onSearch()" [formGroup]="searchForm">
       <div class="row filter-row">
+            <div class="col-sm-6 col-md-3">
+              <div class="form-group form-focus">
+                  <ng-select
+                      [items]="branches"
+                      bindLabel="branchName"
+                      placeholder="Search City Branch"
+                      bindValue="id"
+                      [searchable]="true"
+                      [clearable]="true"
+                      [virtualScroll]="true"
+                      class="custom-ng-select"
+                      formControlName="branchId"
+                      [(ngModel)]="searchBranchId"
+                      (change)="rerender()">
+                   </ng-select>
+               </div>
+            </div>
           <div class="col-sm-6 col-md-3">
               <div class="form-group form-focus">
                   <ng-select
@@ -42,9 +59,9 @@
                       [(ngModel)]="searchSupplierId"
                       (change)="rerender()">
                    </ng-select>
-              </div>
-          </div>
-          <div class="col-sm-6 col-md-3">
+               </div>
+            </div>
+          <div class="col-sm-6 col-md-2">
               <div class="form-group form-focus">
                   <div class="cal-icon">
                       <input
@@ -61,7 +78,7 @@
                   <label class="focus-label">From</label>
               </div>
           </div>
-          <div class="col-sm-6 col-md-3">
+          <div class="col-sm-6 col-md-2">
               <div class="form-group form-focus">
                   <div class="cal-icon">
                       <input
@@ -76,7 +93,7 @@
                   <label class="focus-label">To</label>
               </div>
           </div>
-          <div class="col-sm-6 col-md-3">
+          <div class="col-sm-6 col-md-2">
               <button class="btn btn-success btn-block" type="submit">Search</button>
               <!-- <a class="btn btn-success btn-block" type="submit" (click)="onSearch()"> Search </a> -->
           </div>
@@ -111,6 +128,9 @@
                               #{{invoice.invoiceNumber}}
                               <small class="block text-ellipsis">
                                   <span class="badge bg-inverse-danger"> {{invoice.isPaid == true ? 'Paid' :'Unpaid'}} </span>
+                              </small>
+                              <small class="block text-ellipsis-large">
+                                  <span class="badge bg-light"> {{invoice.branchName}} </span>
                               </small>
                           </td>
                           <td>{{invoice.supplierName}}</td>
@@ -157,6 +177,27 @@
                   <div class="row">
                       <div class="col-md-6">
                           <div class="form-group">
+                              <label class="col-form-label">City Branch <span class="text-danger">*</span> </label>
+                              <ng-select
+                                  [items]="branches"
+                                  bindLabel="branchName"
+                                  placeholder="--Select--"
+                                  bindValue="id"
+                                  [searchable]="true"
+                                  [clearable]="true"
+                                  [virtualScroll]="true"
+                                  class="custom-ng-select"
+                                  formControlName="shopBranch"
+                                  [(ngModel)]="invoice.shopBranch">
+                               </ng-select>
+                              <div *ngIf="addInvoiceForm.get('shopBranch').invalid && addInvoiceForm.get('shopBranch').touched">
+                                  <small *ngIf="addInvoiceForm.get('shopBranch').invalid && addInvoiceForm.get('shopBranch').touched"
+                                   class="text-danger"> *Shop Branch is required</small>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
                               <label class="col-form-label">Vendor Name <span class="text-danger">*</span> </label>
                               <ng-select
                                   [items]="suppliers"
@@ -171,7 +212,8 @@
                                   [(ngModel)]="invoice.supplierDetails">
                                </ng-select>
                               <div *ngIf="addInvoiceForm.get('supplierDetails').invalid && addInvoiceForm.get('supplierDetails').touched">
-                                  <small *ngIf="addInvoiceForm.get('supplierDetails').invalid && addInvoiceForm.get('supplierDetails').touched" class="text-danger"> *Company is required</small>
+                                  <small *ngIf="addInvoiceForm.get('supplierDetails').invalid && addInvoiceForm.get('supplierDetails').touched" 
+                                    class="text-danger"> *Vendor is required</small>
                               </div>
                           </div>
                       </div>
@@ -393,6 +435,27 @@
                   <div class="row">
                       <div class="col-md-6">
                           <div class="form-group">
+                              <label class="col-form-label">City Branch <span class="text-danger">*</span> </label>
+                              <ng-select
+                                  [items]="branches"
+                                  bindLabel="branchName"
+                                  placeholder="--Select--"
+                                  bindValue="id"
+                                  [searchable]="true"
+                                  [clearable]="true"
+                                  [virtualScroll]="true"
+                                  class="custom-ng-select"
+                                  formControlName="editShopBranch"
+                                  [(ngModel)]="invoice.shopBranch">
+                               </ng-select>
+                              <div *ngIf="editInvoiceForm.get('editShopBranch').invalid && editInvoiceForm.get('editShopBranch').touched">
+                                  <small *ngIf="editInvoiceForm.get('editShopBranch').invalid && editInvoiceForm.get('editShopBranch').touched"
+                                   class="text-danger"> *Shop Branch is required</small>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
                               <label class="col-form-label">Vendor Name <span class="text-danger">*</span> </label>
                               <ng-select
                                   [items]="suppliers"
@@ -407,7 +470,8 @@
                                   [(ngModel)]="invoice.supplierDetails">
                                </ng-select>
                               <div *ngIf="editInvoiceForm.get('editSupplierDetails').invalid && editInvoiceForm.get('editSupplierDetails').touched">
-                                  <small *ngIf="editInvoiceForm.get('editSupplierDetails').invalid && editInvoiceForm.get('editSupplierDetails').touched" class="text-danger"> *Company is required</small>
+                                  <small *ngIf="editInvoiceForm.get('editSupplierDetails').invalid && editInvoiceForm.get('editSupplierDetails').touched"
+                                   class="text-danger"> *Vendor is required</small>
                               </div>
                           </div>
                       </div>

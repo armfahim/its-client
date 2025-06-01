@@ -50,9 +50,9 @@
                     class="table table-striped custom-table datatable">
                     <thead>
                         <tr>
-                            <th (click)="onTableHeaderClick(0, 'supplierName')">Branch Name</th>
-                            <th (click)="onTableHeaderClick(1, 'email')">City</th>
-                            <th (click)="onTableHeaderClick(2, 'phone')">Address</th>
+                            <th (click)="onTableHeaderClick(0, 'branchName')">Branch Name</th>
+                            <th (click)="onTableHeaderClick(1, 'city')">City</th>
+                            <th (click)="onTableHeaderClick(2, 'address')">Address</th>
                             <th class="text-right">Action</th>
                         </tr>
                     </thead>
@@ -60,7 +60,7 @@
                         <tr *ngFor="let branch of branchesData; let i = index">
                             <td>{{branch.branchName ? branch.branchName : "N/A"}}</td>
                             <td>{{branch.city ? branch.city : "N/A"}}</td>
-                            <td>{{branch.address ? branch.address : "N/A"}}</td>
+                            <td>{{branch.address ? branch.address : ""}}</td>
                            
                             <td class="text-right">
                                 <div class="dropdown dropdown-action">

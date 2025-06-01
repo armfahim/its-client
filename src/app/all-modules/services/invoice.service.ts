@@ -26,6 +26,7 @@ export class InvoiceService {
                 `sortBy=${params.orderColumnName}&` +
                 `dir=${params.order[0].dir}&` +
                 `supplier=${params.supplier}&` +
+                `branch=${params.branch}&` +
                 `fromInvoiceDate=${params.fromInvoiceDate}&` +
                 `toInvoiceDate=${params.toInvoiceDate}`;
     console.log(url);

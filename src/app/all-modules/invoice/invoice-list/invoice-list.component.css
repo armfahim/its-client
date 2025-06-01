@@ -13,3 +13,12 @@
   box-shadow: none;
   height: 43px;
 }
+
+.text-ellipsis-large {
+    display: block;
+    max-width: 141%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: large;
+}

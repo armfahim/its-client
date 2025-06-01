@@ -10,6 +10,8 @@ import { Invoice } from '../../model/invoice';
 import { WhiteSpaceValidator } from 'src/app/utils/white-space-validator';
 import { InvoiceService } from '../../services/invoice.service';
 import { RecordStatus } from 'src/app/utils/enums.enum';
+import { sha1 } from '@angular/compiler/src/i18n/digest';
+import { data } from 'jquery';
 
 declare const $: any;
 @Component({
@@ -40,6 +42,8 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
   invoice: Invoice = new Invoice();
   //obj declaration
   suppliers: [] = [];
+  branches : [] = [];
+  // Terms
   term: [] = [];
   codTerm:any;
 
@@ -51,6 +55,7 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
   searchForm: FormGroup;
   searchFormData : any;
   searchSupplierId: any;
+  searchBranchId: any;
   fromInvoiceDate:any;
   toInvoiceDate:any;
   isGreaterThan: boolean = false;
@@ -92,6 +97,7 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
           }
 
           dataTablesParameters.supplier = this.searchSupplierId ? this.searchSupplierId : "";
+          dataTablesParameters.branch = this.searchBranchId ? this.searchBranchId : "";
           dataTablesParameters.fromInvoiceDate = this.datePipe.transform(this.fromInvoiceDate, 'yyyy-MM-dd') ? this.datePipe.transform(this.fromInvoiceDate, 'yyyy-MM-dd') : "";
           dataTablesParameters.toInvoiceDate = this.datePipe.transform(this.toInvoiceDate, 'yyyy-MM-dd') ? this.datePipe.transform(this.toInvoiceDate, 'yyyy-MM-dd') : "";
           this.invoiceService.getPaginatedData("/v1/invoice-details/list",dataTablesParameters).subscribe(resp => {
@@ -129,6 +135,7 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
       paidDate: ["", []],
       codIncheque:["",[]],
       supplierDetails: ["", [Validators.required]],
+      shopBranch: ["", [Validators.required]],
     });
     this.addInvoiceForm.get("paymentDueDate").disable();
     this.addInvoiceForm.get("netDue").disable();
@@ -148,6 +155,7 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
       editPaidDate: ["", []],
       editCodIncheque:["", []],
       editSupplierDetails: ["", [Validators.required]],
+      editShopBranch: ["", [Validators.required]],
       editId: ["", []],
     });
 
@@ -157,11 +165,13 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
     // Search Form
     this.searchForm = this.formBuilder.group({
       supplierId:["",[]],
+      branchId:["",[]],
       fromInvoiceDate:["",[]],
       toInvoiceDate:["",[]]
     })
 
     this.loadAllSuppliers();
+    this.loadAllShopBranches();
     this.loadAllTerm();
 }
 
@@ -179,6 +189,7 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
       editIsPaid: invoice[0]?.isPaid,
       editPaidDate: invoice[0]?.paidDate,
       editSupplierDetails: invoice[0]?.supplierDetails,
+      editShopBranch: invoice[0]?.shopBranch,
       editId: invoice[0]?.id,
       editNetDue: invoice[0]?.netDue.replace(/,/g,''),
       editPaymentDueDate: invoice[0]?.paymentDueDate,
@@ -214,6 +225,7 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
       chequeNumber: this.editInvoiceForm.value.editChequeNumber,
       paidDate: this.editInvoiceForm.value.editPaidDate,
       supplierDetails: this.editInvoiceForm.value.editSupplierDetails,
+      shopBranch: this.editInvoiceForm.value.editShopBranch,
       id: this.editInvoiceForm.value.editId,
 
       invoiceAmount:this.invoice.invoiceAmount,
@@ -270,6 +282,7 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
       isPaid: this.addInvoiceForm.value.isPaid,
       paidDate: this.addInvoiceForm.value.paidDate,
       supplierDetails: this.addInvoiceForm.value.supplierDetails,
+      shopBranch: this.addInvoiceForm.value.shopBranch,
 
       invoiceAmount:this.invoice.invoiceAmount,
       creditAmount: this.invoice.creditAmount,
@@ -529,6 +542,14 @@ export class InvoiceListComponent implements OnInit,OnDestroy {
   loadAllSuppliers() {
     this.allModulesService.get("/v1/supplier-details/all").subscribe((response: any) => {
       this.suppliers = response?.data;
+    }, (error) => {
+      this.toastr.error(error.error.message);
+    });
+  }
+
+  loadAllShopBranches(){
+    this.allModulesService.get("/v1/shop/branch/find/all").subscribe((response: any) => {
+      this.branches = response?.data;
     }, (error) => {
       this.toastr.error(error.error.message);
     });
