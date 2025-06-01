@@ -87,13 +87,14 @@
                       Due Invoices Summary
                   </h3>
               </div>
+              <input type="search" class="form-control border-radius" placeholder="Search by Invoice Number or Vendor..." [(ngModel)]="searchFeature">
               <div class="card-body">
                   <div class="table-responsive">
                       <table class="table custom-table mb-0">
                           <thead>
                               <tr>
                                   <th>Invoice Number</th>
-                                  <th>Company</th>
+                                  <th>Vendor</th>
                                   <th>Due Date</th>
                                   <th>Net Due</th>
                                   <th>Invoice Date</th>
@@ -101,7 +102,7 @@
                               </tr>
                           </thead>
                           <tbody>
-                              <tr *ngFor="let data of dueInvoices; let i = index">
+                              <tr *ngFor="let data of dueInvoices | filterPipeArray:['invoiceNumber', 'supplierName']:searchFeature; let i = index">
                                   <td class="text-info">#{{data.invoiceNumber}}
                                     <small class="block text-ellipsis">
                                       <span class="badge bg-inverse-danger">Unpaid</span>
@@ -165,16 +166,18 @@
                     </h3>
                     <br>
                     <i class="text-white"><i class="fa fa-info-circle" aria-hidden="true"></i>
-                        Showing pending invoices set to become due in {{days}} or more days
+                        Showing pending invoices that are due in {{days}} or more days — keep an eye out!💸
                     </i>
                 </div>
+                <input type="search" class="form-control border-radius" 
+                    placeholder="Search by Invoice Number or Vendor..." [(ngModel)]="searchFeaturePending">
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table custom-table mb-0">
                             <thead>
                                 <tr>
                                     <th>Invoice Number</th>
-                                    <th>Company</th>
+                                    <th>Vendor</th>
                                     <th>Due Date</th>
                                     <th>Net Due</th>
                                     <th>Invoice Date</th>
@@ -182,7 +185,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let data of pendingInvoices; let i = index">
+                                <tr *ngFor="let data of pendingInvoices | filterPipeArray:['invoiceNumber', 'supplierName']:searchFeaturePending; let i = index">
                                     <td class="text-info">#{{data.invoiceNumber}}
                                       <small class="block text-ellipsis">
                                         <span class="badge bg-inverse-danger">Unpaid</span>

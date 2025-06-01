@@ -37,6 +37,8 @@ export class AdminDashboardComponent implements OnInit {
   netDueOfDueInvoices:any;
   netDueOfPendingInvoices:any;
   totalDueAmount: any;
+  searchFeature:any;
+  searchFeaturePending:any;
   dashboardResponse:any;
 
   //Model

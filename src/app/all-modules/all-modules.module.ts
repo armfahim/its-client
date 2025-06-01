@@ -21,6 +21,7 @@ import { AllModulesService } from './all-modules.service';
 // Api All Modules Database
 import { AllModulesData } from 'src/assets/all-modules-data/all-modules-data';
 import { NgHttpLoaderModule } from 'ng-http-loader';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -41,6 +42,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {};
     // InMemoryWebApiModule.forRoot(AllModulesData),
     PerfectScrollbarModule,
     AllModulesRoutingModule,
+    SharedModule,
     NgHttpLoaderModule.forRoot(), 
 
   ],
