@@ -280,6 +280,7 @@ select.form-control[multiple], select.form-control[size] {
 -----------------------*/
 
 .table-responsive {
+	
 	white-space: nowrap;
 	width: 100%;
 }

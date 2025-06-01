@@ -20,7 +20,9 @@ export class PurchasereportsComponent implements OnInit {
   public searchForm: FormGroup;
   searchFormData : any;
   suppliers: [] = [];
+  branches : [] = [];
   searchSupplierId: any;
+  searchBranchId:any;
   searchMonth:any;
   searchYear:any;
   years:any;
@@ -54,11 +56,13 @@ export class PurchasereportsComponent implements OnInit {
   ngOnInit() {
     this.loadYearsAndMonths();
     this.loadAllSuppliers();
+    this.loadAllShopBranches();
     this.getPurchaseAmountBySupplier();
 
     // Search Form
     this.searchForm = this.formBuilder.group({
       supplierId:["",[]],
+      branchId:["",[]],
       month:["",[]],
       year:["",[]]
     })
@@ -201,12 +205,13 @@ export class PurchasereportsComponent implements OnInit {
     if(!this.selectedYear){
       // this.toastr.info("Please select a year", "",{ timeOut: 5000 });
       // return;
-      this.selectedYear = "2024";
+      this.selectedYear = new Date().getFullYear().toString();
     }
     this.detailsInvoice = null;
     let params = {
       year: this.selectedYear,
-      supplierId : this.searchSupplierId ? this.searchSupplierId : ""
+      supplierId : this.searchSupplierId ? this.searchSupplierId : "",
+      branchId : this.searchBranchId ? this.searchBranchId : ""
     };
 
     this.purchaseReportsService.getPurchaseAmountBySupplierAndYearInMonth("/v1/purchase/amount/by/supplier/year-month",params).subscribe((response: any) => {
@@ -223,7 +228,8 @@ export class PurchasereportsComponent implements OnInit {
 
   getPurchaseAmountBySupplier() {
     let params = {
-      supplierId : this.searchSupplierId ? this.searchSupplierId : ""
+      supplierId : this.searchSupplierId ? this.searchSupplierId : "",
+      branchId : this.searchBranchId ? this.searchBranchId : "",
     };
 
     this.purchaseReportsService.getPurchaseAmountBySupplier("/v1/purchase/amount/by/supplier",params).subscribe((response: any) => {
@@ -255,6 +261,14 @@ export class PurchasereportsComponent implements OnInit {
   loadAllSuppliers() {
     this.allModulesService.get("/v1/supplier-details/all").subscribe((response: any) => {
       this.suppliers = response?.data;
+    }, (error) => {
+      this.toastr.error(error.error.message);
+    });
+  }
+
+  loadAllShopBranches(){
+    this.allModulesService.get("/v1/shop/branch/find/all").subscribe((response: any) => {
+      this.branches = response?.data;
     }, (error) => {
       this.toastr.error(error.error.message);
     });

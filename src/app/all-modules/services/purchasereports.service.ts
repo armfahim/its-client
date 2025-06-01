@@ -17,12 +17,12 @@ export class PurchasereportsService {
     return throwError(error);
   }
   getPurchaseAmountBySupplier(endPoint: any,params: any): Observable<any> {
-    const url = `${this.baseUrl}${endPoint}?supplierId=${params.supplierId}`;
+    const url = `${this.baseUrl}${endPoint}?supplierId=${params.supplierId}&branchId=${params.branchId}`;
     return this.http.get(url);
   }
 
   getPurchaseAmountBySupplierAndYearInMonth(endPoint: any,params: any): Observable<any> {
-    const url = `${this.baseUrl}${endPoint}?year=${params.year}&supplierId=${params.supplierId}`;
+    const url = `${this.baseUrl}${endPoint}?year=${params.year}&supplierId=${params.supplierId}&branchId=${params.branchId}`;
     return this.http.get(url);
   }
 }
