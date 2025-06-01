@@ -25,4 +25,9 @@ export class PurchasereportsService {
     const url = `${this.baseUrl}${endPoint}?year=${params.year}&supplierId=${params.supplierId}&branchId=${params.branchId}`;
     return this.http.get(url);
   }
+
+  findBySupplierAndBranch(endPoint:any, params: any) {
+    const url = `${this.baseUrl}${endPoint}?supplierId=${params.supplierId}&branchId=${params.branchId}`;
+    return this.http.get(url);
+  }
 }

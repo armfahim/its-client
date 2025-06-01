@@ -186,10 +186,13 @@ export class PurchasereportsComponent implements OnInit {
      }
   }
 
-  findBySupplier() {
-    if(!this.searchSupplierId) return;
-
-    this.allModulesService.findById(this.searchSupplierId,"v1/invoice-details/find/supplier").subscribe((data: any) => {
+  findBySupplierOrBranch() {
+    if(!this.searchSupplierId && !this.searchBranchId) return;
+    let params = {
+      supplierId : this.searchSupplierId ? this.searchSupplierId : "",
+      branchId : this.searchBranchId ? this.searchBranchId : ""
+    };
+    this.purchaseReportsService.findBySupplierAndBranch("/v1/invoice-details/find/by/supplier/branch", params).subscribe((data: any) => {
       this.detailsInvoice = data?.data;
       this.supplierName = data?.data[0].supplierName;
       console.log(this.detailsInvoice);
@@ -203,8 +206,6 @@ export class PurchasereportsComponent implements OnInit {
 
   getPurchaseAmountBySupplierAndYearInMonth() {
     if(!this.selectedYear){
-      // this.toastr.info("Please select a year", "",{ timeOut: 5000 });
-      // return;
       this.selectedYear = new Date().getFullYear().toString();
     }
     this.detailsInvoice = null;
